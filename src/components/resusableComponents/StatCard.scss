@@ -1,0 +1,42 @@
+.stats-card {
+    background: #E6EBF0;
+    border-radius: 8px;
+    padding: 16px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+    min-width: 180px;
+
+    &:hover {
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+        transform: translateY(-2px);
+    }
+
+    .stat-name {
+        font-family: 'Lato', sans-serif;
+        font-weight: 600;
+        font-size: 14px;
+        line-height: 16px;
+        letter-spacing: 0%;
+        color: #66717B;
+        margin-bottom: 8px;
+    }
+
+    .stat-count {
+        font-family: 'Poppins', sans-serif;
+        font-weight: 600;
+        font-size: 24px;
+        line-height: 32px;
+        letter-spacing: 0%;
+        color: #586FCC;
+    }
+
+    .stat-icon {
+        margin-bottom: 12px;
+
+        svg {
+            width: 24px;
+            height: 24px;
+            color: #586FCC;
+        }
+    }
+}

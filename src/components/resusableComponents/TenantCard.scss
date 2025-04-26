@@ -1,0 +1,105 @@
+@import "../../assets/scss/main.scss";
+
+.TenantCardStyles {
+  .ant-card {
+    border-radius: 12px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: none;
+    margin-bottom: 16px;
+    
+    &:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+    }
+
+    .ant-card-head {
+      border-bottom: none;
+      padding: 16px;
+      background: #E6EBF0;
+      border-top-left-radius: 12px;
+      border-top-right-radius: 12px;
+
+      .card-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+
+        .avatar-container {
+          .tenant-avatar {
+            border-radius: 50%;
+            object-fit: cover;
+          }
+        }
+
+        .tenant-info {
+          display: flex;
+          flex-direction: column;
+        }
+      }
+    }
+
+    .ant-card-body {
+      padding: 16px;
+      background: linear-gradient(to bottom, #ffffff 0%, #f8fafc 100%);
+      border-bottom-left-radius: 12px;
+      border-bottom-right-radius: 12px;
+
+      .detail-row {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+      }
+    }
+  }
+
+  .titleStyle {
+    font-family: 'Lato', sans-serif;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 24px;
+    color: #2d3748;
+    margin: 0;
+  }
+
+  .mobileNumberStyle {
+    font-family: 'Lato', sans-serif;
+    font-weight: 500;
+    font-size: 13px;
+    line-height: 20px;
+    color: #4a5568;
+    margin: 0;
+  }
+
+  .detailLabel {
+    font-family: 'Lato', sans-serif;
+    font-weight: 600;
+    font-size: 12px;
+    color: #66717B;
+  }
+
+  .detailValue {
+    font-family: 'Lato', sans-serif;
+    font-weight: 500;
+    font-size: 13px;
+    color: #111314;
+  }
+
+  .statusTag {
+    border-radius: 24px;
+    padding: 4px 12px;
+    font-weight: 600;
+    font-size: 12px;
+    border: none;
+    
+    &.active {
+      background-color: #D0F4E7;
+      color: #0F8D60;
+    }
+    
+    &.inactive {
+      background-color: #FBD9E5;
+      color: #D23B71;
+    }
+  }
+}
