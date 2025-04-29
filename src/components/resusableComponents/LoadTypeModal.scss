@@ -1,0 +1,51 @@
+@import url("https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap");
+
+.load-type-modal-title {
+  font-family: "Lato";
+  font-weight: 700;
+  font-size: 32px;
+  line-height: 40px;
+  color: #3A4057;
+}
+
+.load-type-modal-title-description {
+  font-family: "Lato";
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 24px;
+  color: #3A4057;
+}
+
+.load-type-label {
+  font-family: "Lato";
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 24px;
+  color: #333;
+  margin-bottom: 4px;
+}
+
+.loadtypeDescription {
+  font-family: "Lato";
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 16px;
+  color: #666;
+}
+
+.load-type-card-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.load-type-info-icon {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.load-type-card-wrapper:hover .load-type-info-icon {
+  opacity: 1;
+}

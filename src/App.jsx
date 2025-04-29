@@ -41,7 +41,6 @@ function App() {
         <Content
           style={{
             margin: '0px 0px 0px 8px ',
-            padding: 24,
             minHeight: 280,
             background: colorBgContainer,
           }}

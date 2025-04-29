@@ -1,0 +1,41 @@
+.toast-notification-success {
+    .drayage-ant-notification-notice-icon {
+      color: #0F8D60 !important;
+    }
+  }
+  
+  .toast-notification-error {
+    .drayage-ant-notification-notice-icon {
+      color: #D23B71 !important;
+    }
+  }
+  
+  .toast-notification-warning {
+    .drayage-ant-notification-notice-icon {
+      color: #E6A706 !important;
+    }
+  }
+  
+  .toast-notification-info {
+    .drayage-ant-notification-notice-icon {
+      color: #586fcc !important;
+    }
+  }
+  
+  .ant-notification {
+    z-index: 9999;
+  }
+  
+  .ant-notification-notice {
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+  
+  .ant-notification-notice-message {
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+  
+  .ant-notification-notice-description {
+    font-size: 14px;
+  }

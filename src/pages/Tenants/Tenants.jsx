@@ -1,7 +1,8 @@
-import { Col, Row } from "antd";
+import { Col, Input, Row } from "antd";
 import TenantCard from "../../components/resusableComponents/TenantCard";
 import StatsCard from "../../components/resusableComponents/StatCard";
 import "./Tenants.scss";
+import PgButton from "../../components/resusableComponents/PgButton";
 
 // Mock data for 50 tenants
 const generateTenants = () => {
@@ -78,7 +79,6 @@ const Tenants = () => {
   const totalTenants = tenants.length;
   const activeTenants = tenants.filter((t) => t.isActive).length;
   const inactiveTenants = totalTenants - activeTenants;
-  
 
   const professionsCount = tenants.reduce((acc, tenant) => {
     acc[tenant.profession] = (acc[tenant.profession] || 0) + 1;
@@ -122,24 +122,30 @@ const Tenants = () => {
 
   return (
     <div className="TenantStyles">
-        <div className="tabheader">
-            Tenants
-        </div>
-      <Row gutter={[16, 16]} style={{ marginBottom: 24 }}>
-        {statsData.map((stat, index) => (
-          <Col key={index}>
-            <StatsCard statName={stat.name} count={stat.value} />
-          </Col>
-        ))}
-      </Row>
+      <div className="tabheader">Tenants</div>
+      <div style={{ padding: "16px" }}>
+        <Row gutter={[16, 16]} style={{ marginBottom: 24 }}>
+          {statsData.map((stat, index) => (
+            <Col key={index}>
+              <StatsCard statName={stat.name} count={stat.value} />
+            </Col>
+          ))}
+        </Row>
+        <Row style={{display:"flex", justifyContent:"space-between", alignItems:"center", paddingBottom:"16px"}}>
+          <div>   <Input/></div>
+        
+        <PgButton>Add Tenant</PgButton>
+        </Row>
 
-      <Row gutter={[16]}>
-        {tenants.map((tenant) => (
-          <Col span={8} key={tenant.id}>
-            <TenantCard tenant={tenant} />
-          </Col>
-        ))}
-      </Row>
+       
+        <Row gutter={[16]}>
+          {tenants.map((tenant) => (
+            <Col span={8} key={tenant.id}>
+              <TenantCard tenant={tenant} />
+            </Col>
+          ))}
+        </Row>
+      </div>
     </div>
   );
 };

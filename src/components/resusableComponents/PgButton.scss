@@ -1,0 +1,135 @@
+@import url("https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap");
+
+.custom-button {
+    font-family: "Lato", sans-serif;
+    font-weight: 700;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0px 1px 1px 0px #0000003D,
+        0px 1px 2px 0px #00000029,
+        0px -1px 1px 0px #00000014;
+
+    &.large {
+        height: 56px;
+        padding: 16px 24px;
+        font-size: 18px;
+        line-height: 24px;
+        background: #586FCC;
+        color: #fff;
+        border-bottom: 2px solid #0000000D;
+    }
+
+    &.medium {
+        height: 40px;
+        padding: 8px 16px;
+        font-size: 14px;
+        line-height: 20px;
+        background: #586FCC;
+        color: #fff;
+        border-bottom: 2px solid #0000000D;
+    }
+
+
+    &.small {
+        height: 32px;
+        padding: 4px 12px;
+        font-size: 14px;
+        line-height: 16px;
+        background: #586FCC;
+        color: #fff;
+        border-bottom: 2px solid #0000000D;
+    }
+
+    &.primary {
+        background: #586FCC !important;
+        color: #fff !important;
+        border-bottom: 2px solid #0000000D !important;
+
+        &:hover {
+            background: #4d63b8 !important;
+            color: #fff !important;
+            border-color: #586FCC !important;
+            box-shadow: 0px 2px 4px 0px #00000029 !important;
+        }
+
+        &:active {
+            transform: scale(0.98) !important;
+            color: #fff !important;
+            border-color: #586FCC !important;
+            box-shadow: 0px 0px 0px 0px !important;
+        }
+    }
+
+    &.secondary {
+        background: transparent !important;
+        color: #586FCC !important;
+        border: 2px solid #BCC5EB !important;
+        transition: all 0.3s ease-in-out !important;
+
+        &:hover {
+            background: rgba(88, 111, 204, 0.1) !important;
+            border-color: #586FCC !important;
+            transition: all 0.3s ease-in-out !important;
+        }
+
+        &:active {
+            transform: scale(0.98) !important;
+            transition: transform 0.1s ease-in-out !important;
+        }
+    }
+
+    &.link {
+        border: none !important;
+        background: transparent !important;
+        font-family: Poppins;
+        font-weight: 600;
+        font-size: 14px;
+        line-height: 24px;
+        letter-spacing: 0px;
+        color: #586FCC;
+        box-shadow: none !important;
+
+        &:hover {
+            color: #586FCC !important;
+            background: rgba(88, 111, 204, 0.1) !important;
+        }
+
+        &:focus {
+            color: #586FCC !important;
+        }
+    }
+
+    &:disabled {
+        background: #b0b5d3 !important;
+        cursor: not-allowed !important;
+
+        &:hover {
+            background: #b0b5d3 !important;
+            border-color: #b0b5d3 !important;
+        }
+    }
+}
+
+.button-icon {
+    display: flex;
+    align-items: center;
+
+    &.left {
+        margin-right: 8px;
+    }
+
+    &.right {
+        margin-left: 8px;
+    }
+}
+
+.modalStyle .drayage-ant-modal-content {
+    padding: 0px !important;
+    border-radius: 24px !important;
+}
