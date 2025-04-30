@@ -118,9 +118,7 @@ const TenantFormModal = ({ visible, onClose, onSubmit, tenantData }) => {
           style={{ display: "flex", gap: "16px", justifyContent: "flex-end" }}
         >
           <PgButton type="secondary">Cancel</PgButton>
-          <PgButton>
-            {tenantData ? "Update Tenant" : "Register Tenant"}
-          </PgButton>
+          <PgButton>{tenantData ? "Update Tenant" : "Add Tenant"}</PgButton>
         </div>
       }
       width={900}
