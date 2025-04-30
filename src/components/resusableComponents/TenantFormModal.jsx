@@ -128,173 +128,178 @@ const TenantFormModal = ({ visible, onClose, onSubmit, tenantData }) => {
     >
       <div className="form-container">
         <Form layout="vertical" form={form} onFinish={handleFinish}>
-          <Row gutter={[16]}>
-            <Col span={18}>
-              <div className="personal-details-section">
-                <div className="section-title">Personal Information</div>
-                <Row gutter={16}>
-                  <Col span={12}>
-                    <div className="form-lable">Full Name</div>
-                    <Form.Item
-                      name="name"
-                      rules={[
-                        { required: true, message: "Please enter full name" },
-                      ]}
-                    >
-                      <Input placeholder="Enter full name" />
-                    </Form.Item>
-                  </Col>
-                  <Col span={12}>
-                    <div className="form-lable">Father's Name</div>
-                    <Form.Item
-                      name="fatherName"
-                      rules={[
-                        {
-                          required: true,
-                          message: "Please enter father's name",
-                        },
-                      ]}
-                    >
-                      <Input placeholder="Enter father's name" />
-                    </Form.Item>
-                  </Col>
-                </Row>
+          <div className="personal-Information">
+            <div className="section-title">Personal Information</div>
 
-                <Row gutter={16}>
-                  <Col span={6}>
-                    <div className="form-lable">Age</div>
-                    <Form.Item
-                      name="age"
-                      rules={[{ required: true, message: "Please enter age" }]}
-                    >
-                      <Input type="number" min={18} max={99} />
-                    </Form.Item>
-                  </Col>
-                  <Col span={6}>
-                    <div className="form-lable">Gender</div>
-                    <Form.Item
-                      name="gender"
-                      rules={[
-                        { required: true, message: "Please select gender" },
-                      ]}
-                    >
-                      <Select placeholder="Select gender">
-                        <Option value="male">Male</Option>
-                        <Option value="female">Female</Option>
-                        <Option value="other">Other</Option>
-                      </Select>
-                    </Form.Item>
-                  </Col>
-                  <Col span={6}>
-                    <div className="form-lable">Blood Group</div>
-                    <Form.Item
-                      name="bloodGroup"
-                      rules={[
-                        {
-                          required: true,
-                          message: "Please select blood group",
-                        },
-                      ]}
-                    >
-                      <Select placeholder="Select blood group">
-                        {bloodGroups.map((group) => (
-                          <Option key={group} value={group}>
-                            {group}
-                          </Option>
-                        ))}
-                      </Select>
-                    </Form.Item>
-                  </Col>
-                  <Col span={6}>
-                    <div className="form-lable">Marital Status</div>
-                    <Form.Item
-                      name="maritalStatus"
-                      rules={[
-                        {
-                          required: true,
-                          message: "Please select marital status",
-                        },
-                      ]}
-                    >
-                      <Select placeholder="Select status">
-                        <Option value="single">Single</Option>
-                        <Option value="married">Married</Option>
-                        <Option value="divorced">Divorced</Option>
-                      </Select>
-                    </Form.Item>
-                  </Col>
-                </Row>
+            <Row gutter={[16]}>
+              <Col span={18}>
+                <div>
+                  <Row gutter={16}>
+                    <Col span={12}>
+                      <div className="form-lable">Full Name</div>
+                      <Form.Item
+                        name="name"
+                        rules={[
+                          { required: true, message: "Please enter full name" },
+                        ]}
+                      >
+                        <Input placeholder="Enter full name as per GOVT ID" />
+                      </Form.Item>
+                    </Col>
+                    <Col span={12}>
+                      <div className="form-lable">Father's Name</div>
+                      <Form.Item
+                        name="fatherName"
+                        rules={[
+                          {
+                            required: true,
+                            message: "Please enter father's name",
+                          },
+                        ]}
+                      >
+                        <Input placeholder="Enter father's name" />
+                      </Form.Item>
+                    </Col>
+                  </Row>
 
-                <Row gutter={16}>
-                  <Col span={12}>
-                    <div className="form-lable">Date of Birth</div>
-                    <Form.Item
-                      name="dob"
-                      rules={[
-                        {
-                          required: true,
-                          message: "Please select date of birth",
-                        },
-                      ]}
-                    >
-                      <DatePicker style={{ width: "100%" }} />
-                    </Form.Item>
-                  </Col>
-                  <Col span={12}>
-                    <div className="form-lable">Mobile Number</div>
-                    <Form.Item
-                      name="mobile"
-                      rules={[
-                        {
-                          required: true,
-                          message: "Please enter mobile number",
-                        },
-                        {
-                          pattern: /^[0-9]{10}$/,
-                          message: "Please enter valid 10 digit number",
-                        },
-                      ]}
-                    >
-                      <Input addonBefore="+91" maxLength={10} />
-                    </Form.Item>
-                  </Col>
-                </Row>
-                <div className="form-lable">Email Address</div>
-                <Form.Item
-                  name="email"
-                  rules={[
-                    { type: "email", message: "Please enter valid email" },
-                    { required: true, message: "Please enter email" },
-                  ]}
-                >
-                  <Input placeholder="Enter email address" />
-                </Form.Item>
-              </div>
-            </Col>
-            <Col span={6}>
-              <div className="profile-upload-section">
-                <div className="form-lable">Profile Photo</div>
-                <Form.Item
-                  name="profileImage"
-                  valuePropName="fileList"
-                  getValueFromEvent={normFile}
-                >
-                  <Upload
-                    name="profile"
-                    listType="picture-card"
-                    maxCount={1}
-                    beforeUpload={() => false}
+                  <Row gutter={16}>
+                    <Col span={6}>
+                      <div className="form-lable">Age</div>
+                      <Form.Item
+                        name="age"
+                        rules={[
+                          { required: true, message: "Please enter age" },
+                        ]}
+                      >
+                        <Input type="number" min={18} max={99} />
+                      </Form.Item>
+                    </Col>
+                    <Col span={6}>
+                      <div className="form-lable">Gender</div>
+                      <Form.Item
+                        name="gender"
+                        rules={[
+                          { required: true, message: "Please select gender" },
+                        ]}
+                      >
+                        <Select placeholder="Select gender">
+                          <Option value="male">Male</Option>
+                          <Option value="female">Female</Option>
+                          <Option value="other">Other</Option>
+                        </Select>
+                      </Form.Item>
+                    </Col>
+                    <Col span={6}>
+                      <div className="form-lable">Blood Group</div>
+                      <Form.Item
+                        name="bloodGroup"
+                        rules={[
+                          {
+                            required: true,
+                            message: "Please select blood group",
+                          },
+                        ]}
+                      >
+                        <Select placeholder="Select blood group">
+                          {bloodGroups.map((group) => (
+                            <Option key={group} value={group}>
+                              {group}
+                            </Option>
+                          ))}
+                        </Select>
+                      </Form.Item>
+                    </Col>
+                    <Col span={6}>
+                      <div className="form-lable">Marital Status</div>
+                      <Form.Item
+                        name="maritalStatus"
+                        rules={[
+                          {
+                            required: true,
+                            message: "Please select marital status",
+                          },
+                        ]}
+                      >
+                        <Select placeholder="Select status">
+                          <Option value="single">Single</Option>
+                          <Option value="married">Married</Option>
+                          <Option value="divorced">Divorced</Option>
+                        </Select>
+                      </Form.Item>
+                    </Col>
+                  </Row>
+
+                  <Row gutter={16}>
+                    <Col span={12}>
+                      <div className="form-lable">Date of Birth</div>
+                      <Form.Item
+                        name="dob"
+                        rules={[
+                          {
+                            required: true,
+                            message: "Please select date of birth",
+                          },
+                        ]}
+                      >
+                        <DatePicker style={{ width: "100%" }} />
+                      </Form.Item>
+                    </Col>
+                    <Col span={12}>
+                      <div className="form-lable">Mobile Number</div>
+                      <Form.Item
+                        name="mobile"
+                        rules={[
+                          {
+                            required: true,
+                            message: "Please enter mobile number",
+                          },
+                          {
+                            pattern: /^[0-9]{10}$/,
+                            message: "Please enter valid 10 digit number",
+                          },
+                        ]}
+                      >
+                        <Input maxLength={10} />
+                      </Form.Item>
+                    </Col>
+                  </Row>
+                  <div className="form-lable">Email Address</div>
+                  <Form.Item
+                    name="email"
+                    rules={[
+                      { type: "email", message: "Please enter valid email" },
+                      { required: true, message: "Please enter email" },
+                    ]}
                   >
-                    <div className="upload-placeholder">
-                      <UploadOutlined style={{ fontSize: "24px" }} />
-                      <div>Click to Upload</div>
-                      <div className="upload-hint">Max. 2MB</div>
-                    </div>
-                  </Upload>
-                </Form.Item>
-              </div>
-            </Col>
-          </Row>
+                    <Input placeholder="Enter email address" />
+                  </Form.Item>
+                </div>
+              </Col>
+              <Col span={6}>
+                <div className="profile-upload-section">
+                  <div className="form-lable">Profile Photo</div>
+                  <Form.Item
+                    name="profileImage"
+                    valuePropName="fileList"
+                    getValueFromEvent={normFile}
+                  >
+                    <Upload
+                      name="profile"
+                      listType="picture-card"
+                      maxCount={1}
+                      beforeUpload={() => false}
+                    >
+                      <div className="upload-placeholder">
+                        <UploadOutlined style={{ fontSize: "24px" }} />
+                        <div>Click to Upload</div>
+                        <div className="upload-hint">Max. 2MB</div>
+                      </div>
+                    </Upload>
+                  </Form.Item>
+                </div>
+              </Col>
+            </Row>
+          </div>
 
           <div className="address-section">
             <div className="section-title">Address Details</div>
@@ -345,13 +350,6 @@ const TenantFormModal = ({ visible, onClose, onSubmit, tenantData }) => {
                 </Form.Item>
               </Col>
             </Row>
-            <div className="form-lable"> Permanent Address (if different) </div>
-            <Form.Item name="permanentAddress">
-              <TextArea
-                rows={3}
-                placeholder="Enter permanent address if different from above"
-              />
-            </Form.Item>
           </div>
 
           <div className="professional-section">

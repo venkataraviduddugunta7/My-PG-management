@@ -20,6 +20,7 @@
         font-size: 14px;
         line-height: 16px;
         color: #111314;
+        margin-bottom: 2px;
 
     }
 
@@ -55,16 +56,19 @@
     .form-container {
         max-height: 70vh;
         overflow-y: auto;
-      
-        scrollbar-width: none; /* Firefox */
-        -ms-overflow-style: none;  /* IE and Edge */
-      
+
+        scrollbar-width: none;
+        /* Firefox */
+        -ms-overflow-style: none;
+        /* IE and Edge */
+
         &::-webkit-scrollbar {
-          display: none; /* Chrome, Safari */
+            display: none;
+            /* Chrome, Safari */
         }
-      }
-      
-      
+    }
+
+
 
     .profile-upload-section {
         text-align: center;
@@ -115,20 +119,27 @@
     .ant-input,
     .ant-select-selector,
     .ant-picker {
-        border-radius: 6px !important;
-        border-color: #d9d9d9;
+        border: 1px solid #8897A4 !important;
+        border-radius: 8px !important;
+        height: 40px !important;
+
+        &::placeholder {
+            font-family: 'Lato', sans-serif;
+            font-weight: 400;
+            font-size: 16px;
+            line-height: 24px;
+            letter-spacing: 0%;
+            color: #8897a4;
+        }
 
         &:hover {
-            border-color: #40a9ff;
+            border-color: #586fcc;
         }
 
         &:focus {
+            border-color: #586fcc;
             box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
         }
-    }
-
-    .ant-btn {
-        border-radius: 6px;
     }
 
     .ant-upload.ant-upload-select {
@@ -137,15 +148,28 @@
 
     .ant-switch {
         min-width: 50px;
+
+        &.ant-switch-checked {
+            background-color: #586FCC;
+            transition: background-color 0.3s ease;
+
+            &:hover {
+                background-color: #586FCC;
+            }
+        }
     }
+
 
     .emergency-contact-section,
     .document-section,
+    .address-section,
+    .professional-section,
+    .stay-details-section,
+    .personal-Information,
     .additional-section {
-        background: #f9f9f9;
+        background: #E6EBF0;
         padding: 16px;
         border-radius: 8px;
-        margin-bottom: 20px;
+        margin-bottom: 16px;
     }
-
 }
