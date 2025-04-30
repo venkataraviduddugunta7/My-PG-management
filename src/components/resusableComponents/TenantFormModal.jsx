@@ -17,7 +17,7 @@ import {
   PlusOutlined,
   MinusCircleOutlined,
 } from "@ant-design/icons";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import "./TenantForm.scss"; // We'll create this SCSS file
 import {
   DrayageModalCloseIcon,
@@ -66,6 +66,17 @@ const idTypes = ["Aadhar", "PAN", "Passport", "Driving License", "Voter ID"];
 const TenantFormModal = ({ visible, onClose, onSubmit, tenantData }) => {
   const [form] = Form.useForm();
 
+  const [fileList, setFileList] = useState([]);
+  const [termsAccepted, setTermsAccepted] = useState(false);
+
+  const termsRules = [
+    "Tenant must provide valid government ID proof",
+    "Rent must be paid by the 5th of every month",
+    "No smoking inside the premises",
+    "Visitors allowed only between 8AM-10PM",
+    "Security deposit is non-refundable if lease is broken early"
+  ];
+
   useEffect(() => {
     if (tenantData) {
       form.setFieldsValue(tenantData);
@@ -89,6 +100,25 @@ const TenantFormModal = ({ visible, onClose, onSubmit, tenantData }) => {
     }
     return e?.fileList;
   };
+
+
+  const handleChange = ({ fileList: newFileList }) => {
+    setFileList(newFileList);
+  };
+  const handlePreview = async (file) => {
+    let src = file.url || file.preview;
+    if (!src && file.originFileObj) {
+      src = await new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file.originFileObj);
+        reader.onload = () => resolve(reader.result);
+      });
+    }
+
+    const imgWindow = window.open(src);
+    imgWindow?.document.write(`<img src="${src}" style="max-width: 100%" />`);
+  };
+
 
   return (
     <Modal
@@ -117,8 +147,8 @@ const TenantFormModal = ({ visible, onClose, onSubmit, tenantData }) => {
         <div
           style={{ display: "flex", gap: "16px", justifyContent: "flex-end" }}
         >
-          <PgButton type="secondary">Cancel</PgButton>
-          <PgButton>{tenantData ? "Update Tenant" : "Add Tenant"}</PgButton>
+          <PgButton type="secondary" size="small">Cancel</PgButton>
+          <PgButton size="small">{tenantData ? "Update Tenant" : "Add Tenant"}</PgButton>
         </div>
       }
       width={900}
@@ -169,7 +199,7 @@ const TenantFormModal = ({ visible, onClose, onSubmit, tenantData }) => {
                           { required: true, message: "Please enter age" },
                         ]}
                       >
-                        <Input type="number" min={18} max={99} />
+                        <Input placeholder="Enter age" type="number" min={18} max={99} />
                       </Form.Item>
                     </Col>
                     <Col span={6}>
@@ -257,7 +287,7 @@ const TenantFormModal = ({ visible, onClose, onSubmit, tenantData }) => {
                           },
                         ]}
                       >
-                        <Input maxLength={10} />
+                        <Input placeholder="Enter Mobile Number" maxLength={10} />
                       </Form.Item>
                     </Col>
                   </Row>
@@ -274,7 +304,7 @@ const TenantFormModal = ({ visible, onClose, onSubmit, tenantData }) => {
                 </div>
               </Col>
               <Col span={6}>
-                <div className="profile-upload-section">
+                <div className="profile-upload-section" style={{ display: "flex", alignItems: "center", flexDirection: "column", gap: "16px", }}>
                   <div className="form-lable">Profile Photo</div>
                   <Form.Item
                     name="profileImage"
@@ -285,13 +315,19 @@ const TenantFormModal = ({ visible, onClose, onSubmit, tenantData }) => {
                       name="profile"
                       listType="picture-card"
                       maxCount={1}
+                      accept="image/*"
                       beforeUpload={() => false}
+                      fileList={fileList}
+                      onChange={handleChange}
+                      onPreview={handlePreview}
                     >
-                      <div className="upload-placeholder">
-                        <UploadOutlined style={{ fontSize: "24px" }} />
-                        <div>Click to Upload</div>
-                        <div className="upload-hint">Max. 2MB</div>
-                      </div>
+                      {fileList.length >= 1 ? null : (
+                        <div className="upload-placeholder">
+                          <UploadOutlined style={{ fontSize: "24px" }} />
+                          <div>Click to Upload</div>
+                          <div className="upload-hint">Max. 2MB</div>
+                        </div>
+                      )}
                     </Upload>
                   </Form.Item>
                 </div>
@@ -518,14 +554,14 @@ const TenantFormModal = ({ visible, onClose, onSubmit, tenantData }) => {
                     </Row>
                   ))}
                   <Form.Item>
-                    <Button
-                      type="dashed"
+                    <PgButton
+                      type="secondary"
+                      size="small"
                       onClick={() => add()}
                       block
-                      icon={<PlusOutlined />}
                     >
                       Add Emergency Contact
-                    </Button>
+                    </PgButton>
                   </Form.Item>
                 </>
               )}
