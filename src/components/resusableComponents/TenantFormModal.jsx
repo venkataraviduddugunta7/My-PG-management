@@ -6,24 +6,14 @@ import {
   Select,
   Switch,
   Upload,
-  Button,
-  Divider,
   Row,
   Col,
   Tooltip,
 } from "antd";
-import {
-  UploadOutlined,
-  PlusOutlined,
-  MinusCircleOutlined,
-} from "@ant-design/icons";
+import { UploadOutlined } from "@ant-design/icons";
 import { useEffect, useState } from "react";
-import "./TenantForm.scss"; // We'll create this SCSS file
-import {
-  DrayageModalCloseIcon,
-  ItemDeleteIcon,
-  TagsCloseIcon,
-} from "./DrayageIcons";
+import "./TenantForm.scss";
+import { DropdownIcon, ItemDeleteIcon, TagsCloseIcon } from "./DrayageIcons";
 import PgButton from "./PgButton";
 
 const { Option } = Select;
@@ -74,7 +64,7 @@ const TenantFormModal = ({ visible, onClose, onSubmit, tenantData }) => {
     "Rent must be paid by the 5th of every month",
     "No smoking inside the premises",
     "Visitors allowed only between 8AM-10PM",
-    "Security deposit is non-refundable if lease is broken early"
+    "Security deposit is non-refundable if lease is broken early",
   ];
 
   useEffect(() => {
@@ -101,7 +91,6 @@ const TenantFormModal = ({ visible, onClose, onSubmit, tenantData }) => {
     return e?.fileList;
   };
 
-
   const handleChange = ({ fileList: newFileList }) => {
     setFileList(newFileList);
   };
@@ -118,7 +107,6 @@ const TenantFormModal = ({ visible, onClose, onSubmit, tenantData }) => {
     const imgWindow = window.open(src);
     imgWindow?.document.write(`<img src="${src}" style="max-width: 100%" />`);
   };
-
 
   return (
     <Modal
@@ -137,7 +125,7 @@ const TenantFormModal = ({ visible, onClose, onSubmit, tenantData }) => {
             {tenantData ? "Edit Tenant Details" : "New Tenant Registration"}
           </div>
           <Tooltip title="Close">
-            <TagsCloseIcon width={24} height={24} onClick={() => onClose} />
+            <TagsCloseIcon width={24} height={24} onClick={onClose} />
           </Tooltip>
         </div>
       }
@@ -147,8 +135,12 @@ const TenantFormModal = ({ visible, onClose, onSubmit, tenantData }) => {
         <div
           style={{ display: "flex", gap: "16px", justifyContent: "flex-end" }}
         >
-          <PgButton type="secondary" size="small">Cancel</PgButton>
-          <PgButton size="small">{tenantData ? "Update Tenant" : "Add Tenant"}</PgButton>
+          <PgButton onClick={onClose} type="secondary" size="small">
+            Cancel
+          </PgButton>
+          <PgButton size="small" onClick={onSubmit}> 
+            {tenantData ? "Update Tenant" : "Add Tenant"}
+          </PgButton>
         </div>
       }
       width={900}
@@ -199,7 +191,12 @@ const TenantFormModal = ({ visible, onClose, onSubmit, tenantData }) => {
                           { required: true, message: "Please enter age" },
                         ]}
                       >
-                        <Input placeholder="Enter age" type="number" min={18} max={99} />
+                        <Input
+                          placeholder="Enter age"
+                          type="number"
+                          min={18}
+                          max={99}
+                        />
                       </Form.Item>
                     </Col>
                     <Col span={6}>
@@ -210,7 +207,10 @@ const TenantFormModal = ({ visible, onClose, onSubmit, tenantData }) => {
                           { required: true, message: "Please select gender" },
                         ]}
                       >
-                        <Select placeholder="Select gender">
+                        <Select
+                          placeholder="Select gender"
+                          suffixIcon={<DropdownIcon />}
+                        >
                           <Option value="male">Male</Option>
                           <Option value="female">Female</Option>
                           <Option value="other">Other</Option>
@@ -228,7 +228,10 @@ const TenantFormModal = ({ visible, onClose, onSubmit, tenantData }) => {
                           },
                         ]}
                       >
-                        <Select placeholder="Select blood group">
+                        <Select
+                          placeholder="Select blood group"
+                          suffixIcon={<DropdownIcon />}
+                        >
                           {bloodGroups.map((group) => (
                             <Option key={group} value={group}>
                               {group}
@@ -248,7 +251,10 @@ const TenantFormModal = ({ visible, onClose, onSubmit, tenantData }) => {
                           },
                         ]}
                       >
-                        <Select placeholder="Select status">
+                        <Select
+                          placeholder="Select status"
+                          suffixIcon={<DropdownIcon />}
+                        >
                           <Option value="single">Single</Option>
                           <Option value="married">Married</Option>
                           <Option value="divorced">Divorced</Option>
@@ -287,7 +293,10 @@ const TenantFormModal = ({ visible, onClose, onSubmit, tenantData }) => {
                           },
                         ]}
                       >
-                        <Input placeholder="Enter Mobile Number" maxLength={10} />
+                        <Input
+                          placeholder="Enter Mobile Number"
+                          maxLength={10}
+                        />
                       </Form.Item>
                     </Col>
                   </Row>
@@ -304,7 +313,15 @@ const TenantFormModal = ({ visible, onClose, onSubmit, tenantData }) => {
                 </div>
               </Col>
               <Col span={6}>
-                <div className="profile-upload-section" style={{ display: "flex", alignItems: "center", flexDirection: "column", gap: "16px", }}>
+                <div
+                  className="profile-upload-section"
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    flexDirection: "column",
+                    gap: "16px",
+                  }}
+                >
                   <div className="form-lable">Profile Photo</div>
                   <Form.Item
                     name="profileImage"
@@ -397,7 +414,11 @@ const TenantFormModal = ({ visible, onClose, onSubmit, tenantData }) => {
                     { required: true, message: "Please select profession" },
                   ]}
                 >
-                  <Select showSearch placeholder="Select profession">
+                  <Select
+                    showSearch
+                    placeholder="Select profession"
+                    suffixIcon={<DropdownIcon />}
+                  >
                     {professions.map((prof) => (
                       <Option key={prof} value={prof}>
                         {prof}
@@ -441,7 +462,10 @@ const TenantFormModal = ({ visible, onClose, onSubmit, tenantData }) => {
                     { required: true, message: "Please select stay type" },
                   ]}
                 >
-                  <Select placeholder="Select stay type">
+                  <Select
+                    placeholder="Select stay type"
+                    suffixIcon={<DropdownIcon />}
+                  >
                     {stayTypes.map((type) => (
                       <Option key={type} value={type}>
                         {type}
