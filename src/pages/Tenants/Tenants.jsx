@@ -41,7 +41,7 @@ const generateTenants = () => {
     "Civil Engineer",
   ];
 
-  for (let i = 1; i <= 50; i++) {
+  for (let i = 1; i <= 10; i++) {
     tenants.push({
       id: `T${1000 + i}`,
       name: `Tenant ${i}`,
