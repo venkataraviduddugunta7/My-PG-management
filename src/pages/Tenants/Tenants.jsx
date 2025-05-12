@@ -9,7 +9,7 @@ import { useState } from "react";
 // Mock data generator function
 const generateTenants = () => {
   const tenants = [];
-  
+
   const imageOptions = [
     "https://xsgames.co/randomusers/avatar.php?g=male",
     "https://xsgames.co/randomusers/avatar.php?g=female",
@@ -19,11 +19,26 @@ const generateTenants = () => {
   ];
 
   const professions = [
-    "Software Engineer", "Doctor", "Teacher", "Marketing Executive",
-    "Graphic Designer", "Accountant", "Nurse", "Data Analyst",
-    "Sales Manager", "Architect", "Chef", "Electrician",
-    "Student", "Research Scientist", "Bank Manager", "Journalist",
-    "Interior Designer", "Pharmacist", "HR Manager", "Civil Engineer"
+    "Software Engineer",
+    "Doctor",
+    "Teacher",
+    "Marketing Executive",
+    "Graphic Designer",
+    "Accountant",
+    "Nurse",
+    "Data Analyst",
+    "Sales Manager",
+    "Architect",
+    "Chef",
+    "Electrician",
+    "Student",
+    "Research Scientist",
+    "Bank Manager",
+    "Journalist",
+    "Interior Designer",
+    "Pharmacist",
+    "HR Manager",
+    "Civil Engineer",
   ];
 
   for (let i = 1; i <= 50; i++) {
@@ -31,14 +46,28 @@ const generateTenants = () => {
       id: `T${1000 + i}`,
       name: `Tenant ${i}`,
       age: 20 + Math.floor(Math.random() * 30),
-      dob: `19${Math.floor(Math.random() * 100).toString().padStart(2, "0")}-${Math.floor(Math.random() * 12 + 1).toString().padStart(2, "0")}-${Math.floor(Math.random() * 28 + 1).toString().padStart(2, "0")}`,
-      doj: `20${Math.floor(Math.random() * 15 + 10).toString().padStart(2, "0")}-${Math.floor(Math.random() * 12 + 1).toString().padStart(2, "0")}-${Math.floor(Math.random() * 28 + 1).toString().padStart(2, "0")}`,
+      dob: `19${Math.floor(Math.random() * 100)
+        .toString()
+        .padStart(2, "0")}-${Math.floor(Math.random() * 12 + 1)
+        .toString()
+        .padStart(2, "0")}-${Math.floor(Math.random() * 28 + 1)
+        .toString()
+        .padStart(2, "0")}`,
+      doj: `20${Math.floor(Math.random() * 15 + 10)
+        .toString()
+        .padStart(2, "0")}-${Math.floor(Math.random() * 12 + 1)
+        .toString()
+        .padStart(2, "0")}-${Math.floor(Math.random() * 28 + 1)
+        .toString()
+        .padStart(2, "0")}`,
       mobile: `${Math.floor(9000000000 + Math.random() * 1000000000)}`,
       address: `Address Line ${i}, City ${i}`,
       pincode: Math.floor(100000 + Math.random() * 900000),
       profession: professions[Math.floor(Math.random() * professions.length)],
       isActive: Math.random() > 0.3,
-      image: imageOptions[Math.floor(Math.random() * imageOptions.length)] + `&random=${i}`,
+      image:
+        imageOptions[Math.floor(Math.random() * imageOptions.length)] +
+        `&random=${i}`,
     });
   }
   return tenants;
@@ -79,16 +108,15 @@ const Tenants = () => {
     { name: "All Tenants", value: totalTenants },
     { name: "Active Tenants", value: activeTenants },
     { name: "Inactive Tenants", value: inactiveTenants },
-    { name: "Avg. Tenant Age", value: averageAge },
-    { name: "Recent Joinees (3m)", value: recentJoinees },
     { name: "Blocked", value: inactiveTenants },
   ];
 
   // Filter tenants based on search term
-  const filteredTenants = tenants.filter(tenant =>
-    tenant.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    tenant.mobile.includes(searchTerm) ||
-    tenant.profession.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredTenants = tenants.filter(
+    (tenant) =>
+      tenant.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      tenant.mobile.includes(searchTerm) ||
+      tenant.profession.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   // Handle form submission
@@ -97,9 +125,9 @@ const Tenants = () => {
       ...formData,
       id: `T${1000 + tenants.length + 1}`,
       isActive: true,
-      image: "https://xsgames.co/randomusers/avatar.php?g=pixel"
+      image: "https://xsgames.co/randomusers/avatar.php?g=pixel",
     };
-    
+
     setTenants([...tenants, newTenant]);
     setAddModalVisible(false);
   };
@@ -115,7 +143,7 @@ const Tenants = () => {
             </Col>
           ))}
         </Row>
-        
+
         <Row
           style={{
             display: "flex",
@@ -125,8 +153,8 @@ const Tenants = () => {
           }}
         >
           <div>
-            <Input 
-              placeholder="Search tenants..." 
+            <Input
+              placeholder="Search tenants..."
               onChange={(e) => setSearchTerm(e.target.value)}
               value={searchTerm}
             />
@@ -135,7 +163,7 @@ const Tenants = () => {
           <PgButton onClick={() => setAddModalVisible(true)}>
             Add Tenant
           </PgButton>
-          
+
           <TenantFormModal
             visible={isAddModalVisible}
             onClose={() => setAddModalVisible(false)}
@@ -143,7 +171,7 @@ const Tenants = () => {
           />
         </Row>
 
-        <Row gutter={[16]}>
+        <Row gutter={[16, 16]}>
           {filteredTenants.map((tenant) => (
             <Col span={8} key={tenant.id}>
               <TenantCard tenant={tenant} />
