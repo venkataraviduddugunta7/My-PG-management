@@ -92,7 +92,7 @@ const Rooms = () => {
               <Table />
             </div>
 
-            <AddFloorModal visible={floorModal} />
+            <AddFloorModal visible={floorModal} onClose={()=>setFloorModal(false)} />
           </div>
         )}
 
@@ -112,7 +112,7 @@ const Rooms = () => {
               <Table />
             </div>
 
-            <AddRoomModal visible={roomModal} />
+            <AddRoomModal visible={roomModal}  floors={floors} onClose={()=>setRoomModal(false)} />
           </div>
         )}
 
@@ -131,7 +131,7 @@ const Rooms = () => {
             <div>
               <Table />
             </div>
-            <AddBedModal visible={bedModal} />
+            <AddBedModal visible={bedModal} rooms={rooms} onClose={()=>setBedModal(false)}/>
           </div>
         )}
       </div>

@@ -12,17 +12,18 @@ const AddFloorModal = ({ visible, onClose, onSubmit }) => {
 
   return (
     <Modal
+      closable={false}
       title="Add New Floor"
       open={visible}
       onCancel={onClose}
-      footer={[
+      footer={<div style={{display:"flex", justifyContent:"flex-end", gap:"8px" }}>
         <PgButton key="cancel" type="secondary" size="small" onClick={onClose}>
           Cancel
         </PgButton>,
         <PgButton key="submit" size="small" onClick={() => form.submit()}>
           Add Floor
         </PgButton>,
-      ]}
+        </div>}
     >
       <Form form={form} layout="vertical" onFinish={handleFinish}>
         <Form.Item
