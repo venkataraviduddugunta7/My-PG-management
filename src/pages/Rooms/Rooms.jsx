@@ -18,7 +18,6 @@ const Rooms = () => {
   const [activeTab, setActiveTab] = useState("Floors");
 
   const [form] = Form.useForm();
-
   // Tab configuration
   const tabs = [
     { id: "Beds", label: "Beds" },
@@ -26,104 +25,9 @@ const Rooms = () => {
     { id: "Floors", label: "Floors" },
   ];
 
-  const [floors, setFloors] = useState([
-    {
-      id: "floor-1",
-      floorNumber: 1,
-      floorName: "Ground Floor",
-      description: "Main floor with reception",
-    },
-    {
-      id: "floor-2",
-      floorNumber: 2,
-      floorName: "First Floor",
-      description: "Standard rooms floor",
-    },
-    {
-      id: "floor-3",
-      floorNumber: 3,
-      floorName: "Second Floor",
-      description: "Premium rooms floor",
-    },
-  ]);
-
-  const [rooms, setRooms] = useState([
-    {
-      id: "room-1",
-      floorId: "floor-1",
-      roomNumber: "101",
-      roomType: "Standard",
-      capacity: 2,
-      rent: 5000,
-    },
-    {
-      id: "room-2",
-      floorId: "floor-1",
-      roomNumber: "102",
-      roomType: "Deluxe",
-      capacity: 3,
-      rent: 7000,
-    },
-    {
-      id: "room-3",
-      floorId: "floor-2",
-      roomNumber: "201",
-      roomType: "Premium",
-      capacity: 2,
-      rent: 8000,
-    },
-    {
-      id: "room-4",
-      floorId: "floor-3",
-      roomNumber: "301",
-      roomType: "Shared",
-      capacity: 4,
-      rent: 4000,
-    },
-  ]);
-
-  const [beds, setBeds] = useState([
-    {
-      id: "bed-1",
-      roomId: "room-1",
-      bedNumber: "1",
-      bedType: "Single",
-      status: "occupied",
-      notes: "Near window",
-    },
-    {
-      id: "bed-2",
-      roomId: "room-1",
-      bedNumber: "2",
-      bedType: "Single",
-      status: "available",
-      notes: "Near door",
-    },
-    {
-      id: "bed-3",
-      roomId: "room-2",
-      bedNumber: "1",
-      bedType: "Bunk",
-      status: "available",
-      notes: "Lower bunk",
-    },
-    {
-      id: "bed-4",
-      roomId: "room-2",
-      bedNumber: "2",
-      bedType: "Bunk",
-      status: "available",
-      notes: "Upper bunk",
-    },
-    {
-      id: "bed-5",
-      roomId: "room-3",
-      bedNumber: "1",
-      bedType: "Double",
-      status: "maintenance",
-      notes: "Needs mattress replacement",
-    },
-  ]);
+  const [floors, setFloors] = useState([]);
+  const [rooms, setRooms] = useState([]);
+  const [beds, setBeds] = useState([]);
 
   const floorColumns = [
     {
