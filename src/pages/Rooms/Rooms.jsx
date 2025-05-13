@@ -6,6 +6,10 @@ import AddFloorModal from "../../components/resusableComponents/AddFloorModal";
 import AddRoomModal from "../../components/resusableComponents/AddRoomModal";
 import AddBedModal from "../../components/resusableComponents/AddBedModal";
 import PgTable from "../../components/resusableComponents/PgTable";
+import {
+  ItemDeleteIcon,
+  ItemEditIcon,
+} from "../../components/resusableComponents/DrayageIcons";
 
 const Rooms = () => {
   const [floorModal, setFloorModal] = useState(false);
@@ -137,9 +141,8 @@ const Rooms = () => {
       key: "actions",
       render: (_, record) => (
         <>
-          <a onClick={() => onEdit(record)}>Edit</a>
-          <span style={{ margin: "0 8px" }}>|</span>
-          <a onClick={() => onDelete(record.id)}>Delete</a>
+          <ItemEditIcon onClick={() => onEdit(record)} />
+          <ItemDeleteIcon onClick={() => onDelete(record.id)} />
         </>
       ),
     },
@@ -166,9 +169,8 @@ const Rooms = () => {
       key: "actions",
       render: (_, record) => (
         <>
-          <a onClick={() => onEdit(record)}>Edit</a>
-          <span style={{ margin: "0 8px" }}>|</span>
-          <a onClick={() => onDelete(record.id)}>Delete</a>
+          <ItemEditIcon onClick={() => onEdit(record)} />
+          <ItemDeleteIcon onClick={() => onDelete(record.id)} />
         </>
       ),
     },
@@ -205,9 +207,8 @@ const Rooms = () => {
       key: "actions",
       render: (_, record) => (
         <>
-          <a onClick={() => onEdit(record)}>Edit</a>
-          <span style={{ margin: "0 8px" }}>|</span>
-          <a onClick={() => onDelete(record.id)}>Delete</a>
+          <ItemEditIcon onClick={() => onEdit(record)} />
+          <ItemDeleteIcon onClick={() => onDelete(record.id)} />
         </>
       ),
     },
