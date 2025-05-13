@@ -133,8 +133,8 @@ const Rooms = () => {
     },
     {
       title: "Floor Name",
-      dataIndex: "name",
-      key: "name",
+      dataIndex: "floorName",
+      key: "floorName",
     },
     {
       title: "Actions",
