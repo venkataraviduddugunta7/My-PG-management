@@ -321,7 +321,10 @@ const Rooms = () => {
             <AddFloorModal
               onSubmit={handleAddFloor}
               visible={floorModal}
-              onClose={() => setFloorModal(false)}
+              onClose={() => {
+                setFloorModal(false);
+                setEditingFloor(null);
+              }}
               floorData={editingFloor}
             />
           </div>
@@ -348,7 +351,10 @@ const Rooms = () => {
             <AddRoomModal
               visible={roomModal}
               floors={floors}
-              onClose={() => setRoomModal(false)}
+              onClose={() => {
+                setRoomModal(false);
+                setEditingRoom(null);
+              }}
               onSubmit={handleAddRoom}
               roomData={editingRoom}
             />
@@ -375,7 +381,10 @@ const Rooms = () => {
             <AddBedModal
               visible={bedModal}
               rooms={rooms}
-              onClose={() => setBedModal(false)}
+              onClose={() => {
+                setBedModal(false);
+                setEditingBed(null);
+              }}
               onSubmit={handleAddBed}
               bedData={editingBed}
             />
