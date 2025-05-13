@@ -1,11 +1,18 @@
-import { Form, InputNumber, Select, Button, message } from "antd";
+import { Form, InputNumber, Select, Button, message, Table } from "antd";
 import { useState } from "react";
 import "./Rooms.scss";
+import PgButton from "../../components/resusableComponents/PgButton";
+import AddFloorModal from "../../components/resusableComponents/AddFloorModal";
+import AddRoomModal from "../../components/resusableComponents/AddRoomModal";
+import AddBedModal from "../../components/resusableComponents/AddBedModal";
 
 const Rooms = () => {
   const [floors, setFloors] = useState([]);
+  const [floorModal, setFloorModal] = useState(false);
   const [rooms, setRooms] = useState([]);
+  const [roomModal, setRoomModal] = useState(false);
   const [beds, setBeds] = useState([]);
+  const [bedModal, setBedModal] = useState(false);
   const [activeTab, setActiveTab] = useState("Floors"); // Default active tab
 
   const [form] = Form.useForm();
@@ -71,90 +78,61 @@ const Rooms = () => {
       <div className="tab-content">
         {/* Floor Tab */}
         {activeTab === "Floors" && (
-          <Form layout="vertical" onFinish={createFloor} form={form}>
-            <Form.Item
-              label="Floor Number"
-              name="floorNumber"
-              rules={[{ required: true }]}
+          <div>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "flex-end",
+                padding: "16px 0px",
+              }}
             >
-              <InputNumber min={1} />
-            </Form.Item>
-            <Form.Item
-              label="Room Capacity on Floor"
-              name="roomCapacity"
-              rules={[{ required: true }]}
-            >
-              <InputNumber min={1} />
-            </Form.Item>
-            <Button type="primary" htmlType="submit">
-              Create Floor
-            </Button>
-          </Form>
+              <PgButton onClick={() => setFloorModal(true)}>Add Floor</PgButton>
+            </div>
+            <div>
+              <Table />
+            </div>
+
+            <AddFloorModal visible={floorModal} />
+          </div>
         )}
 
         {/* Room Tab */}
         {activeTab === "Rooms" && (
-          <Form layout="vertical" onFinish={createRoom} form={form}>
-            <Form.Item
-              label="Select Floor"
-              name="floorId"
-              rules={[{ required: true }]}
+          <div>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "flex-end",
+                padding: "16px 0px",
+              }}
             >
-              <Select placeholder="Select a floor">
-                {floors.map((floor) => (
-                  <Select.Option key={floor.id} value={floor.id}>
-                    Floor {floor.floorNumber}
-                  </Select.Option>
-                ))}
-              </Select>
-            </Form.Item>
-            <Form.Item
-              label="Room Number"
-              name="roomNumber"
-              rules={[{ required: true }]}
-            >
-              <InputNumber min={1} />
-            </Form.Item>
-            <Form.Item
-              label="Sharing Capacity"
-              name="sharingCapacity"
-              rules={[{ required: true }]}
-            >
-              <InputNumber min={1} />
-            </Form.Item>
-            <Button type="primary" htmlType="submit">
-              Create Room
-            </Button>
-          </Form>
+              <PgButton onClick={() => setRoomModal(true)}>Add Room</PgButton>
+            </div>
+            <div>
+              <Table />
+            </div>
+
+            <AddRoomModal visible={roomModal} />
+          </div>
         )}
 
         {/* Bed Tab */}
         {activeTab === "Beds" && (
-          <Form layout="vertical" onFinish={createBed} form={form}>
-            <Form.Item
-              label="Select Room"
-              name="roomId"
-              rules={[{ required: true }]}
+          <div>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "flex-end",
+                padding: "16px 0px",
+              }}
             >
-              <Select placeholder="Select a room">
-                {rooms.map((room) => (
-                  <Select.Option key={room.id} value={room.id}>
-                    Room {room.roomNumber}
-                  </Select.Option>
-                ))}
-              </Select>
-            </Form.Item>
-            <Form.Item
-              label="Number of Beds"
-              name="bedCount"
-              rules={[{ required: true }]}
-            >
-              <InputNumber min={1} />
-            </Form.Item>
-            <Button type="primary" htmlType="submit">
-              Create Beds
-            </Button>
-          </Form>
+              <PgButton onClick={() => setBedModal(true)}>Add Bed</PgButton>
+            </div>
+            <div>
+              <Table />
+            </div>
+            <AddBedModal visible={bedModal} />
+          </div>
         )}
       </div>
     </div>
