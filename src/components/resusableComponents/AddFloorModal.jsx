@@ -1,9 +1,10 @@
-import { Modal, Form, Input, Button } from "antd";
+import { Modal, Form, Input, Button, Tooltip } from "antd";
 import { useState } from "react";
 import PgButton from "./PgButton";
 import "./TenantForm.scss";
+import { TagsCloseIcon } from "./DrayageIcons";
 
-const AddFloorModal = ({ visible, onClose, onSubmit }) => {
+const AddFloorModal = ({ visible, onClose, onSubmit, floorData }) => {
   const [form] = Form.useForm();
 
   const handleFinish = (values) => {
@@ -15,7 +16,21 @@ const AddFloorModal = ({ visible, onClose, onSubmit }) => {
     <Modal
       className="premium-tenant-form"
       closable={false}
-      title="Add New Floor"
+      title={
+        <div
+          className="modal-title"
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+          <div>{floorData ? "Edit Floor" : "New Floor"}</div>
+          <Tooltip title="Close">
+            <TagsCloseIcon width={24} height={24} onClick={onClose} />
+          </Tooltip>
+        </div>
+      }
       open={visible}
       onCancel={onClose}
       footer={

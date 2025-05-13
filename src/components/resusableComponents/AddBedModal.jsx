@@ -1,14 +1,14 @@
-import { Modal, Form, Input, Select, InputNumber } from "antd";
+import { Modal, Form, Input, Select, InputNumber, Tooltip } from "antd";
 import { useState } from "react";
 import "./TenantForm.scss";
 import PgButton from "./PgButton";
-import { DropdownIcon } from "./DrayageIcons";
+import { DropdownIcon, TagsCloseIcon } from "./DrayageIcons";
 
 const { Option } = Select;
 
 const bedTypes = ["Single", "Bunk", "Double", "Queen", "King"];
 
-const AddBedModal = ({ visible, onClose, onSubmit, rooms }) => {
+const AddBedModal = ({ visible, onClose, onSubmit, rooms, bedData }) => {
   const [form] = Form.useForm();
 
   const handleFinish = (values) => {
@@ -19,7 +19,23 @@ const AddBedModal = ({ visible, onClose, onSubmit, rooms }) => {
   return (
     <Modal
       closable={false}
-      title="Add New Bed"
+      title={
+        <div
+          className="modal-title"
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+          <div>
+            {bedData ? "Edit Bed" : "New Bed"}
+          </div>
+          <Tooltip title="Close">
+            <TagsCloseIcon width={24} height={24} onClick={onClose} />
+          </Tooltip>
+        </div>
+      }
       className="premium-tenant-form"
       open={visible}
       onCancel={onClose}

@@ -1,14 +1,14 @@
-import { Modal, Form, Input, Select, InputNumber, Row, Col } from "antd";
+import { Modal, Form, Input, Select, InputNumber, Row, Col, Tooltip } from "antd";
 import { useState } from "react";
 import PgButton from "./PgButton";
 import "./TenantForm.scss";
-import { DropdownIcon } from "./DrayageIcons";
+import { DropdownIcon, TagsCloseIcon } from "./DrayageIcons";
 
 const { Option } = Select;
 
 const roomTypes = ["Standard", "Deluxe", "Premium", "Dormitory", "Shared"];
 
-const AddRoomModal = ({ visible, onClose, onSubmit, floors }) => {
+const AddRoomModal = ({ visible, onClose, onSubmit, floors, roomData }) => {
   const [form] = Form.useForm();
 
   const handleFinish = (values) => {
@@ -19,7 +19,23 @@ const AddRoomModal = ({ visible, onClose, onSubmit, floors }) => {
   return (
     <Modal
       closable={false}
-      title="Add New Room"
+      title={
+        <div
+          className="modal-title"
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+          <div>
+            {roomData ? "Edit Room" : "New Room"}
+          </div>
+          <Tooltip title="Close">
+            <TagsCloseIcon width={24} height={24} onClick={onClose} />
+          </Tooltip>
+        </div>
+      }
       className="premium-tenant-form"
       open={visible}
       onCancel={onClose}
