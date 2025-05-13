@@ -140,10 +140,12 @@ const Rooms = () => {
       title: "Actions",
       key: "actions",
       render: (_, record) => (
-        <>
+        <div
+          style={{ display: "flex", justifyContent: "flex-end", gap: "4px" }}
+        >
           <ItemEditIcon onClick={() => onEdit(record)} />
           <ItemDeleteIcon onClick={() => onDelete(record.id)} />
-        </>
+        </div>
       ),
     },
   ];
@@ -168,10 +170,12 @@ const Rooms = () => {
       title: "Actions",
       key: "actions",
       render: (_, record) => (
-        <>
+        <div
+          style={{ display: "flex", justifyContent: "flex-end", gap: "4px" }}
+        >
           <ItemEditIcon onClick={() => onEdit(record)} />
           <ItemDeleteIcon onClick={() => onDelete(record.id)} />
-        </>
+        </div>
       ),
     },
   ];
@@ -206,10 +210,12 @@ const Rooms = () => {
       title: "Actions",
       key: "actions",
       render: (_, record) => (
-        <>
+        <div
+          style={{ display: "flex", justifyContent: "flex-end", gap: "4px" }}
+        >
           <ItemEditIcon onClick={() => onEdit(record)} />
           <ItemDeleteIcon onClick={() => onDelete(record.id)} />
-        </>
+        </div>
       ),
     },
   ];
