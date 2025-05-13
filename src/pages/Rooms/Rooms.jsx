@@ -82,17 +82,22 @@ const Rooms = () => {
             <div
               style={{
                 display: "flex",
-                justifyContent: "flex-end",
+                justifyContent: "space-between",
                 padding: "16px 0px",
+                alignItems: "center",
               }}
             >
+              <div className="tab-title">Floors</div>
               <PgButton onClick={() => setFloorModal(true)}>Add Floor</PgButton>
             </div>
             <div>
               <Table />
             </div>
 
-            <AddFloorModal visible={floorModal} onClose={()=>setFloorModal(false)} />
+            <AddFloorModal
+              visible={floorModal}
+              onClose={() => setFloorModal(false)}
+            />
           </div>
         )}
 
@@ -102,17 +107,23 @@ const Rooms = () => {
             <div
               style={{
                 display: "flex",
-                justifyContent: "flex-end",
+                justifyContent: "space-between",
                 padding: "16px 0px",
+                alignItems: "center",
               }}
             >
+              <div className="tab-title">Rooms</div>
               <PgButton onClick={() => setRoomModal(true)}>Add Room</PgButton>
             </div>
             <div>
               <Table />
             </div>
 
-            <AddRoomModal visible={roomModal}  floors={floors} onClose={()=>setRoomModal(false)} />
+            <AddRoomModal
+              visible={roomModal}
+              floors={floors}
+              onClose={() => setRoomModal(false)}
+            />
           </div>
         )}
 
@@ -122,16 +133,22 @@ const Rooms = () => {
             <div
               style={{
                 display: "flex",
-                justifyContent: "flex-end",
+                justifyContent: "space-between",
                 padding: "16px 0px",
+                alignItems: "center",
               }}
             >
+              <div className="tab-title">Beds</div>
               <PgButton onClick={() => setBedModal(true)}>Add Bed</PgButton>
             </div>
             <div>
               <Table />
             </div>
-            <AddBedModal visible={bedModal} rooms={rooms} onClose={()=>setBedModal(false)}/>
+            <AddBedModal
+              visible={bedModal}
+              rooms={rooms}
+              onClose={() => setBedModal(false)}
+            />
           </div>
         )}
       </div>
