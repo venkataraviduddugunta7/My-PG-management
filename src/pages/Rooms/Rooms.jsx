@@ -11,7 +11,26 @@ import {
   ItemEditIcon,
 } from "../../components/resusableComponents/DrayageIcons";
 
+import { useDispatch, useSelector } from 'react-redux';
+import { 
+  selectAllFloors,
+  selectRoomsByFloor,
+  selectBedsByRoom
+} from '../../store/selectors';
+import {
+  addFloor,
+  updateFloor,
+  deleteFloor,
+  addRoom,
+  updateRoom,
+  deleteRoom,
+  addBed,
+  updateBed,
+  deleteBed
+} from '../../store/features/propertySlice';
+
 const Rooms = () => {
+  const dispatch = useDispatch();
   const [floorModal, setFloorModal] = useState(false);
   const [roomModal, setRoomModal] = useState(false);
   const [bedModal, setBedModal] = useState(false);
