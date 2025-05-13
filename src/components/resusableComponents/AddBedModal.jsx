@@ -1,6 +1,8 @@
 import { Modal, Form, Input, Select, InputNumber } from "antd";
 import { useState } from "react";
+import "./TenantForm.scss";
 import PgButton from "./PgButton";
+import { DropdownIcon } from "./DrayageIcons";
 
 const { Option } = Select;
 
@@ -18,6 +20,7 @@ const AddBedModal = ({ visible, onClose, onSubmit, rooms }) => {
     <Modal
       closable={false}
       title="Add New Bed"
+      className="premium-tenant-form"
       open={visible}
       onCancel={onClose}
       footer={
@@ -46,12 +49,12 @@ const AddBedModal = ({ visible, onClose, onSubmit, rooms }) => {
       }
     >
       <Form form={form} layout="vertical" onFinish={handleFinish}>
+        <div className="form-lable">Room</div>
         <Form.Item
           name="roomId"
-          label="Select Room"
           rules={[{ required: true, message: "Please select a room" }]}
         >
-          <Select placeholder="Select room">
+          <Select placeholder="Select room" suffixIcon={<DropdownIcon />}>
             {rooms.map((room) => (
               <Option key={room.id} value={room.id}>
                 {`${room.roomNumber} (${room.roomType})`}
@@ -59,21 +62,19 @@ const AddBedModal = ({ visible, onClose, onSubmit, rooms }) => {
             ))}
           </Select>
         </Form.Item>
-
+        <div className="form-lable">Bed Number</div>
         <Form.Item
           name="bedNumber"
-          label="Bed Number/Identifier"
           rules={[{ required: true, message: "Please enter bed number" }]}
         >
           <Input placeholder="e.g. 1, 2, A, B..." />
         </Form.Item>
-
+        <div className="form-lable">Bed Type</div>
         <Form.Item
           name="bedType"
-          label="Bed Type"
           rules={[{ required: true, message: "Please select bed type" }]}
         >
-          <Select placeholder="Select bed type">
+          <Select placeholder="Select bed type" suffixIcon={<DropdownIcon />}>
             {bedTypes.map((type) => (
               <Option key={type} value={type}>
                 {type}
@@ -81,20 +82,32 @@ const AddBedModal = ({ visible, onClose, onSubmit, rooms }) => {
             ))}
           </Select>
         </Form.Item>
-
+        <div className="form-lable">Monthly Rent</div>
         <Form.Item
-          name="status"
-          label="Initial Status"
-          initialValue="available"
+          name="rent"
+          rules={[{ required: true, message: "Please enter rent amount" }]}
         >
-          <Select>
+          <Input
+            min={1}
+            type="number"
+            style={{ width: "100%" }}
+            placeholder="Monthly Rent"
+            formatter={(value) =>
+              `₹ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+            }
+            parser={(value) => value.replace(/₹\s?|(,*)/g, "")}
+          />
+        </Form.Item>
+        <div className="form-lable">Initial Status</div>
+        <Form.Item name="status" initialValue="available">
+          <Select suffixIcon={<DropdownIcon />}>
             <Option value="available">Available</Option>
             <Option value="occupied">Occupied</Option>
             <Option value="maintenance">Under Maintenance</Option>
           </Select>
         </Form.Item>
-
-        <Form.Item name="notes" label="Notes (Optional)">
+        <div className="form-lable">Notes</div>
+        <Form.Item name="notes">
           <Input.TextArea
             rows={2}
             placeholder="Any special notes about this bed"

@@ -1,6 +1,8 @@
-import { Modal, Form, Input, Select, InputNumber } from "antd";
+import { Modal, Form, Input, Select, InputNumber, Row, Col } from "antd";
 import { useState } from "react";
 import PgButton from "./PgButton";
+import "./TenantForm.scss";
+import { DropdownIcon } from "./DrayageIcons";
 
 const { Option } = Select;
 
@@ -18,6 +20,7 @@ const AddRoomModal = ({ visible, onClose, onSubmit, floors }) => {
     <Modal
       closable={false}
       title="Add New Room"
+      className="premium-tenant-form"
       open={visible}
       onCancel={onClose}
       footer={
@@ -46,12 +49,12 @@ const AddRoomModal = ({ visible, onClose, onSubmit, floors }) => {
       }
     >
       <Form form={form} layout="vertical" onFinish={handleFinish}>
+        <div className="form-lable">Floor</div>
         <Form.Item
           name="floorId"
-          label="Select Floor"
           rules={[{ required: true, message: "Please select a floor" }]}
         >
-          <Select placeholder="Select floor">
+          <Select placeholder="Select floor" suffixIcon={<DropdownIcon />}>
             {floors.map((floor) => (
               <Option key={floor.id} value={floor.id}>
                 {floor.floorName || `Floor ${floor.floorNumber}`}
@@ -59,21 +62,19 @@ const AddRoomModal = ({ visible, onClose, onSubmit, floors }) => {
             ))}
           </Select>
         </Form.Item>
-
+        <div className="form-lable">Room Number</div>
         <Form.Item
           name="roomNumber"
-          label="Room Number"
           rules={[{ required: true, message: "Please enter room number" }]}
         >
           <Input placeholder="e.g. 101, 102..." />
         </Form.Item>
-
+        <div className="form-lable">Room Type</div>
         <Form.Item
           name="roomType"
-          label="Room Type"
           rules={[{ required: true, message: "Please select room type" }]}
         >
-          <Select placeholder="Select room type">
+          <Select placeholder="Select room type" suffixIcon={<DropdownIcon />}>
             {roomTypes.map((type) => (
               <Option key={type} value={type}>
                 {type}
@@ -81,28 +82,40 @@ const AddRoomModal = ({ visible, onClose, onSubmit, floors }) => {
             ))}
           </Select>
         </Form.Item>
-
-        <Form.Item
-          name="capacity"
-          label="Maximum Capacity"
-          rules={[{ required: true, message: "Please enter capacity" }]}
-        >
-          <InputNumber min={1} max={10} placeholder="Number of beds" />
-        </Form.Item>
-
-        <Form.Item
-          name="rent"
-          label="Monthly Rent"
-          rules={[{ required: true, message: "Please enter rent amount" }]}
-        >
-          <InputNumber
-            min={0}
-            formatter={(value) =>
-              `₹ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-            }
-            parser={(value) => value.replace(/₹\s?|(,*)/g, "")}
-          />
-        </Form.Item>
+        <Row gutter={[16]}>
+          <Col span={12}>
+            <div className="form-lable">Maximum Capacity</div>
+            <Form.Item
+              name="capacity"
+              rules={[{ required: true, message: "Please enter capacity" }]}
+            >
+              <Input
+                min={1}
+                type="number"
+                placeholder="Number of beds"
+                style={{ width: "100%" }}
+              />
+            </Form.Item>
+          </Col>
+          <Col span={12}>
+            <div className="form-lable">Monthly Rent</div>
+            <Form.Item
+              name="rent"
+              rules={[{ required: true, message: "Please enter rent amount" }]}
+            >
+              <Input
+                min={1}
+                type="number"
+                style={{ width: "100%" }}
+                placeholder="Monthly Rent"
+                formatter={(value) =>
+                  `₹ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                }
+                parser={(value) => value.replace(/₹\s?|(,*)/g, "")}
+              />
+            </Form.Item>
+          </Col>
+        </Row>
       </Form>
     </Modal>
   );
