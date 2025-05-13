@@ -1,5 +1,5 @@
 import { Modal, Form, Input, Select, InputNumber, Tooltip } from "antd";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./TenantForm.scss";
 import PgButton from "./PgButton";
 import { DropdownIcon, TagsCloseIcon } from "./DrayageIcons";
@@ -10,6 +10,14 @@ const bedTypes = ["Single", "Bunk", "Double", "Queen", "King"];
 
 const AddBedModal = ({ visible, onClose, onSubmit, rooms, bedData }) => {
   const [form] = Form.useForm();
+
+  useEffect(() => {
+    if (bedData) {
+      form.setFieldsValue(bedData);
+    } else {
+      form.resetFields();
+    }
+  }, [bedData, form]);
 
   const handleFinish = (values) => {
     onSubmit(values);
@@ -28,9 +36,7 @@ const AddBedModal = ({ visible, onClose, onSubmit, rooms, bedData }) => {
             alignItems: "center",
           }}
         >
-          <div>
-            {bedData ? "Edit Bed" : "New Bed"}
-          </div>
+          <div>{bedData ? "Edit Bed" : "New Bed"}</div>
           <Tooltip title="Close">
             <TagsCloseIcon width={24} height={24} onClick={onClose} />
           </Tooltip>

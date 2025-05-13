@@ -1,4 +1,4 @@
-import { Form, Popconfirm, Select, Tooltip, message } from "antd";
+import { Popconfirm, Tooltip, message } from "antd";
 import { useState } from "react";
 import "./Rooms.scss";
 import PgButton from "../../components/resusableComponents/PgButton";
@@ -17,7 +17,6 @@ const Rooms = () => {
   const [bedModal, setBedModal] = useState(false);
   const [activeTab, setActiveTab] = useState("Floors");
 
-  const [form] = Form.useForm();
   // Tab configuration
   const tabs = [
     { id: "Beds", label: "Beds" },
@@ -132,11 +131,11 @@ const Rooms = () => {
           style={{ display: "flex", justifyContent: "flex-end", gap: "4px" }}
         >
           <Tooltip title="Edit">
-            <ItemEditIcon onClick={() => handleEditFloor(record)} />
+            <ItemEditIcon onClick={() => handleEditRoom(record)} />
           </Tooltip>
           <Popconfirm
             title="Are you sure to delete this Room?"
-            onConfirm={() => handleDeleteFloor(record.id)}
+            onConfirm={() => handleDeleteRoom(record.id)}
             okText="Yes"
             cancelText="No"
           >
@@ -183,11 +182,11 @@ const Rooms = () => {
           style={{ display: "flex", justifyContent: "flex-end", gap: "4px" }}
         >
           <Tooltip title="Edit">
-            <ItemEditIcon onClick={() => handleEditFloor(record)} />
+            <ItemEditIcon onClick={() => handleEditBed(record)} />
           </Tooltip>
           <Popconfirm
             title="Are you sure to delete this Bed?"
-            onConfirm={() => handleDeleteFloor(record.id)}
+            onConfirm={() => handleDeleteBed(record.id)}
             okText="Yes"
             cancelText="No"
           >
@@ -200,22 +199,86 @@ const Rooms = () => {
     },
   ];
 
+  // Room handlers
   const handleAddRoom = (roomData) => {
-    const newRoom = {
-      ...roomData,
-      id: `room-${rooms.length + 1}`,
-    };
-    setRooms([...rooms, newRoom]);
+    if (editingRoom) {
+      // Update existing room
+      setRooms(
+        rooms.map((room) =>
+          room.id === editingRoom.id ? { ...room, ...roomData } : room
+        )
+      );
+      message.success("Room updated successfully");
+    } else {
+      // Add new room
+      const newRoom = {
+        ...roomData,
+        id: `room-${rooms.length + 1}`,
+      };
+      setRooms([...rooms, newRoom]);
+      message.success("Room added successfully");
+    }
     setRoomModal(false);
+    setEditingRoom(null);
   };
 
+  const handleEditRoom = (room) => {
+    setEditingRoom(room);
+    setRoomModal(true);
+  };
+
+  const handleDeleteRoom = (id) => {
+    // Check if any beds are using this room
+    const bedsInRoom = beds.some((bed) => bed.roomId === id);
+
+    if (bedsInRoom) {
+      message.error("Cannot delete room with existing beds");
+      return;
+    }
+
+    setRooms(rooms.filter((room) => room.id !== id));
+    message.success("Room deleted successfully");
+  };
+
+  // Bed handlers
   const handleAddBed = (bedData) => {
-    const newBed = {
-      ...bedData,
-      id: `bed-${beds.length + 1}`,
-    };
-    setBeds([...beds, newBed]);
+    if (editingBed) {
+      // Update existing bed
+      setBeds(
+        beds.map((bed) =>
+          bed.id === editingBed.id ? { ...bed, ...bedData } : bed
+        )
+      );
+      message.success("Bed updated successfully");
+    } else {
+      // Add new bed
+      const newBed = {
+        ...bedData,
+        id: `bed-${beds.length + 1}`,
+      };
+      setBeds([...beds, newBed]);
+      message.success("Bed added successfully");
+    }
     setBedModal(false);
+    setEditingBed(null);
+  };
+
+  const handleEditBed = (bed) => {
+    setEditingBed(bed);
+    setBedModal(true);
+  };
+
+  const handleDeleteBed = (id) => {
+    // Additional checks if needed (e.g., if bed is occupied)
+    const bedToDelete = beds.find((bed) => bed.id === id);
+
+    if (bedToDelete?.status === "Occupied") {
+      message.error("Cannot delete an occupied bed");
+      return;
+    }
+
+    setBeds(beds.filter((bed) => bed.id !== id));
+    message.success("Bed deleted successfully");
   };
 
   return (

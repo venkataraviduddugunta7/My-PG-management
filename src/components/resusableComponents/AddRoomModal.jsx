@@ -1,5 +1,14 @@
-import { Modal, Form, Input, Select, InputNumber, Row, Col, Tooltip } from "antd";
-import { useState } from "react";
+import {
+  Modal,
+  Form,
+  Input,
+  Select,
+  InputNumber,
+  Row,
+  Col,
+  Tooltip,
+} from "antd";
+import { useEffect, useState } from "react";
 import PgButton from "./PgButton";
 import "./TenantForm.scss";
 import { DropdownIcon, TagsCloseIcon } from "./DrayageIcons";
@@ -10,6 +19,14 @@ const roomTypes = ["Standard", "Deluxe", "Premium", "Dormitory", "Shared"];
 
 const AddRoomModal = ({ visible, onClose, onSubmit, floors, roomData }) => {
   const [form] = Form.useForm();
+
+  useEffect(() => {
+    if (roomData) {
+      form.setFieldsValue(roomData);
+    } else {
+      form.resetFields();
+    }
+  }, [roomData, form]);
 
   const handleFinish = (values) => {
     onSubmit(values);
@@ -28,9 +45,7 @@ const AddRoomModal = ({ visible, onClose, onSubmit, floors, roomData }) => {
             alignItems: "center",
           }}
         >
-          <div>
-            {roomData ? "Edit Room" : "New Room"}
-          </div>
+          <div>{roomData ? "Edit Room" : "New Room"}</div>
           <Tooltip title="Close">
             <TagsCloseIcon width={24} height={24} onClick={onClose} />
           </Tooltip>
