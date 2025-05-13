@@ -1,0 +1,35 @@
+.custom-ant-table {
+    font-family: Lato, sans-serif;
+
+    .ant-table {
+        border: 1px solid #CCD7E1;
+        border-top: none;
+    }
+
+    .ant-table-wrapper .ant-table-container table>thead>tr:first-child>* {
+        border-radius: 0px !important;
+        background-color: #E6EBF0;
+        font-family: Lato, sans-serif;
+        font-weight: 600;
+        font-size: 0.875rem;
+        line-height: 1rem;
+        color: #273156;
+        padding: 0.75rem 0.5rem;
+        border-right: 1px solid #C4D1DC;
+        border: none;
+    }
+
+    .ant-table-wrapper .ant-table-tbody>tr>td {
+        font-family: Lato, sans-serif;
+        font-weight: 400;
+        font-size: 0.875rem;
+        line-height: 1rem;
+        letter-spacing: 0%;
+        color: #111314;
+        border-bottom: 1px solid #CCD7E1;
+        padding: 0.75rem 0.5rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+}

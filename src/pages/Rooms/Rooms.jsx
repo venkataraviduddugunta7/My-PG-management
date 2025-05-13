@@ -1,10 +1,11 @@
-import { Form, InputNumber, Select, Button, message, Table } from "antd";
+import { Form, Select, message } from "antd";
 import { useState } from "react";
 import "./Rooms.scss";
 import PgButton from "../../components/resusableComponents/PgButton";
 import AddFloorModal from "../../components/resusableComponents/AddFloorModal";
 import AddRoomModal from "../../components/resusableComponents/AddRoomModal";
 import AddBedModal from "../../components/resusableComponents/AddBedModal";
+import PgTable from "../../components/resusableComponents/PgTable";
 
 const Rooms = () => {
   const [floors, setFloors] = useState([]);
@@ -91,7 +92,7 @@ const Rooms = () => {
               <PgButton onClick={() => setFloorModal(true)}>Add Floor</PgButton>
             </div>
             <div>
-              <Table />
+              <PgTable />
             </div>
 
             <AddFloorModal
@@ -116,7 +117,7 @@ const Rooms = () => {
               <PgButton onClick={() => setRoomModal(true)}>Add Room</PgButton>
             </div>
             <div>
-              <Table />
+              <PgTable />
             </div>
 
             <AddRoomModal
@@ -142,7 +143,7 @@ const Rooms = () => {
               <PgButton onClick={() => setBedModal(true)}>Add Bed</PgButton>
             </div>
             <div>
-              <Table />
+              <PgTable />
             </div>
             <AddBedModal
               visible={bedModal}
