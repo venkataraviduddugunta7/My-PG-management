@@ -1,11 +1,19 @@
 import { Modal, Form, Input, Button, Tooltip } from "antd";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import PgButton from "./PgButton";
 import "./TenantForm.scss";
 import { TagsCloseIcon } from "./DrayageIcons";
 
 const AddFloorModal = ({ visible, onClose, onSubmit, floorData }) => {
   const [form] = Form.useForm();
+
+  useEffect(() => {
+    if (floorData) {
+      form.setFieldsValue(floorData);
+    } else {
+      form.resetFields();
+    }
+  }, [floorData, form]);
 
   const handleFinish = (values) => {
     onSubmit(values);
@@ -47,7 +55,7 @@ const AddFloorModal = ({ visible, onClose, onSubmit, floorData }) => {
           </PgButton>
           ,
           <PgButton key="submit" size="small" onClick={() => form.submit()}>
-            Add Floor
+           {floorData? "Update Floor " : "Add Floor"}
           </PgButton>
           ,
         </div>

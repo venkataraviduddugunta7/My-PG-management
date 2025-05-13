@@ -1,4 +1,4 @@
-import { Form, Select, message } from "antd";
+import { Form, Popconfirm, Select, Tooltip, message } from "antd";
 import { useState } from "react";
 import "./Rooms.scss";
 import PgButton from "../../components/resusableComponents/PgButton";
@@ -26,8 +26,51 @@ const Rooms = () => {
   ];
 
   const [floors, setFloors] = useState([]);
+  const [editingFloor, setEditingFloor] = useState(null);
+  const [editingRoom, setEditingRoom] = useState(null);
+  const [editingBed, setEditingBed] = useState(null);
   const [rooms, setRooms] = useState([]);
   const [beds, setBeds] = useState([]);
+
+  const handleAddFloor = (floorData) => {
+    if (editingFloor) {
+      // Update existing floor
+      setFloors(
+        floors.map((floor) =>
+          floor.id === editingFloor.id ? { ...floor, ...floorData } : floor
+        )
+      );
+      message.success("Floor updated successfully");
+    } else {
+      // Add new floor
+      const newFloor = {
+        ...floorData,
+        id: `floor-${floors.length + 1}`,
+      };
+      setFloors([...floors, newFloor]);
+      message.success("Floor added successfully");
+    }
+    setFloorModal(false);
+    setEditingFloor(null);
+  };
+
+  const handleEditFloor = (floor) => {
+    setEditingFloor(floor);
+    setFloorModal(true);
+  };
+
+  const handleDeleteFloor = (id) => {
+    // Check if any rooms are using this floor
+    const roomsUsingFloor = rooms.some((room) => room.floorId === id);
+
+    if (roomsUsingFloor) {
+      message.error("Cannot delete floor with existing rooms");
+      return;
+    }
+
+    setFloors(floors.filter((floor) => floor.id !== id));
+    message.success("Floor deleted successfully");
+  };
 
   const floorColumns = [
     {
@@ -47,8 +90,19 @@ const Rooms = () => {
         <div
           style={{ display: "flex", justifyContent: "flex-end", gap: "4px" }}
         >
-          <ItemEditIcon onClick={() => onEdit(record)} />
-          <ItemDeleteIcon onClick={() => onDelete(record.id)} />
+          <Tooltip title="Edit">
+            <ItemEditIcon onClick={() => handleEditFloor(record)} />
+          </Tooltip>
+          <Popconfirm
+            title="Are you sure to delete this floor?"
+            onConfirm={() => handleDeleteFloor(record.id)}
+            okText="Yes"
+            cancelText="No"
+          >
+            <Tooltip title="Delete">
+              <ItemDeleteIcon style={{ cursor: "pointer" }} />
+            </Tooltip>
+          </Popconfirm>
         </div>
       ),
     },
@@ -77,8 +131,19 @@ const Rooms = () => {
         <div
           style={{ display: "flex", justifyContent: "flex-end", gap: "4px" }}
         >
-          <ItemEditIcon onClick={() => onEdit(record)} />
-          <ItemDeleteIcon onClick={() => onDelete(record.id)} />
+          <Tooltip title="Edit">
+            <ItemEditIcon onClick={() => handleEditFloor(record)} />
+          </Tooltip>
+          <Popconfirm
+            title="Are you sure to delete this Room?"
+            onConfirm={() => handleDeleteFloor(record.id)}
+            okText="Yes"
+            cancelText="No"
+          >
+            <Tooltip title="Delete">
+              <ItemDeleteIcon style={{ cursor: "pointer" }} />
+            </Tooltip>
+          </Popconfirm>
         </div>
       ),
     },
@@ -117,21 +182,23 @@ const Rooms = () => {
         <div
           style={{ display: "flex", justifyContent: "flex-end", gap: "4px" }}
         >
-          <ItemEditIcon onClick={() => onEdit(record)} />
-          <ItemDeleteIcon onClick={() => onDelete(record.id)} />
+          <Tooltip title="Edit">
+            <ItemEditIcon onClick={() => handleEditFloor(record)} />
+          </Tooltip>
+          <Popconfirm
+            title="Are you sure to delete this Bed?"
+            onConfirm={() => handleDeleteFloor(record.id)}
+            okText="Yes"
+            cancelText="No"
+          >
+            <Tooltip title="Delete">
+              <ItemDeleteIcon style={{ cursor: "pointer" }} />
+            </Tooltip>
+          </Popconfirm>
         </div>
       ),
     },
   ];
-
-  const handleAddFloor = (floorData) => {
-    const newFloor = {
-      ...floorData,
-      id: `floor-${floors.length + 1}`,
-    };
-    setFloors([...floors, newFloor]);
-    setFloorModal(false);
-  };
 
   const handleAddRoom = (roomData) => {
     const newRoom = {
@@ -149,16 +216,6 @@ const Rooms = () => {
     };
     setBeds([...beds, newBed]);
     setBedModal(false);
-  };
-
-  const handleEditFloor = (floor) => {
-    setFloorModal(true);
-    form.setFieldsValue(floor);
-  };
-
-  const handleDeleteFloor = (id) => {
-    setFloors(floors.filter((f) => f.id !== id));
-    message.success("Floor deleted");
   };
 
   return (
@@ -202,6 +259,7 @@ const Rooms = () => {
               onSubmit={handleAddFloor}
               visible={floorModal}
               onClose={() => setFloorModal(false)}
+              floorData={editingFloor}
             />
           </div>
         )}
@@ -229,6 +287,7 @@ const Rooms = () => {
               floors={floors}
               onClose={() => setRoomModal(false)}
               onSubmit={handleAddRoom}
+              roomData={editingRoom}
             />
           </div>
         )}
@@ -255,6 +314,7 @@ const Rooms = () => {
               rooms={rooms}
               onClose={() => setBedModal(false)}
               onSubmit={handleAddBed}
+              bedData={editingBed}
             />
           </div>
         )}
