@@ -4,17 +4,12 @@ import {
   DollarOutlined,
   AlertOutlined,
   ToolOutlined,
-  PieChartOutlined,
 } from "@ant-design/icons";
 import { Col, Row } from "antd";
 import StatsCard from "../../components/resusableComponents/StatCard";
-import OccupancyChart from "../../components/OccupancyChart";
-import RevenueExpenseChart from "../../components/RevenueExpenseChart";
-import QuickActions from "../../components/QuickActions";
-import RecentActivity from "../../components/RecentActivity";
+import "./Dashboard.scss";
 
 const Dashboard = () => {
-  // Sample data - replace with real data
   const stats = [
     { name: "Total Beds", value: 50, icon: <HomeOutlined /> },
     { name: "Occupied", value: 42, icon: <UserOutlined /> },
@@ -25,27 +20,31 @@ const Dashboard = () => {
   ];
 
   return (
-    <div className="dashboard-container">
+    <div className="dashboard-cantainer ">
       {/* Stat Cards */}
+      <div className="header-section tabheader">Dashboard</div>
       <div className="stats-section">
-        <Row gutter={[16, 16]}>
-          {stats.map((stat, index) => (
-            <Col key={index} xs={24} sm={12} md={8} lg={6}>
-              <StatsCard
-                statName={stat.name}
-                count={stat.value}
-                icon={stat.icon}
-              />
-            </Col>
-          ))}
+        <Row gutter={[16]}>
+          <Col span={18}>
+            <Row gutter={[16, 16]}>
+              {stats.map((stat, index) => (
+                <Col key={index} xs={24} sm={12} md={8} lg={6}>
+                  <StatsCard
+                    statName={stat.name}
+                    count={stat.value}
+                    icon={stat.icon}
+                  />
+                </Col>
+              ))}
+            </Row>
+          </Col>
+          <Col span={6}>
+            <div className="activity">
+              <div className="activity-title ">Notifications & Logs</div>
+            </div>
+          </Col>
         </Row>
       </div>
-
-      {/* Charts Section */}
-
-
-      {/* Quick Actions & Activity */}
-    
     </div>
   );
 };

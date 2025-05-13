@@ -1,7 +1,10 @@
 @import "../../assets/scss/main.scss";
 
-.DashboardStyles {
-
+.dashboard-cantainer {
+    .header-section {
+        padding: 1rem;
+        background-color: #E6EBF0;
+    }
 
     .tabheader {
         font-family: Poppins;
@@ -10,6 +13,40 @@
         line-height: 32px;
         color: 273156;
         padding-bottom: 16px;
+    }
+
+    .stats-section {
+        padding: 1rem;
+    }
+
+}
+
+.activity {
+    background: #E6EBF0;
+    padding: 16px;
+    border-radius: 8px 8px 0px 0px;
+    height: 100%;
+    cursor: pointer;
+
+    .activity-name {
+        font-family: 'Lato', sans-serif;
+        font-weight: 600;
+        font-size: 14px;
+        line-height: 16px;
+        letter-spacing: 0%;
+        color: #66717B;
+        margin-bottom: 8px;
+    }
+
+    .activity-title {
+        font-family: Poppins;
+        font-weight: 600;
+        font-size: 20px;
+        line-height: 24px;
+        letter-spacing: 0%;
+        vertical-align: middle;
+        color: #273156;
+        margin-bottom: 16px;
     }
 
 }
