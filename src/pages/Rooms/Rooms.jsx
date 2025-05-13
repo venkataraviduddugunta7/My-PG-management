@@ -6,6 +6,9 @@ import AddFloorModal from "../../components/resusableComponents/AddFloorModal";
 import AddRoomModal from "../../components/resusableComponents/AddRoomModal";
 import AddBedModal from "../../components/resusableComponents/AddBedModal";
 import PgTable from "../../components/resusableComponents/PgTable";
+import { floorColumns } from "../../components/resusableComponents/floorColumns";
+import { roomColumns } from "../../components/resusableComponents/roomColumns";
+import { bedColumns } from "../../components/resusableComponents/bedColumns";
 
 const Rooms = () => {
   const [floors, setFloors] = useState([]);
@@ -14,7 +17,7 @@ const Rooms = () => {
   const [roomModal, setRoomModal] = useState(false);
   const [beds, setBeds] = useState([]);
   const [bedModal, setBedModal] = useState(false);
-  const [activeTab, setActiveTab] = useState("Floors"); // Default active tab
+  const [activeTab, setActiveTab] = useState("Floors");
 
   const [form] = Form.useForm();
 
@@ -58,6 +61,16 @@ const Rooms = () => {
     form.resetFields();
   };
 
+  const handleEditFloor = (floor) => {
+    setFloorModal(true);
+    form.setFieldsValue(floor);
+  };
+
+  const handleDeleteFloor = (id) => {
+    setFloors(floors.filter((f) => f.id !== id));
+    message.success("Floor deleted");
+  };
+
   return (
     <div className="RoomsStyle">
       <div className="tabheader">Room Management</div>
@@ -92,7 +105,10 @@ const Rooms = () => {
               <PgButton onClick={() => setFloorModal(true)}>Add Floor</PgButton>
             </div>
             <div>
-              <PgTable />
+              <PgTable
+                columns={floorColumns(handleEditFloor, handleDeleteFloor)}
+                dataSource={floors}
+              />
             </div>
 
             <AddFloorModal
@@ -117,7 +133,10 @@ const Rooms = () => {
               <PgButton onClick={() => setRoomModal(true)}>Add Room</PgButton>
             </div>
             <div>
-              <PgTable />
+              <PgTable
+                columns={roomColumns(handleEditFloor, handleDeleteFloor)}
+                dataSource={rooms}
+              />
             </div>
 
             <AddRoomModal
@@ -143,7 +162,10 @@ const Rooms = () => {
               <PgButton onClick={() => setBedModal(true)}>Add Bed</PgButton>
             </div>
             <div>
-              <PgTable />
+              <PgTable
+                columns={bedColumns(handleEditFloor, handleDeleteFloor)}
+                dataSource={beds}
+              />
             </div>
             <AddBedModal
               visible={bedModal}
