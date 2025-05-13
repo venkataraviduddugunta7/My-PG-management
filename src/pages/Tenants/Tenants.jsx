@@ -97,12 +97,12 @@ const Tenants = () => {
   ];
 
   // Filter tenants based on search term
-  const filteredTenants = tenants.filter(
-    (tenant) =>
-      tenant.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      tenant.mobile.includes(searchTerm) ||
-      tenant.profession.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  // const filteredTenants = tenants.filter(
+  //   (tenant) =>
+  //     tenant.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+  //     tenant.mobile.includes(searchTerm) ||
+  //     tenant.profession.toLowerCase().includes(searchTerm.toLowerCase())
+  // );
 
   const handleAddTenant = (formData) => {
     if (termsAccepted) {
@@ -188,8 +188,8 @@ const Tenants = () => {
         </Row>
 
         <Row gutter={[16, 16]}>
-          {filteredTenants.map((tenant) => (
-            <Col span={6} key={tenant.id}>
+          {tenants.map((tenant) => (
+            <Col span={8} key={tenant.id}>
               <TenantCard tenant={tenant} />
             </Col>
           ))}

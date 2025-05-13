@@ -130,7 +130,7 @@ const TenantFormModal = ({ visible, onClose, onSubmit, tenantData, termsAccepted
           <PgButton onClick={onClose} type="secondary" size="small">
             Cancel
           </PgButton>
-          <PgButton size="small" onClick={onSubmit} disabled={!termsAccepted}>
+          <PgButton size="small" onClick={() => form.submit()}  disabled={!termsAccepted}>
             {tenantData ? "Update Tenant" : "Add Tenant"}
           </PgButton>
         </div>
