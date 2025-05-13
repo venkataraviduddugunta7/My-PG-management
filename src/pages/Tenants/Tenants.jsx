@@ -5,6 +5,7 @@ import "./Tenants.scss";
 import PgButton from "../../components/resusableComponents/PgButton";
 import TenantFormModal from "../../components/resusableComponents/TenantFormModal";
 import { useState } from "react";
+import TermsAgreementModal from "../../components/resusableComponents/TermsAgreementModal";
 
 // Mock data generator function
 const generateTenants = () => {
@@ -79,30 +80,14 @@ const Tenants = () => {
   const [isAddModalVisible, setAddModalVisible] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
 
+  const [isTermsModalVisible, setTermsModalVisible] = useState(false);
+  const [termsAccepted, setTermsAccepted] = useState(false);
+  const [pendingTenantData, setPendingTenantData] = useState(null);
+
   // Calculate statistics based on current tenants
   const totalTenants = tenants.length;
   const activeTenants = tenants.filter((t) => t.isActive).length;
   const inactiveTenants = totalTenants - activeTenants;
-
-  const professionsCount = tenants.reduce((acc, tenant) => {
-    acc[tenant.profession] = (acc[tenant.profession] || 0) + 1;
-    return acc;
-  }, {});
-
-  const topProfessions = Object.entries(professionsCount)
-    .sort((a, b) => b[1] - a[1])
-    .slice(0, 3);
-
-  const averageAge = Math.round(
-    tenants.reduce((sum, tenant) => sum + tenant.age, 0) / tenants.length
-  );
-
-  const recentJoinees = tenants.filter((t) => {
-    const doj = new Date(t.doj);
-    const threeMonthsAgo = new Date();
-    threeMonthsAgo.setMonth(threeMonthsAgo.getMonth() - 3);
-    return doj > threeMonthsAgo;
-  }).length;
 
   const statsData = [
     { name: "All Tenants", value: totalTenants },
@@ -119,17 +104,36 @@ const Tenants = () => {
       tenant.profession.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  // Handle form submission
   const handleAddTenant = (formData) => {
-    const newTenant = {
-      ...formData,
-      id: `T${1000 + tenants.length + 1}`,
-      isActive: true,
-      image: "https://xsgames.co/randomusers/avatar.php?g=pixel",
-    };
+    if (termsAccepted) {
+      const newTenant = {
+        ...formData,
+        id: `T${1000 + tenants.length + 1}`,
+        isActive: true,
+        image: "https://xsgames.co/randomusers/avatar.php?g=pixel",
+      };
+      setTenants([...tenants, newTenant]);
+      setAddModalVisible(false);
+    } else {
+      setPendingTenantData(formData);
+      setTermsModalVisible(true);
+    }
+  };
 
-    setTenants([...tenants, newTenant]);
-    setAddModalVisible(false);
+  const handleAcceptTerms = () => {
+    setTermsAccepted(true);
+    setTermsModalVisible(false);
+    if (pendingTenantData) {
+      const newTenant = {
+        ...pendingTenantData,
+        id: `T${1000 + tenants.length + 1}`,
+        isActive: true,
+        image: "https://xsgames.co/randomusers/avatar.php?g=pixel",
+      };
+      setTenants([...tenants, newTenant]);
+      setAddModalVisible(false);
+      setPendingTenantData(null);
+    }
   };
 
   return (
@@ -157,6 +161,7 @@ const Tenants = () => {
               placeholder="Search tenants..."
               onChange={(e) => setSearchTerm(e.target.value)}
               value={searchTerm}
+              style={{ width: "224px" }}
             />
           </div>
 
@@ -168,6 +173,17 @@ const Tenants = () => {
             visible={isAddModalVisible}
             onClose={() => setAddModalVisible(false)}
             onSubmit={handleAddTenant}
+            termsAccepted={termsAccepted}
+            onShowTerms={() => setTermsModalVisible(true)}
+          />
+
+          <TermsAgreementModal
+            visible={isTermsModalVisible}
+            onAccept={handleAcceptTerms}
+            onCancel={() => {
+              setTermsModalVisible(false);
+              setPendingTenantData(null);
+            }}
           />
         </Row>
 

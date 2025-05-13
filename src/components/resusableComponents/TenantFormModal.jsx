@@ -9,6 +9,7 @@ import {
   Row,
   Col,
   Tooltip,
+  Checkbox,
 } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import { useEffect, useState } from "react";
@@ -53,19 +54,10 @@ const stayTypes = [
 ];
 const idTypes = ["Aadhar", "PAN", "Passport", "Driving License", "Voter ID"];
 
-const TenantFormModal = ({ visible, onClose, onSubmit, tenantData }) => {
+const TenantFormModal = ({ visible, onClose, onSubmit, tenantData, termsAccepted, onShowTerms }) => {
   const [form] = Form.useForm();
 
   const [fileList, setFileList] = useState([]);
-  const [termsAccepted, setTermsAccepted] = useState(false);
-
-  const termsRules = [
-    "Tenant must provide valid government ID proof",
-    "Rent must be paid by the 5th of every month",
-    "No smoking inside the premises",
-    "Visitors allowed only between 8AM-10PM",
-    "Security deposit is non-refundable if lease is broken early",
-  ];
 
   useEffect(() => {
     if (tenantData) {
@@ -138,7 +130,7 @@ const TenantFormModal = ({ visible, onClose, onSubmit, tenantData }) => {
           <PgButton onClick={onClose} type="secondary" size="small">
             Cancel
           </PgButton>
-          <PgButton size="small" onClick={onSubmit}> 
+          <PgButton size="small" onClick={onSubmit} disabled={!termsAccepted}>
             {tenantData ? "Update Tenant" : "Add Tenant"}
           </PgButton>
         </div>
@@ -642,6 +634,23 @@ const TenantFormModal = ({ visible, onClose, onSubmit, tenantData }) => {
             <div className="form-lable"> Agreement Signed </div>
             <Form.Item name="agreementSigned" valuePropName="checked">
               <Switch checkedChildren="Yes" unCheckedChildren="No" />
+            </Form.Item>
+            <Form.Item>
+              <Checkbox
+                checked={termsAccepted}
+                onChange={(e) => setTermsAccepted(e.target.checked)}
+              >
+                I agree to the{" "}
+                <a
+                  href="#"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    onShowTerms();
+                  }}
+                >
+                  Terms and Conditions
+                </a>
+              </Checkbox>
             </Form.Item>
           </div>
 
