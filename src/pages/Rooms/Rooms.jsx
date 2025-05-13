@@ -287,7 +287,7 @@ const Rooms = () => {
                 alignItems: "center",
               }}
             >
-              <div className="tab-title">Floors {floors.length}</div>
+              <div className="tab-title">Floors - {floors.length}</div>
               <PgButton onClick={() => setFloorModal(true)}>Add Floor</PgButton>
             </div>
             <div>
@@ -312,7 +312,7 @@ const Rooms = () => {
                 alignItems: "center",
               }}
             >
-              <div className="tab-title">Rooms {rooms.length}</div>
+              <div className="tab-title">Rooms - {rooms.length}</div>
               <PgButton onClick={() => setRoomModal(true)}>Add Room</PgButton>
             </div>
             <div>
@@ -338,7 +338,7 @@ const Rooms = () => {
                 alignItems: "center",
               }}
             >
-              <div className="tab-title">Beds {beds.length}</div>
+              <div className="tab-title">Beds - {beds.length}</div>
               <PgButton onClick={() => setBedModal(true)}>Add Bed</PgButton>
             </div>
             <div>
