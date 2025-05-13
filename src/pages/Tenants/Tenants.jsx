@@ -189,7 +189,7 @@ const Tenants = () => {
 
         <Row gutter={[16, 16]}>
           {filteredTenants.map((tenant) => (
-            <Col span={8} key={tenant.id}>
+            <Col span={6} key={tenant.id}>
               <TenantCard tenant={tenant} />
             </Col>
           ))}
