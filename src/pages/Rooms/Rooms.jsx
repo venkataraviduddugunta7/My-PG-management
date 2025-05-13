@@ -6,16 +6,10 @@ import AddFloorModal from "../../components/resusableComponents/AddFloorModal";
 import AddRoomModal from "../../components/resusableComponents/AddRoomModal";
 import AddBedModal from "../../components/resusableComponents/AddBedModal";
 import PgTable from "../../components/resusableComponents/PgTable";
-import { floorColumns } from "../../components/resusableComponents/floorColumns";
-import { roomColumns } from "../../components/resusableComponents/roomColumns";
-import { bedColumns } from "../../components/resusableComponents/bedColumns";
 
 const Rooms = () => {
-  const [floors, setFloors] = useState([]);
   const [floorModal, setFloorModal] = useState(false);
-  const [rooms, setRooms] = useState([]);
   const [roomModal, setRoomModal] = useState(false);
-  const [beds, setBeds] = useState([]);
   const [bedModal, setBedModal] = useState(false);
   const [activeTab, setActiveTab] = useState("Floors");
 
@@ -28,37 +22,130 @@ const Rooms = () => {
     { id: "Floors", label: "Floors" },
   ];
 
-  // ─── Floor Creation ───────────────────────────────────────────
-  const createFloor = (values) => {
+  const [floors, setFloors] = useState([
+    {
+      id: "floor-1",
+      floorNumber: 1,
+      floorName: "Ground Floor",
+      description: "Main floor with reception",
+    },
+    {
+      id: "floor-2",
+      floorNumber: 2,
+      floorName: "First Floor",
+      description: "Standard rooms floor",
+    },
+    {
+      id: "floor-3",
+      floorNumber: 3,
+      floorName: "Second Floor",
+      description: "Premium rooms floor",
+    },
+  ]);
+
+  const [rooms, setRooms] = useState([
+    {
+      id: "room-1",
+      floorId: "floor-1",
+      roomNumber: "101",
+      roomType: "Standard",
+      capacity: 2,
+      rent: 5000,
+    },
+    {
+      id: "room-2",
+      floorId: "floor-1",
+      roomNumber: "102",
+      roomType: "Deluxe",
+      capacity: 3,
+      rent: 7000,
+    },
+    {
+      id: "room-3",
+      floorId: "floor-2",
+      roomNumber: "201",
+      roomType: "Premium",
+      capacity: 2,
+      rent: 8000,
+    },
+    {
+      id: "room-4",
+      floorId: "floor-3",
+      roomNumber: "301",
+      roomType: "Shared",
+      capacity: 4,
+      rent: 4000,
+    },
+  ]);
+
+  const [beds, setBeds] = useState([
+    {
+      id: "bed-1",
+      roomId: "room-1",
+      bedNumber: "1",
+      bedType: "Single",
+      status: "occupied",
+      notes: "Near window",
+    },
+    {
+      id: "bed-2",
+      roomId: "room-1",
+      bedNumber: "2",
+      bedType: "Single",
+      status: "available",
+      notes: "Near door",
+    },
+    {
+      id: "bed-3",
+      roomId: "room-2",
+      bedNumber: "1",
+      bedType: "Bunk",
+      status: "available",
+      notes: "Lower bunk",
+    },
+    {
+      id: "bed-4",
+      roomId: "room-2",
+      bedNumber: "2",
+      bedType: "Bunk",
+      status: "available",
+      notes: "Upper bunk",
+    },
+    {
+      id: "bed-5",
+      roomId: "room-3",
+      bedNumber: "1",
+      bedType: "Double",
+      status: "maintenance",
+      notes: "Needs mattress replacement",
+    },
+  ]);
+
+  const handleAddFloor = (floorData) => {
     const newFloor = {
-      id: `F${floors.length + 1}`,
-      ...values,
+      ...floorData,
+      id: `floor-${floors.length + 1}`,
     };
     setFloors([...floors, newFloor]);
-    message.success("Floor added!");
-    form.resetFields();
+    setFloorModal(false);
   };
 
-  // ─── Room Creation ────────────────────────────────────────────
-  const createRoom = (values) => {
+  const handleAddRoom = (roomData) => {
     const newRoom = {
-      id: `R${rooms.length + 1}`,
-      ...values,
+      ...roomData,
+      id: `room-${rooms.length + 1}`,
     };
     setRooms([...rooms, newRoom]);
-    message.success("Room added!");
-    form.resetFields();
+    setRoomModal(false);
   };
 
-  // ─── Bed Creation ─────────────────────────────────────────────
-  const createBed = (values) => {
+  const handleAddBed = (bedData) => {
     const newBed = {
-      id: `B${beds.length + 1}`,
-      ...values,
+      ...bedData,
+      id: `bed-${beds.length + 1}`,
     };
     setBeds([...beds, newBed]);
-    message.success("Bed(s) added!");
-    form.resetFields();
+    setBedModal(false);
   };
 
   const handleEditFloor = (floor) => {
@@ -101,14 +188,13 @@ const Rooms = () => {
                 alignItems: "center",
               }}
             >
-              <div className="tab-title">Floors</div>
+              <div className="tab-title">Floors {floors.length}</div>
               <PgButton onClick={() => setFloorModal(true)}>Add Floor</PgButton>
             </div>
             <div>
-              <PgTable
-                columns={floorColumns(handleEditFloor, handleDeleteFloor)}
-                dataSource={floors}
-              />
+              <PgTable 
+              // columns={floorColumns}
+               dataSource={floors} />
             </div>
 
             <AddFloorModal
@@ -129,14 +215,13 @@ const Rooms = () => {
                 alignItems: "center",
               }}
             >
-              <div className="tab-title">Rooms</div>
+              <div className="tab-title">Rooms {rooms.length}</div>
               <PgButton onClick={() => setRoomModal(true)}>Add Room</PgButton>
             </div>
             <div>
-              <PgTable
-                columns={roomColumns(handleEditFloor, handleDeleteFloor)}
-                dataSource={rooms}
-              />
+              <PgTable 
+              // columns={roomColumns}
+               dataSource={rooms} />
             </div>
 
             <AddRoomModal
@@ -158,14 +243,13 @@ const Rooms = () => {
                 alignItems: "center",
               }}
             >
-              <div className="tab-title">Beds</div>
+              <div className="tab-title">Beds {beds.length}</div>
               <PgButton onClick={() => setBedModal(true)}>Add Bed</PgButton>
             </div>
             <div>
-              <PgTable
-                columns={bedColumns(handleEditFloor, handleDeleteFloor)}
-                dataSource={beds}
-              />
+              <PgTable 
+              // columns={bedColumns}
+               dataSource={beds} />
             </div>
             <AddBedModal
               visible={bedModal}
