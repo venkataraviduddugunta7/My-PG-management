@@ -121,6 +121,98 @@ const Rooms = () => {
     },
   ]);
 
+  const floorColumns = [
+    {
+      title: "Floor ID",
+      dataIndex: "id",
+      key: "id",
+    },
+    {
+      title: "Floor Name",
+      dataIndex: "name",
+      key: "name",
+    },
+    {
+      title: "Actions",
+      key: "actions",
+      render: (_, record) => (
+        <>
+          <a onClick={() => onEdit(record)}>Edit</a>
+          <span style={{ margin: "0 8px" }}>|</span>
+          <a onClick={() => onDelete(record.id)}>Delete</a>
+        </>
+      ),
+    },
+  ];
+
+  const roomColumns = [
+    {
+      title: "Room ID",
+      dataIndex: "id",
+      key: "id",
+    },
+    {
+      title: "Room Name",
+      dataIndex: "name",
+      key: "name",
+    },
+    {
+      title: "Floor",
+      dataIndex: "floor",
+      key: "floor",
+    },
+    {
+      title: "Actions",
+      key: "actions",
+      render: (_, record) => (
+        <>
+          <a onClick={() => onEdit(record)}>Edit</a>
+          <span style={{ margin: "0 8px" }}>|</span>
+          <a onClick={() => onDelete(record.id)}>Delete</a>
+        </>
+      ),
+    },
+  ];
+
+  const bedColumns = [
+    {
+      title: "Bed ID",
+      dataIndex: "id",
+      key: "id",
+    },
+    {
+      title: "Bed Number",
+      dataIndex: "number",
+      key: "number",
+    },
+    {
+      title: "Room",
+      dataIndex: "room",
+      key: "room",
+    },
+    {
+      title: "Status",
+      dataIndex: "status",
+      key: "status",
+      render: (status) => (
+        <span style={{ color: status === "Occupied" ? "red" : "green" }}>
+          {status}
+        </span>
+      ),
+    },
+    {
+      title: "Actions",
+      key: "actions",
+      render: (_, record) => (
+        <>
+          <a onClick={() => onEdit(record)}>Edit</a>
+          <span style={{ margin: "0 8px" }}>|</span>
+          <a onClick={() => onDelete(record.id)}>Delete</a>
+        </>
+      ),
+    },
+  ];
+
   const handleAddFloor = (floorData) => {
     const newFloor = {
       ...floorData,
@@ -192,9 +284,7 @@ const Rooms = () => {
               <PgButton onClick={() => setFloorModal(true)}>Add Floor</PgButton>
             </div>
             <div>
-              <PgTable 
-              // columns={floorColumns}
-               dataSource={floors} />
+              <PgTable columns={floorColumns} dataSource={floors} />
             </div>
 
             <AddFloorModal
@@ -219,9 +309,7 @@ const Rooms = () => {
               <PgButton onClick={() => setRoomModal(true)}>Add Room</PgButton>
             </div>
             <div>
-              <PgTable 
-              // columns={roomColumns}
-               dataSource={rooms} />
+              <PgTable columns={roomColumns} dataSource={rooms} />
             </div>
 
             <AddRoomModal
@@ -247,9 +335,7 @@ const Rooms = () => {
               <PgButton onClick={() => setBedModal(true)}>Add Bed</PgButton>
             </div>
             <div>
-              <PgTable 
-              // columns={bedColumns}
-               dataSource={beds} />
+              <PgTable columns={bedColumns} dataSource={beds} />
             </div>
             <AddBedModal
               visible={bedModal}
