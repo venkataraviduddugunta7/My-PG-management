@@ -142,7 +142,7 @@ const Tenants = () => {
       <div style={{ padding: "16px" }}>
         <Row gutter={[16, 16]} style={{ marginBottom: 24 }}>
           {statsData.map((stat, index) => (
-            <Col key={index}>
+            <Col key={index} xs={24} sm={12} md={8} lg={6} xl={6}>
               <StatsCard statName={stat.name} count={stat.value} />
             </Col>
           ))}
@@ -189,7 +189,7 @@ const Tenants = () => {
 
         <Row gutter={[16, 16]}>
           {tenants.map((tenant) => (
-            <Col span={8} key={tenant.id}>
+            <Col key={tenant.id} xs={24} sm={12} md={8} lg={6} xl={6}>
               <TenantCard tenant={tenant} />
             </Col>
           ))}

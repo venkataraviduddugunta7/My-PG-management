@@ -135,7 +135,7 @@ const Dashboard = () => {
             </Row>
 
             {/* AG Grid Table */}
-            <div style={{ marginTop: "16px", height: "400px" }}>
+            <div style={{ marginTop: "16px", height: "" }}>
               <Table
                 columns={columnDefs}
                 dataSource={rowData}
