@@ -12,6 +12,7 @@ import {
   RouteWarehouseIcon,
   TagsCloseIcon,
 } from "../../components/resusableComponents/DrayageIcons";
+import PgTable from "../../components/resusableComponents/PgTable";
 
 // Mock data generator function
 const generateTenants = () => {
@@ -95,7 +96,7 @@ const Tenants = () => {
   const activeTenants = tenants.filter((t) => t.isActive).length;
   const inactiveTenants = totalTenants - activeTenants;
 
-  const [selectedMode, setSelectedMode] = useState("card");
+  const [selectedMode, setSelectedMode] = useState("table");
 
   const modes = [
     { id: "table", component: RouteCommercialIcon },
@@ -108,6 +109,50 @@ const Tenants = () => {
     { name: "Inactive Tenants", value: inactiveTenants },
     { name: "Blocked", value: inactiveTenants },
   ];
+
+  const columnDefs = [
+    {
+      title: "Tenant ID",
+      dataIndex: "id",
+      key: "id",
+    },
+    {
+      title: "Name",
+      dataIndex: "name",
+      key: "name",
+    },
+    {
+      title: "Mobile",
+      dataIndex: "mobile",
+      key: "mobile",
+    },
+    {
+      title: "Profession",
+      dataIndex: "profession",
+      key: "profession",
+    },
+    {
+      title: "Age",
+      dataIndex: "age",
+      key: "age",
+    },
+    {
+      title: "Date of Joining",
+      dataIndex: "doj",
+      key: "doj",
+    },
+    {
+      title: "Status",
+      dataIndex: "isActive",
+      key: "isActive",
+      render: (isActive) => (
+        <span style={{ color: isActive ? "green" : "red" }}>
+          {isActive ? "Active" : "Inactive"}
+        </span>
+      ),
+    },
+  ];
+  
 
   // Filter tenants based on search term
   // const filteredTenants = tenants.filter(
@@ -255,14 +300,24 @@ const Tenants = () => {
             }}
           />
         </Row>
+        {selectedMode === "card" && (
+          <Row gutter={[16, 16]}>
+            {tenants.map((tenant) => (
+              <Col key={tenant.id} xs={24} sm={12} md={8} lg={6} xl={6}>
+                <TenantCard tenant={tenant} />
+              </Col>
+            ))}
+          </Row>
+        )}
 
-        <Row gutter={[16, 16]}>
-          {tenants.map((tenant) => (
-            <Col key={tenant.id} xs={24} sm={12} md={8} lg={6} xl={6}>
-              <TenantCard tenant={tenant} />
-            </Col>
-          ))}
-        </Row>
+        {selectedMode === "table" && (
+          <PgTable
+            columns={columnDefs}
+            dataSource={tenants}
+            pagination={{ pageSize: 10 }}
+            scroll={{ y: "calc(100vh - 300px)" }}
+          />
+        )}
       </div>
     </div>
   );
