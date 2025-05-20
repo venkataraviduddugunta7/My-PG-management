@@ -85,7 +85,7 @@ const Tenants = () => {
   // Initialize state with generated tenants
   const [tenants, setTenants] = useState(generateTenants());
   const [isAddModalVisible, setAddModalVisible] = useState(false);
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
 
   const [isTermsModalVisible, setTermsModalVisible] = useState(false);
   const [termsAccepted, setTermsAccepted] = useState(false);
@@ -96,11 +96,11 @@ const Tenants = () => {
   const activeTenants = tenants.filter((t) => t.isActive).length;
   const inactiveTenants = totalTenants - activeTenants;
 
-  const [selectedMode, setSelectedMode] = useState('table');
+  const [selectedMode, setSelectedMode] = useState("table");
 
   const modes = [
-    { id: 'table', component: RouteCommercialIcon },
-    { id: 'card', component: RouteWarehouseIcon },
+    { id: "table", component: RouteCommercialIcon },
+    { id: "card", component: RouteWarehouseIcon },
   ];
 
   const statsData = [
@@ -152,15 +152,13 @@ const Tenants = () => {
       ),
     },
   ];
-  
 
-  // Filter tenants based on search term
-  // const filteredTenants = tenants.filter(
-  //   (tenant) =>
-  //     tenant.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-  //     tenant.mobile.includes(searchTerm) ||
-  //     tenant.profession.toLowerCase().includes(searchTerm.toLowerCase())
-  // );
+  const filteredTenants = tenants.filter(
+    (tenant) =>
+      tenant.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      tenant.mobile.includes(searchTerm) ||
+      tenant.profession.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   const handleAddTenant = (formData) => {
     if (termsAccepted) {
@@ -223,7 +221,7 @@ const Tenants = () => {
               className="input-style"
               suffix={
                 searchTerm ? (
-                  <TagsCloseIcon onClick={() => setSearchTerm('')} />
+                  <TagsCloseIcon onClick={() => setSearchTerm("")} />
                 ) : (
                   <FilterSearchIcon />
                 )
@@ -302,7 +300,7 @@ const Tenants = () => {
         </Row>
         {selectedMode === "card" && (
           <Row gutter={[16, 16]}>
-            {tenants.map((tenant) => (
+            {filteredTenants.map((tenant) => (
               <Col key={tenant.id} xs={24} sm={12} md={8} lg={6} xl={6}>
                 <TenantCard tenant={tenant} />
               </Col>
@@ -313,7 +311,7 @@ const Tenants = () => {
         {selectedMode === "table" && (
           <PgTable
             columns={columnDefs}
-            dataSource={tenants}
+            dataSource={filteredTenants}
             pagination={{ pageSize: 10 }}
             scroll={{ y: "calc(100vh - 300px)" }}
           />
