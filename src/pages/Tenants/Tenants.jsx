@@ -10,6 +10,7 @@ import {
   FilterSearchIcon,
   RouteCommercialIcon,
   RouteWarehouseIcon,
+  TagsCloseIcon,
 } from "../../components/resusableComponents/DrayageIcons";
 
 // Mock data generator function
@@ -94,7 +95,7 @@ const Tenants = () => {
   const activeTenants = tenants.filter((t) => t.isActive).length;
   const inactiveTenants = totalTenants - activeTenants;
 
-  const [selectedMode, setSelectedMode] = useState(null);
+  const [selectedMode, setSelectedMode] = useState("card");
 
   const modes = [
     { id: "table", component: RouteCommercialIcon },
@@ -174,7 +175,14 @@ const Tenants = () => {
               onChange={(e) => setSearchTerm(e.target.value)}
               value={searchTerm}
               style={{ width: "224px" }}
-              suffix={<FilterSearchIcon />}
+              className="input-style"
+              suffix={
+                searchTerm ? (
+                  <TagsCloseIcon onClick={() => setSearchTerm("")} />
+                ) : (
+                  <FilterSearchIcon />
+                )
+              }
             />
           </div>
 
