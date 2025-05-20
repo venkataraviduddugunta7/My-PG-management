@@ -6,6 +6,11 @@ import PgButton from "../../components/resusableComponents/PgButton";
 import TenantFormModal from "../../components/resusableComponents/TenantFormModal";
 import { useState } from "react";
 import TermsAgreementModal from "../../components/resusableComponents/TermsAgreementModal";
+import {
+  FilterSearchIcon,
+  RouteCommercialIcon,
+  RouteWarehouseIcon,
+} from "../../components/resusableComponents/DrayageIcons";
 
 // Mock data generator function
 const generateTenants = () => {
@@ -89,6 +94,13 @@ const Tenants = () => {
   const activeTenants = tenants.filter((t) => t.isActive).length;
   const inactiveTenants = totalTenants - activeTenants;
 
+  const [selectedMode, setSelectedMode] = useState(null);
+
+  const modes = [
+    { id: "table", component: RouteCommercialIcon },
+    { id: "card", component: RouteWarehouseIcon },
+  ];
+
   const statsData = [
     { name: "All Tenants", value: totalTenants },
     { name: "Active Tenants", value: activeTenants },
@@ -162,12 +174,61 @@ const Tenants = () => {
               onChange={(e) => setSearchTerm(e.target.value)}
               value={searchTerm}
               style={{ width: "224px" }}
+              suffix={<FilterSearchIcon />}
             />
           </div>
 
-          <PgButton onClick={() => setAddModalVisible(true)}>
-            Add Tenant
-          </PgButton>
+          <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
+            <div
+              style={{
+                display: "flex",
+                background: "#f7f8fa",
+                borderRadius: "24px",
+                outline: "2px solid #cdd4f0",
+                overflow: "hidden", // Ensures rounded corners clip content
+              }}
+            >
+              {modes.map(({ id, component: IconComponent }, index) => {
+                const isSelected = selectedMode === id;
+                const isFirst = index === 0;
+                const isLast = index === modes.length - 1;
+
+                let borderRadius = "0px"; // default for middle items
+                if (isFirst) borderRadius = "24px 0px 0px 24px";
+                else if (isLast) borderRadius = "0px 24px 24px 0px";
+
+                return (
+                  <div
+                    key={id}
+                    onClick={() => setSelectedMode(id)}
+                    style={{
+                      cursor: "pointer",
+                      borderRadius,
+                      background: isSelected ? "#cdd4f0" : "transparent",
+                      padding: "6px 16px",
+                      transition: "0.2s ease",
+                    }}
+                    onMouseEnter={(e) => {
+                      if (!isSelected) {
+                        e.currentTarget.style.background = "#cdd4f0";
+                      }
+                    }}
+                    onMouseLeave={(e) => {
+                      if (!isSelected) {
+                        e.currentTarget.style.background = "transparent";
+                      }
+                    }}
+                  >
+                    <IconComponent />
+                  </div>
+                );
+              })}
+            </div>
+
+            <PgButton onClick={() => setAddModalVisible(true)}>
+              Add Tenant
+            </PgButton>
+          </div>
 
           <TenantFormModal
             visible={isAddModalVisible}
