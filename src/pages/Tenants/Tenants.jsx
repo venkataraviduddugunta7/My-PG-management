@@ -85,7 +85,7 @@ const Tenants = () => {
   // Initialize state with generated tenants
   const [tenants, setTenants] = useState(generateTenants());
   const [isAddModalVisible, setAddModalVisible] = useState(false);
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState('');
 
   const [isTermsModalVisible, setTermsModalVisible] = useState(false);
   const [termsAccepted, setTermsAccepted] = useState(false);
@@ -96,11 +96,11 @@ const Tenants = () => {
   const activeTenants = tenants.filter((t) => t.isActive).length;
   const inactiveTenants = totalTenants - activeTenants;
 
-  const [selectedMode, setSelectedMode] = useState("table");
+  const [selectedMode, setSelectedMode] = useState('table');
 
   const modes = [
-    { id: "table", component: RouteCommercialIcon },
-    { id: "card", component: RouteWarehouseIcon },
+    { id: 'table', component: RouteCommercialIcon },
+    { id: 'card', component: RouteWarehouseIcon },
   ];
 
   const statsData = [
@@ -223,7 +223,7 @@ const Tenants = () => {
               className="input-style"
               suffix={
                 searchTerm ? (
-                  <TagsCloseIcon onClick={() => setSearchTerm("")} />
+                  <TagsCloseIcon onClick={() => setSearchTerm('')} />
                 ) : (
                   <FilterSearchIcon />
                 )
