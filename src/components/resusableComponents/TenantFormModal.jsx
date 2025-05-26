@@ -16,6 +16,7 @@ import { useEffect, useState } from "react";
 import "./TenantForm.scss";
 import { DropdownIcon, ItemDeleteIcon, TagsCloseIcon } from "./DrayageIcons";
 import PgButton from "./PgButton";
+import moment from 'moment';
 
 const { Option } = Select;
 const { TextArea } = Input;
@@ -59,9 +60,28 @@ const TenantFormModal = ({ visible, onClose, onSubmit, tenantData, termsAccepted
 
   const [fileList, setFileList] = useState([]);
 
+  const transformTenantToFormData = (tenant) => {
+    if (!tenant) return null;
+    
+    return {
+      ...tenant,
+      dob: moment(tenant.dob),
+      doj: moment(tenant.doj),
+      // Default values for required fields
+      fatherName: tenant.fatherName || 'Not provided',
+      gender: tenant.gender || 'male',
+      bloodGroup: tenant.bloodGroup || 'A+',
+      maritalStatus: tenant.maritalStatus || 'single',
+      email: tenant.email || `${tenant.name.replace(/\s+/g, '').toLowerCase()}@example.com`,
+      city: tenant.city || 'Unknown',
+      state: tenant.state || 'Unknown',
+      // Other defaults...
+    };
+  };
+
   useEffect(() => {
     if (tenantData) {
-      form.setFieldsValue(tenantData);
+      form.setFieldsValue(transformTenantToFormData(tenantData));
     } else {
       form.resetFields();
     }

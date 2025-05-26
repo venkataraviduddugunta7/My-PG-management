@@ -1,4 +1,4 @@
-import { Col, Input, Row } from "antd";
+import { Col, Input, Row, Tooltip } from "antd";
 import TenantCard from "../../components/resusableComponents/TenantCard";
 import StatsCard from "../../components/resusableComponents/StatCard";
 import "./Tenants.scss";
@@ -8,6 +8,8 @@ import { useState } from "react";
 import TermsAgreementModal from "../../components/resusableComponents/TermsAgreementModal";
 import {
   FilterSearchIcon,
+  ItemDeleteIcon,
+  ItemEditIcon,
   RouteCommercialIcon,
   RouteWarehouseIcon,
   TagsCloseIcon,
@@ -86,6 +88,9 @@ const Tenants = () => {
   const [tenants, setTenants] = useState(generateTenants());
   const [isAddModalVisible, setAddModalVisible] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
+  const [editingTenant, setEditingTenant] = useState(null);
+
+  console.log("Tenants", tenants)
 
   const [isTermsModalVisible, setTermsModalVisible] = useState(false);
   const [termsAccepted, setTermsAccepted] = useState(false);
@@ -110,14 +115,27 @@ const Tenants = () => {
     { name: "Blocked", value: inactiveTenants },
   ];
 
+
+  const handleEdit = (tenant) => {
+    setEditingTenant(tenant);
+    setAddModalVisible(true);
+  };
+
+  const handleDelete = (tenantId) => {
+    setTenants(tenants.filter((tenant) => tenant.id !== tenantId));
+  };
+
+  const handleUpdateTenant = (formData) => {
+    setTenants(tenants.map(tenant => 
+      tenant.id === editingTenant.id ? { ...tenant, ...formData } : tenant
+    ));
+    setEditingTenant(null);
+    setAddModalVisible(false);
+  };
+
   const columnDefs = [
     {
-      title: "Tenant ID",
-      dataIndex: "id",
-      key: "id",
-    },
-    {
-      title: "Name",
+      title: "Tenant Name",
       dataIndex: "name",
       key: "name",
     },
@@ -149,6 +167,20 @@ const Tenants = () => {
         <span style={{ color: isActive ? "green" : "red" }}>
           {isActive ? "Active" : "Inactive"}
         </span>
+      ),
+    },
+    {
+      title: "Actions",
+      key: "actions",
+      render: (_,record) => (
+        <div style={{ display: "flex", justifyContent: "flex-end" }}>
+          <Tooltip title="Edit">
+            <ItemEditIcon onClick={()=>handleEdit(record)} />
+          </Tooltip>
+          <Tooltip title="Delete">
+            <ItemDeleteIcon onClick={()=>handleDelete(record.id)}/>
+          </Tooltip>
+        </div>
       ),
     },
   ];
@@ -283,10 +315,15 @@ const Tenants = () => {
 
           <TenantFormModal
             visible={isAddModalVisible}
-            onClose={() => setAddModalVisible(false)}
-            onSubmit={handleAddTenant}
+            onClose={() => {
+              setAddModalVisible(false);
+              setEditingTenant(null);
+            }}
+            onSubmit={editingTenant ? handleUpdateTenant : handleAddTenant}
             termsAccepted={termsAccepted}
             onShowTerms={() => setTermsModalVisible(true)}
+            tenantData={editingTenant}
+            isEditing={!!editingTenant}
           />
 
           <TermsAgreementModal
