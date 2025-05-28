@@ -3,7 +3,7 @@ import "./Payments.scss";
 const Payments = () => {
   return (
     <div className="PaymentsStyle">
-      <div className="tabheader">Payments</div>
+      <div className="header-section tabheader">Payments</div>
     </div>
   );
 };

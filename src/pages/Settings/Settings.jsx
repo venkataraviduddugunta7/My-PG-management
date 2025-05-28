@@ -2,7 +2,7 @@ import "./Settings.scss"
 const Settings = () => {
   return (
     <div className="SettingsStyle">
-      <div className="tabheader">Settings</div>
+      <div className="header-section tabheader">Settings</div>
     </div>
   );
 };

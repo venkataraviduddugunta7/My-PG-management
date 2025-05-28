@@ -4,7 +4,7 @@ import "./Maintenance.scss";
 const Maintenance = () => {
   return (
     <div className="MaintenanceStyle">
-      <div className="tabheader">Maintenance Management</div>
+      <div className="header-section tabheader">Maintenance Management</div>
     </div>
   );
 };
