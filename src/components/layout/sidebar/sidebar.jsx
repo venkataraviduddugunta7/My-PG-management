@@ -11,6 +11,7 @@ import {
 } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import "./Sidebar.scss";
+import { DashboardIcon, MaintenanceIcon, NoticesIcon, PaymentsIcon, ReportsIcon, RoomsIcon, SettingsIcon, TenantsIcon } from "../../resusableComponents/DrayageIcons";
 
 const Sidebar = ({ collapsed }) => {
   const navigate = useNavigate();
@@ -18,49 +19,49 @@ const Sidebar = ({ collapsed }) => {
   const menuItems = [
     {
       key: "dashboard",
-      icon: <DashboardOutlined />,
+      icon: <DashboardIcon />,
       label: "Dashboard",
       onClick: () => navigate("/"),
     },
     {
       key: "tenants",
-      icon: <TeamOutlined />,
+      icon: <TenantsIcon />,
       label: "Tenants",
       onClick: () => navigate("/tenants"),
     },
     {
       key: "payments",
-      icon: <CreditCardOutlined />,
+      icon: <PaymentsIcon />,
       label: "Payments",
       onClick: () => navigate("/payments"),
     },
     {
       key: "rooms",
-      icon: <HomeOutlined />,
+      icon: <RoomsIcon />,
       label: "Rooms",
       onClick: () => navigate("/rooms"),
     },
     {
       key: "reports",
-      icon: <FileTextOutlined />,
+      icon: <ReportsIcon />,
       label: "Reports",
       onClick: () => navigate("/reports"),
     },
     {
       key: "notices",
-      icon: <NotificationOutlined />,
+      icon: <NoticesIcon />,
       label: "Notices",
       onClick: () => navigate("/notices"),
     },
     {
       key: "maintenance",
-      icon: <ToolOutlined />,
+      icon: <MaintenanceIcon />,
       label: "Maintenance",
       onClick: () => navigate("/maintenance"),
     },
     {
       key: "settings",
-      icon: <SettingOutlined />,
+      icon: <SettingsIcon />,
       label: "Settings",
       onClick: () => navigate("/settings"),
     },

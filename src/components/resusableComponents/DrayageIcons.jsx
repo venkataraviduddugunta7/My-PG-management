@@ -677,6 +677,67 @@ export const FilterSearchIcon = ({
 );
 
 
+export const RoomsIcon = ({
+    width = 24,
+    height = 24,
+    color1 = "#5064AE",
+    className = "",
+    style = {},
+    ...props
+  }) => (
+    <svg
+      width={width}
+      height={height}
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+      style={style}
+      {...props}
+    >
+      {/* Outer rectangle representing a room */}
+      <rect x="3" y="3" width="18" height="18" stroke={color1} strokeWidth="2" fill="none" />
+      
+      {/* Inner door rectangle */}
+      <rect x="8" y="10" width="4" height="8" fill={color1} />
+      
+      {/* Door handle */}
+      <circle cx="11" cy="14" r="0.75" fill="white" />
+    </svg>
+  );
+  
+
+  export const DashboardIcon = ({
+    width = 24,
+    height = 24,
+    color1 = "#5064AE",
+    className = "",
+    style = {},
+    ...props
+  }) => (
+    <svg
+      width={width}
+      height={height}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke={color1}
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+      style={style}
+      {...props}
+    >
+      {/* Four squares representing dashboard panels */}
+      <rect x="3" y="3" width="7" height="7" rx="1" ry="1" />
+      <rect x="14" y="3" width="7" height="7" rx="1" ry="1" />
+      <rect x="3" y="14" width="7" height="7" rx="1" ry="1" />
+      <rect x="14" y="14" width="7" height="7" rx="1" ry="1" />
+    </svg>
+  );
+  
+
 export const ItemDeleteIcon = ({
     width = 24,
     height = 24,
@@ -714,6 +775,284 @@ export const ItemDeleteIcon = ({
         </svg>
     </div>
 );
+
+export const TenantsIcon = ({
+    width = 24,
+    height = 24,
+    color1 = "#5064AE",
+    className = "",
+    style = {},
+    ...props
+  }) => (
+    <svg
+      width={width}
+      height={height}
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+      style={style}
+      {...props}
+    >
+      {/* Group of people in a modern, cohesive design */}
+      <path
+        d="M17 21V19C17 17.3431 15.6569 16 14 16H10C8.34315 16 7 17.3431 7 19V21"
+        stroke={color1}
+        strokeWidth="1.5"
+        strokeLinecap="round"
+      />
+      <path
+        d="M12 12C14.2091 12 16 10.2091 16 8C16 5.79086 14.2091 4 12 4C9.79086 4 8 5.79086 8 8C8 10.2091 9.79086 12 12 12Z"
+        stroke={color1}
+        strokeWidth="1.5"
+      />
+      <path
+        d="M3 21V19C3 16.7909 4.79086 15 7 15"
+        stroke={color1}
+        strokeWidth="1.5"
+        strokeLinecap="round"
+      />
+      <path
+        d="M21 21V19C21 16.7909 19.2091 15 17 15"
+        stroke={color1}
+        strokeWidth="1.5"
+        strokeLinecap="round"
+      />
+      <circle
+        cx="5"
+        cy="8"
+        r="2"
+        stroke={color1}
+        strokeWidth="1.5"
+      />
+      <circle
+        cx="19"
+        cy="8"
+        r="2"
+        stroke={color1}
+        strokeWidth="1.5"
+      />
+    </svg>
+  );
+
+  export const PaymentsIcon = ({
+    width = 24,
+    height = 24,
+    primaryColor = "#4F46E5",  // Modern purple-blue (primary)
+    secondaryColor = "#8B5CF6", // Lighter accent
+    className = "",
+    style = {},
+    ...props
+  }) => (
+    <svg
+      width={width}
+      height={height}
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+      style={style}
+      {...props}
+    >
+      {/* Card with subtle shadow effect */}
+      <rect
+        x="3.5"
+        y="5.5"
+        width="17"
+        height="13"
+        rx="1.5"
+        fill="white"
+        stroke={primaryColor}
+        strokeWidth="1.2"
+      />
+      
+      {/* Gradient overlay */}
+      <rect
+        x="3.5"
+        y="5.5"
+        width="17"
+        height="13"
+        rx="1.5"
+        fill="url(#card-gradient)"
+        fillOpacity="0.15"
+      />
+      
+      {/* Card strip (like a debit card) */}
+      <rect x="3.5" y="8" width="17" height="2.5" fill={primaryColor} fillOpacity="0.8" />
+      
+      {/* Rupee symbol (modern & clean) */}
+      <path
+        d="M15.5 14.5H17.5M15.5 12.5H17.5M16.5 12.5V15.5M15.5 13.5L17.5 11.5M15.5 15.5L17.5 13.5"
+        stroke={primaryColor}
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      
+      {/* Mini card chip (golden) */}
+      <rect x="6" y="12" width="4" height="3" rx="0.8" fill="#FFD700" stroke="#D4AF37" strokeWidth="0.5" />
+      <path d="M7 12V15M9 12V15M6 13.5H10" stroke="#D4AF37" strokeWidth="0.6" />
+      
+      {/* Subtle payment lines (mimicking card details) */}
+      <rect x="6" y="16" width="12" height="1" rx="0.5" fill={primaryColor} fillOpacity="0.3" />
+      <rect x="6" y="18" width="8" height="1" rx="0.5" fill={primaryColor} fillOpacity="0.3" />
+      
+      {/* Gradient definition */}
+      <defs>
+        <linearGradient
+          id="card-gradient"
+          x1="3.5"
+          y1="5.5"
+          x2="20.5"
+          y2="18.5"
+          gradientUnits="userSpaceOnUse"
+        >
+          <stop stopColor={primaryColor} stopOpacity="0.1" />
+          <stop offset="1" stopColor={secondaryColor} stopOpacity="0.2" />
+        </linearGradient>
+      </defs>
+    </svg>
+  );
+  
+  export const ReportsIcon = ({
+    width = 24,
+    height = 24,
+    color1 = "#5064AE",
+    className = "",
+    style = {},
+    ...props
+  }) => (
+    <svg
+      width={width}
+      height={height}
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+      style={style}
+      {...props}
+    >
+      {/* Base line */}
+      <line x1="3" y1="20" x2="21" y2="20" stroke={color1} strokeWidth="2" />
+      
+      {/* Bars */}
+      <rect x="6" y="12" width="3" height="8" fill={color1} />
+      <rect x="11" y="8" width="3" height="12" fill={color1} />
+      <rect x="16" y="5" width="3" height="15" fill={color1} />
+    </svg>
+  );
+
+  export const NoticesIcon = ({
+    width = 24,
+    height = 24,
+    color1 = "#5064AE",
+    className = "",
+    style = {},
+    ...props
+  }) => (
+    <svg
+      width={width}
+      height={height}
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+      style={style}
+      {...props}
+    >
+      {/* Bell body */}
+      <path
+        d="M12 22c1.104 0 2-.896 2-2H10c0 1.104.896 2 2 2zM18 16v-5c0-3.07-1.64-5.64-4.5-6.32V4a1.5 1.5 0 0 0-3 0v.68C7.64 5.36 6 7.93 6 11v5l-2 2v1h16v-1l-2-2z"
+        fill={color1}
+      />
+    </svg>
+  );
+
+
+  export const MaintenanceIcon = ({
+    width = 24,
+    height = 24,
+    color = "#4F46E5", // Modern purple-blue
+    alertColor = "#EF4444", // Red for alert state
+    isAlert = false, // Toggle for maintenance-needed state
+    className = "",
+    style = {},
+    ...props
+  }) => (
+    <svg
+      width={width}
+      height={height}
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+      style={style}
+      {...props}
+    >
+      {/* Gear Base */}
+      <circle cx="12" cy="12" r="7" stroke={isAlert ? alertColor : color} strokeWidth="1.5" />
+      
+      {/* Gear Teeth */}
+      {[0, 45, 90, 135].map((angle) => (
+        <rect
+          key={angle}
+          x="11.5"
+          y="4"
+          width="1"
+          height="4"
+          rx="0.5"
+          fill={isAlert ? alertColor : color}
+          transform={`rotate(${angle} 12 12)`}
+        />
+      ))}
+      
+      {/* Wrench Handle */}
+      <path
+        d="M15 8L19 4"
+        stroke={isAlert ? alertColor : color}
+        strokeWidth="2"
+        strokeLinecap="round"
+      />
+      
+      {/* Wrench Head */}
+      <path
+        d="M10 14L7 17C5.5 18.5 5.5 21 7 22.5C8.5 24 11 24 12.5 22.5L15.5 19.5L10 14Z"
+        stroke={isAlert ? alertColor : color}
+        strokeWidth="1.5"
+        fill="white"
+      />
+      
+      {/* Alert Dot (shown when maintenance is needed) */}
+      {isAlert && (
+        <circle cx="18" cy="6" r="2.5" fill={alertColor} stroke="white" strokeWidth="1" />
+      )}
+    </svg>
+  );
+
+  export const SettingsIcon = ({
+    width = 24,
+    height = 24,
+    color1 = "#5064AE",
+    className = "",
+    style = {},
+    ...props
+  }) => (
+    <svg
+      width={width}
+      height={height}
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+      style={style}
+      {...props}
+    >
+      <path
+        d="M19.43 12.98c.04-.32.07-.65.07-.98s-.03-.66-.07-.98l2.11-1.65a.5.5 0 0 0 .12-.54l-2-3.46a.5.5 0 0 0-.6-.22l-2.49 1a7.03 7.03 0 0 0-1.7-.98l-.38-2.65a.5.5 0 0 0-.5-.42h-4a.5.5 0 0 0-.5.42l-.38 2.65a7.1 7.1 0 0 0-1.7.98l-2.5-1a.5.5 0 0 0-.6.22l-2 3.46a.5.5 0 0 0 .12.54l2.1 1.65c-.04.32-.07.65-.07.98s.03.66.07.98L2.1 14.63a.5.5 0 0 0-.12.54l2 3.46a.5.5 0 0 0 .6.22l2.49-1c.52.4 1.08.72 1.7.98l.38 2.65a.5.5 0 0 0 .5.42h4a.5.5 0 0 0 .5-.42l.38-2.65a7.1 7.1 0 0 0 1.7-.98l2.5 1a.5.5 0 0 0 .6-.22l2-3.46a.5.5 0 0 0-.12-.54l-2.11-1.65zM12 15.5a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7z"
+        fill={color1}
+      />
+    </svg>
+  );
 
 export const LoadCloneIcon = ({
     width = 24,
