@@ -1,0 +1,222 @@
+.quick-stats-widget {
+  border-radius: 12px !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06) !important;
+  border: 1px solid #e8eef5 !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  background: linear-gradient(145deg, #ffffff 0%, #fafbfc 100%) !important;
+  position: relative;
+  cursor: pointer;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #586FCC 0%, #7c94e0 100%);
+    border-radius: 12px 12px 0 0;
+  }
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12) !important;
+    
+    .widget-icon svg {
+      transform: scale(1.1);
+    }
+  }
+
+  .widget-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+
+    .widget-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      background: rgba(88, 111, 204, 0.1);
+      border-radius: 8px;
+      transition: all 0.3s ease;
+
+      svg {
+        width: 18px;
+        height: 18px;
+        color: #586FCC;
+        transition: all 0.3s ease;
+      }
+    }
+
+    .widget-title {
+      font-family: 'Lato', sans-serif !important;
+      font-weight: 600 !important;
+      font-size: 14px !important;
+      color: #66717B !important;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+  }
+
+  .widget-value {
+    margin: 12px 0;
+
+    .ant-statistic {
+      .ant-statistic-content {
+        .ant-statistic-content-value {
+          color: #273156;
+          font-family: 'Poppins', sans-serif;
+          font-weight: 700;
+        }
+
+        .ant-statistic-content-prefix,
+        .ant-statistic-content-suffix {
+          color: #586FCC;
+          font-weight: 600;
+        }
+      }
+    }
+  }
+
+  .widget-meta {
+    margin: 8px 0;
+  }
+
+  .widget-progress {
+    margin: 12px 0 8px 0;
+
+    .ant-progress {
+      .ant-progress-outer {
+        .ant-progress-inner {
+          background-color: rgba(88, 111, 204, 0.1);
+          border-radius: 6px;
+
+          .ant-progress-bg {
+            border-radius: 6px;
+            background: linear-gradient(90deg, #586FCC 0%, #7c94e0 100%);
+          }
+        }
+      }
+    }
+  }
+
+  .widget-comparison {
+    margin-top: 4px;
+    font-style: italic;
+  }
+
+  // Variants
+  &.success {
+    &::before {
+      background: linear-gradient(90deg, #52c41a 0%, #73d13d 100%);
+    }
+
+    .widget-icon {
+      background: rgba(82, 196, 26, 0.1);
+      
+      svg {
+        color: #52c41a;
+      }
+    }
+  }
+
+  &.warning {
+    &::before {
+      background: linear-gradient(90deg, #faad14 0%, #ffc53d 100%);
+    }
+
+    .widget-icon {
+      background: rgba(250, 173, 20, 0.1);
+      
+      svg {
+        color: #faad14;
+      }
+    }
+  }
+
+  &.error {
+    &::before {
+      background: linear-gradient(90deg, #ff4d4f 0%, #ff7875 100%);
+    }
+
+    .widget-icon {
+      background: rgba(255, 77, 79, 0.1);
+      
+      svg {
+        color: #ff4d4f;
+      }
+    }
+  }
+
+  &.compact {
+    .ant-card-body {
+      padding: 16px !important;
+    }
+
+    .widget-header {
+      margin-bottom: 4px;
+
+      .widget-icon {
+        width: 28px;
+        height: 28px;
+
+        svg {
+          width: 16px;
+          height: 16px;
+        }
+      }
+
+      .widget-title {
+        font-size: 12px !important;
+      }
+    }
+
+    .widget-value {
+      margin: 8px 0;
+
+      .ant-statistic-content-value {
+        font-size: 22px !important;
+      }
+    }
+  }
+
+  // Responsive
+  @media (max-width: 768px) {
+    .widget-header {
+      .widget-title {
+        font-size: 12px !important;
+      }
+    }
+
+    .widget-value {
+      .ant-statistic-content-value {
+        font-size: 24px !important;
+      }
+    }
+  }
+
+  // Loading state
+  &.loading {
+    .widget-value {
+      .ant-statistic-content-value {
+        background: linear-gradient(90deg, #f0f0f0 25%, #e6e6e6 50%, #f0f0f0 75%);
+        background-size: 200% 100%;
+        animation: shimmer 1.5s infinite;
+        color: transparent;
+        border-radius: 4px;
+      }
+    }
+  }
+
+  @keyframes shimmer {
+    0% {
+      background-position: -200% 0;
+    }
+    100% {
+      background-position: 200% 0;
+    }
+  }
+} 
