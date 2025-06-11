@@ -8,6 +8,7 @@ import Reports from "./pages/Reports/Reports";
 import Notices from "./pages/Notices/Notices";
 import Maintenance from "./pages/Maintenance/Maintenance";
 import Settings from "./pages/Settings/Settings";
+import TableDemo from "./pages/TableDemo/TableDemo";
 
 export const router = createBrowserRouter([
   {
@@ -45,6 +46,10 @@ export const router = createBrowserRouter([
       {
         path: "settings",
         element: <Settings />,
+      },
+      {
+        path: "table-demo",
+        element: <TableDemo />,
       },
     ],
   },

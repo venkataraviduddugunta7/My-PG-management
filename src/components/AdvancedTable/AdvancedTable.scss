@@ -1,0 +1,548 @@
+// Advanced Table Styles
+.advanced-table-container {
+  background: #ffffff;
+  border: 1px solid #e8e8e8;
+  border-radius: 8px;
+  overflow: hidden;
+  font-family: 'Lato', sans-serif;
+
+  // Table Header
+  .table-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 20px;
+    background: #fafafa;
+    border-bottom: 1px solid #e8e8e8;
+
+    .table-title {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+
+      h3 {
+        margin: 0;
+        font-size: 16px;
+        font-weight: 600;
+        color: #1d2540;
+      }
+
+      .selection-badge {
+        .ant-badge-count {
+          background: #586fcc;
+        }
+      }
+    }
+
+    .table-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+
+      .ant-input {
+        border-radius: 6px;
+      }
+    }
+  }
+
+  // Table Wrapper
+  .table-wrapper {
+    position: relative;
+    overflow: auto;
+    background: #ffffff;
+
+    &.bordered {
+      .advanced-table {
+        border-collapse: separate;
+        border-spacing: 0;
+
+        th, td {
+          border-right: 1px solid #e8e8e8;
+          border-bottom: 1px solid #e8e8e8;
+
+          &:last-child {
+            border-right: none;
+          }
+        }
+      }
+    }
+
+    &.striped {
+      .advanced-table tbody tr {
+        &.even {
+          background: #fafafa;
+        }
+        
+        &.odd {
+          background: #ffffff;
+        }
+      }
+    }
+  }
+
+  // Main Table
+  .advanced-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+
+    // Sticky Header
+    .sticky-header {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: #ffffff;
+    }
+
+    // Table Header
+    thead {
+      background: #f5f7fa;
+
+      .sortable-header {
+        position: relative;
+        padding: 0;
+        background: #f5f7fa;
+        border-bottom: 2px solid #e8e8e8;
+        user-select: none;
+        transition: all 0.2s ease;
+
+        &.dragging {
+          background: #e6f7ff;
+          z-index: 999;
+        }
+
+        &.filtered {
+          background: #fff7e6;
+        }
+
+        .header-content {
+          display: flex;
+          align-items: center;
+          padding: 12px 8px;
+          height: 48px;
+          gap: 4px;
+
+          .drag-handle {
+            display: flex;
+            align-items: center;
+            cursor: grab;
+            color: #8897a4;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+            padding: 4px;
+            border-radius: 4px;
+
+            &:hover {
+              background: rgba(88, 111, 204, 0.1);
+              color: #586fcc;
+            }
+
+            &:active {
+              cursor: grabbing;
+            }
+          }
+
+          .header-text {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex: 1;
+            min-width: 0;
+
+            &.clickable {
+              cursor: pointer;
+              border-radius: 4px;
+              padding: 4px;
+              transition: background 0.2s ease;
+
+              &:hover {
+                background: rgba(88, 111, 204, 0.05);
+              }
+            }
+
+            .header-title {
+              font-weight: 600;
+              color: #1d2540;
+              white-space: nowrap;
+              overflow: hidden;
+              text-overflow: ellipsis;
+            }
+
+            .sort-indicator {
+              display: flex;
+              align-items: center;
+              color: #586fcc;
+              font-size: 12px;
+
+              .sort-placeholder {
+                width: 12px;
+                height: 12px;
+              }
+            }
+          }
+
+          .filter-button {
+            opacity: 0.6;
+            transition: all 0.2s ease;
+
+            &:hover, &.active {
+              opacity: 1;
+              color: #586fcc;
+            }
+
+            &.active {
+              background: rgba(88, 111, 204, 0.1);
+            }
+          }
+        }
+
+        &:hover .drag-handle {
+          opacity: 1;
+        }
+
+        // Resize Handle
+        .resize-handle {
+          position: absolute;
+          right: 0;
+          top: 0;
+          bottom: 0;
+          width: 4px;
+          cursor: col-resize;
+          background: transparent;
+          transition: background 0.2s ease;
+
+          &:hover {
+            background: #586fcc;
+          }
+
+          &:active {
+            background: #1d2540;
+          }
+        }
+      }
+    }
+
+    // Table Body
+    tbody {
+      tr {
+        transition: all 0.2s ease;
+
+        &:hover {
+          background: #f5f9ff !important;
+        }
+
+        &.selected {
+          background: #e6f7ff !important;
+          
+          td {
+            background: inherit;
+          }
+        }
+
+        td {
+          padding: 12px 8px;
+          border-bottom: 1px solid #f0f0f0;
+          vertical-align: middle;
+          color: #333;
+          line-height: 1.4;
+
+          &:first-child {
+            padding-left: 16px;
+          }
+
+          &:last-child {
+            padding-right: 16px;
+          }
+        }
+      }
+    }
+  }
+
+  // Cell Components
+  .text-cell {
+    font-size: 14px;
+    color: #333;
+  }
+
+  .tags-cell {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+
+  .actions-cell {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+
+    .ant-btn {
+      border: none;
+      box-shadow: none;
+      color: #666;
+
+      &:hover {
+        color: #586fcc;
+        background: rgba(88, 111, 204, 0.1);
+      }
+    }
+  }
+
+  .avatar-cell {
+    .avatar-container {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+
+      .avatar-image {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background: #586fcc;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 600;
+        font-size: 12px;
+      }
+
+      .avatar-text {
+        flex: 1;
+        min-width: 0;
+
+        .avatar-name {
+          font-weight: 500;
+          color: #333;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+
+        .avatar-subtitle {
+          font-size: 12px;
+          color: #666;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+      }
+    }
+  }
+
+  .currency-cell {
+    font-weight: 500;
+    color: #333;
+    text-align: right;
+  }
+
+  .date-cell {
+    color: #666;
+    font-size: 13px;
+  }
+
+  // Filter Dropdown
+  .column-filter-dropdown {
+    padding: 8px;
+    width: 200px;
+
+    .ant-input {
+      border-radius: 4px;
+    }
+  }
+
+  // Column Toggle Panel
+  .column-toggle-panel {
+    width: 280px;
+    max-height: 400px;
+
+    .panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .panel-actions {
+      margin-bottom: 8px;
+
+      .ant-btn {
+        border-radius: 4px;
+      }
+    }
+
+    .column-list {
+      max-height: 300px;
+      overflow-y: auto;
+
+      .column-item {
+        padding: 6px 0;
+        border-bottom: 1px solid #f0f0f0;
+
+        &:last-child {
+          border-bottom: none;
+        }
+
+        .column-name {
+          font-size: 14px;
+          color: #333;
+        }
+      }
+    }
+
+    .empty-columns {
+      text-align: center;
+      padding: 20px;
+      color: #999;
+    }
+  }
+
+  // Empty State
+  .empty-state {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 200px;
+    background: #fafafa;
+
+    .empty-content {
+      text-align: center;
+      color: #999;
+
+      h4 {
+        margin: 0 0 8px 0;
+        color: #666;
+      }
+
+      p {
+        margin: 0;
+        font-size: 14px;
+      }
+    }
+  }
+
+  // Loading State
+  .loading-state {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 200px;
+    background: rgba(255, 255, 255, 0.8);
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 100;
+
+    .loading-content {
+      text-align: center;
+      color: #666;
+
+      .loading-spinner {
+        width: 32px;
+        height: 32px;
+        margin: 0 auto 12px;
+        border: 3px solid #f0f0f0;
+        border-top: 3px solid #586fcc;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+      }
+
+      p {
+        margin: 0;
+        font-size: 14px;
+      }
+    }
+  }
+
+  // Pagination
+  .table-pagination {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 20px;
+    background: #fafafa;
+    border-top: 1px solid #e8e8e8;
+
+    .pagination-info {
+      color: #666;
+      font-size: 14px;
+    }
+
+    .pagination-controls {
+      .page-info {
+        margin: 0 8px;
+        font-size: 14px;
+        color: #333;
+      }
+
+      .ant-btn {
+        border-radius: 4px;
+      }
+    }
+  }
+
+  // Responsive Design
+  @media (max-width: 768px) {
+    .table-header {
+      flex-direction: column;
+      gap: 12px;
+      align-items: stretch;
+
+      .table-actions {
+        justify-content: space-between;
+      }
+    }
+
+    .table-wrapper {
+      .advanced-table {
+        font-size: 12px;
+
+        thead .sortable-header .header-content {
+          padding: 8px 4px;
+          height: 40px;
+
+          .header-title {
+            font-size: 12px;
+          }
+        }
+
+        tbody tr td {
+          padding: 8px 4px;
+        }
+      }
+    }
+
+    .table-pagination {
+      flex-direction: column;
+      gap: 12px;
+      align-items: stretch;
+      text-align: center;
+    }
+  }
+}
+
+// Animations
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+// Ant Design Overrides
+.ant-popover {
+  .ant-popover-content {
+    padding: 0;
+  }
+
+  .ant-popover-inner {
+    padding: 12px;
+    border-radius: 8px;
+  }
+}
+
+.ant-dropdown {
+  .ant-dropdown-menu {
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+} 
