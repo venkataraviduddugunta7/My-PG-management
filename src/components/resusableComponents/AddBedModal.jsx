@@ -79,7 +79,7 @@ const AddBedModal = ({ visible, onClose, onSubmit, rooms, bedData }) => {
           <Select placeholder="Select room" suffixIcon={<DropdownIcon />}>
             {rooms.map((room) => (
               <Option key={room.id} value={room.id}>
-                {`${room.roomNumber} (${room.roomType})`}
+                {room.name || room.roomNumber || room.id}
               </Option>
             ))}
           </Select>
@@ -121,11 +121,11 @@ const AddBedModal = ({ visible, onClose, onSubmit, rooms, bedData }) => {
           />
         </Form.Item>
         <div className="form-lable">Initial Status</div>
-        <Form.Item name="status" initialValue="available">
+        <Form.Item name="status" initialValue="Available">
           <Select suffixIcon={<DropdownIcon />}>
-            <Option value="available">Available</Option>
-            <Option value="occupied">Occupied</Option>
-            <Option value="maintenance">Under Maintenance</Option>
+            <Option value="Available">Available</Option>
+            <Option value="Occupied">Occupied</Option>
+            <Option value="Maintenance">Under Maintenance</Option>
           </Select>
         </Form.Item>
         <div className="form-lable">Notes</div>

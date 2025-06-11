@@ -4,7 +4,8 @@ import StatsCard from "../../components/resusableComponents/StatCard";
 import "./Tenants.scss";
 import PgButton from "../../components/resusableComponents/PgButton";
 import TenantFormModal from "../../components/resusableComponents/TenantFormModal";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import TermsAgreementModal from "../../components/resusableComponents/TermsAgreementModal";
 import {
   FilterSearchIcon,
@@ -15,6 +16,7 @@ import {
   TagsCloseIcon,
 } from "../../components/resusableComponents/DrayageIcons";
 import PgTable from "../../components/resusableComponents/PgTable";
+import { addTenant, updateTenant, deleteTenant, setTenants } from "../../store/slices/tenantsSlice";
 
 // Mock data generator function
 const generateTenants = () => {
@@ -84,17 +86,26 @@ const generateTenants = () => {
 };
 
 const Tenants = () => {
-  // Initialize state with generated tenants
-  const [tenants, setTenants] = useState(generateTenants());
+  const dispatch = useDispatch();
+  const { tenants } = useSelector(state => state.tenants);
+  const { floors } = useSelector(state => state.floors);
+  const { rooms } = useSelector(state => state.rooms);
+  const { beds } = useSelector(state => state.beds);
+
   const [isAddModalVisible, setAddModalVisible] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [editingTenant, setEditingTenant] = useState(null);
 
-  console.log("Tenants", tenants)
-
   const [isTermsModalVisible, setTermsModalVisible] = useState(false);
   const [termsAccepted, setTermsAccepted] = useState(false);
   const [pendingTenantData, setPendingTenantData] = useState(null);
+
+  // Initialize with mock data if tenants array is empty
+  useEffect(() => {
+    if (tenants.length === 0) {
+      dispatch(setTenants(generateTenants()));
+    }
+  }, [dispatch, tenants.length]);
 
   // Calculate statistics based on current tenants
   const totalTenants = tenants.length;
@@ -122,13 +133,11 @@ const Tenants = () => {
   };
 
   const handleDelete = (tenantId) => {
-    setTenants(tenants.filter((tenant) => tenant.id !== tenantId));
+    dispatch(deleteTenant(tenantId));
   };
 
   const handleUpdateTenant = (formData) => {
-    setTenants(tenants.map(tenant => 
-      tenant.id === editingTenant.id ? { ...tenant, ...formData } : tenant
-    ));
+    dispatch(updateTenant({ id: editingTenant.id, ...formData }));
     setEditingTenant(null);
     setAddModalVisible(false);
   };
@@ -194,13 +203,7 @@ const Tenants = () => {
 
   const handleAddTenant = (formData) => {
     if (termsAccepted) {
-      const newTenant = {
-        ...formData,
-        id: `T${1000 + tenants.length + 1}`,
-        isActive: true,
-        image: "https://xsgames.co/randomusers/avatar.php?g=pixel",
-      };
-      setTenants([...tenants, newTenant]);
+      dispatch(addTenant(formData));
       setAddModalVisible(false);
     } else {
       setPendingTenantData(formData);
@@ -212,13 +215,7 @@ const Tenants = () => {
     setTermsAccepted(true);
     setTermsModalVisible(false);
     if (pendingTenantData) {
-      const newTenant = {
-        ...pendingTenantData,
-        id: `T${1000 + tenants.length + 1}`,
-        isActive: true,
-        image: "https://xsgames.co/randomusers/avatar.php?g=pixel",
-      };
-      setTenants([...tenants, newTenant]);
+      dispatch(addTenant(pendingTenantData));
       setAddModalVisible(false);
       setPendingTenantData(null);
     }
@@ -324,6 +321,9 @@ const Tenants = () => {
             onShowTerms={() => setTermsModalVisible(true)}
             tenantData={editingTenant}
             isEditing={!!editingTenant}
+            floors={floors}
+            rooms={rooms}
+            beds={beds}
           />
 
           <TermsAgreementModal

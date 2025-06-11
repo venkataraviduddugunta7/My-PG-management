@@ -1,5 +1,6 @@
 import { Popconfirm, Tooltip, message } from "antd";
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import "./Rooms.scss";
 import PgButton from "../../components/resusableComponents/PgButton";
 import AddFloorModal from "../../components/resusableComponents/AddFloorModal";
@@ -10,8 +11,16 @@ import {
   ItemDeleteIcon,
   ItemEditIcon,
 } from "../../components/resusableComponents/DrayageIcons";
+import { addFloor, updateFloor, deleteFloor } from "../../store/slices/floorsSlice";
+import { addRoom, updateRoom, deleteRoom } from "../../store/slices/roomsSlice";
+import { addBed, updateBed, deleteBed } from "../../store/slices/bedsSlice";
 
 const Rooms = () => {
+  const dispatch = useDispatch();
+  const { floors } = useSelector(state => state.floors);
+  const { rooms } = useSelector(state => state.rooms);
+  const { beds } = useSelector(state => state.beds);
+
   const [floorModal, setFloorModal] = useState(false);
   const [roomModal, setRoomModal] = useState(false);
   const [bedModal, setBedModal] = useState(false);
@@ -24,29 +33,18 @@ const Rooms = () => {
     { id: "Floors", label: "Floors" },
   ];
 
-  const [floors, setFloors] = useState([]);
   const [editingFloor, setEditingFloor] = useState(null);
   const [editingRoom, setEditingRoom] = useState(null);
   const [editingBed, setEditingBed] = useState(null);
-  const [rooms, setRooms] = useState([]);
-  const [beds, setBeds] = useState([]);
 
   const handleAddFloor = (floorData) => {
     if (editingFloor) {
       // Update existing floor
-      setFloors(
-        floors.map((floor) =>
-          floor.id === editingFloor.id ? { ...floor, ...floorData } : floor
-        )
-      );
+      dispatch(updateFloor({ id: editingFloor.id, ...floorData }));
       message.success("Floor updated successfully");
     } else {
       // Add new floor
-      const newFloor = {
-        ...floorData,
-        id: `floor-${floors.length + 1}`,
-      };
-      setFloors([...floors, newFloor]);
+      dispatch(addFloor(floorData));
       message.success("Floor added successfully");
     }
     setFloorModal(false);
@@ -67,7 +65,7 @@ const Rooms = () => {
       return;
     }
 
-    setFloors(floors.filter((floor) => floor.id !== id));
+    dispatch(deleteFloor(id));
     message.success("Floor deleted successfully");
   };
 
@@ -114,14 +112,28 @@ const Rooms = () => {
       key: "id",
     },
     {
+      title: "Room Number",
+      dataIndex: "roomNumber",
+      key: "roomNumber",
+    },
+    {
       title: "Room Name",
       dataIndex: "name",
       key: "name",
     },
     {
       title: "Floor",
-      dataIndex: "floor",
-      key: "floor",
+      dataIndex: "floorId",
+      key: "floorId",
+      render: (floorId) => {
+        const floor = floors.find(f => f.id === floorId);
+        return floor ? floor.floorName : 'N/A';
+      }
+    },
+    {
+      title: "Room Type",
+      dataIndex: "roomType",
+      key: "roomType",
     },
     {
       title: "Actions",
@@ -156,13 +168,22 @@ const Rooms = () => {
     },
     {
       title: "Bed Number",
-      dataIndex: "number",
-      key: "number",
+      dataIndex: "bedNumber",
+      key: "bedNumber",
     },
     {
       title: "Room",
-      dataIndex: "room",
-      key: "room",
+      dataIndex: "roomId",
+      key: "roomId",
+      render: (roomId) => {
+        const room = rooms.find(r => r.id === roomId);
+        return room ? `${room.roomNumber} - ${room.name}` : 'N/A';
+      }
+    },
+    {
+      title: "Bed Type",
+      dataIndex: "bedType",
+      key: "bedType",
     },
     {
       title: "Status",
@@ -203,19 +224,11 @@ const Rooms = () => {
   const handleAddRoom = (roomData) => {
     if (editingRoom) {
       // Update existing room
-      setRooms(
-        rooms.map((room) =>
-          room.id === editingRoom.id ? { ...room, ...roomData } : room
-        )
-      );
+      dispatch(updateRoom({ id: editingRoom.id, ...roomData }));
       message.success("Room updated successfully");
     } else {
       // Add new room
-      const newRoom = {
-        ...roomData,
-        id: `room-${rooms.length + 1}`,
-      };
-      setRooms([...rooms, newRoom]);
+      dispatch(addRoom(roomData));
       message.success("Room added successfully");
     }
     setRoomModal(false);
@@ -236,7 +249,7 @@ const Rooms = () => {
       return;
     }
 
-    setRooms(rooms.filter((room) => room.id !== id));
+    dispatch(deleteRoom(id));
     message.success("Room deleted successfully");
   };
 
@@ -244,19 +257,11 @@ const Rooms = () => {
   const handleAddBed = (bedData) => {
     if (editingBed) {
       // Update existing bed
-      setBeds(
-        beds.map((bed) =>
-          bed.id === editingBed.id ? { ...bed, ...bedData } : bed
-        )
-      );
+      dispatch(updateBed({ id: editingBed.id, ...bedData }));
       message.success("Bed updated successfully");
     } else {
       // Add new bed
-      const newBed = {
-        ...bedData,
-        id: `bed-${beds.length + 1}`,
-      };
-      setBeds([...beds, newBed]);
+      dispatch(addBed(bedData));
       message.success("Bed added successfully");
     }
     setBedModal(false);
@@ -277,7 +282,7 @@ const Rooms = () => {
       return;
     }
 
-    setBeds(beds.filter((bed) => bed.id !== id));
+    dispatch(deleteBed(id));
     message.success("Bed deleted successfully");
   };
 

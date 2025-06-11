@@ -70,7 +70,10 @@ const AddFloorModal = ({ visible, onClose, onSubmit, floorData }) => {
           <Input type="number" min={0} placeholder="e.g. 1, 2, 3..." />
         </Form.Item>
         <div className="form-lable">Floor Name</div>
-        <Form.Item name="floorName">
+        <Form.Item 
+          name="floorName"
+          rules={[{ required: true, message: "Please enter floor name" }]}
+        >
           <Input placeholder="e.g. Ground Floor, First Floor" />
         </Form.Item>
         <div className="form-lable">Description</div>

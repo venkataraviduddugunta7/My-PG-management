@@ -55,10 +55,11 @@ const stayTypes = [
 ];
 const idTypes = ["Aadhar", "PAN", "Passport", "Driving License", "Voter ID"];
 
-const TenantFormModal = ({ visible, onClose, onSubmit, tenantData, termsAccepted, onShowTerms }) => {
+const TenantFormModal = ({ visible, onClose, onSubmit, tenantData, termsAccepted, onShowTerms, floors = [], rooms = [], beds = [] }) => {
   const [form] = Form.useForm();
-
   const [fileList, setFileList] = useState([]);
+  const [selectedFloorId, setSelectedFloorId] = useState(null);
+  const [selectedRoomId, setSelectedRoomId] = useState(null);
 
   const transformTenantToFormData = (tenant) => {
     if (!tenant) return null;
@@ -81,11 +82,40 @@ const TenantFormModal = ({ visible, onClose, onSubmit, tenantData, termsAccepted
 
   useEffect(() => {
     if (tenantData) {
-      form.setFieldsValue(transformTenantToFormData(tenantData));
+      const transformedData = transformTenantToFormData(tenantData);
+      form.setFieldsValue(transformedData);
+      // Set selected values for cascading dropdowns
+      if (transformedData.floorId) setSelectedFloorId(transformedData.floorId);
+      if (transformedData.roomId) setSelectedRoomId(transformedData.roomId);
     } else {
       form.resetFields();
+      setSelectedFloorId(null);
+      setSelectedRoomId(null);
     }
   }, [tenantData, form]);
+
+  // Filter rooms based on selected floor
+  const filteredRooms = selectedFloorId 
+    ? rooms.filter(room => room.floorId === selectedFloorId)
+    : [];
+
+  // Filter beds based on selected room
+  const filteredBeds = selectedRoomId
+    ? beds.filter(bed => bed.roomId === selectedRoomId && bed.status === 'Available')
+    : [];
+
+  const handleFloorChange = (floorId) => {
+    setSelectedFloorId(floorId);
+    setSelectedRoomId(null);
+    // Clear room and bed selections when floor changes
+    form.setFieldsValue({ roomId: undefined, bedId: undefined });
+  };
+
+  const handleRoomChange = (roomId) => {
+    setSelectedRoomId(roomId);
+    // Clear bed selection when room changes
+    form.setFieldsValue({ bedId: undefined });
+  };
 
   const handleFinish = (values) => {
     const formattedValues = {
@@ -509,26 +539,67 @@ const TenantFormModal = ({ visible, onClose, onSubmit, tenantData, termsAccepted
             </Row>
 
             <Row gutter={16}>
-              <Col span={12}>
-                <div className="form-lable"> Room Number </div>
+              <Col span={8}>
+                <div className="form-lable"> Floor </div>
                 <Form.Item
-                  name="roomNumber"
+                  name="floorId"
                   rules={[
-                    { required: true, message: "Please enter room number" },
+                    { required: true, message: "Please select a floor" },
                   ]}
                 >
-                  <Input placeholder="Enter room number" />
+                  <Select 
+                    placeholder="Select floor"
+                    onChange={handleFloorChange}
+                    value={selectedFloorId}
+                  >
+                    {floors.map((floor) => (
+                      <Option key={floor.id} value={floor.id}>
+                        {floor.floorName || `Floor ${floor.floorNumber}`}
+                      </Option>
+                    ))}
+                  </Select>
                 </Form.Item>
               </Col>
-              <Col span={12}>
-                <div className="form-lable"> Bed Number </div>
+              <Col span={8}>
+                <div className="form-lable"> Room </div>
                 <Form.Item
-                  name="bedNumber"
+                  name="roomId"
                   rules={[
-                    { required: true, message: "Please enter bed number" },
+                    { required: true, message: "Please select a room" },
                   ]}
                 >
-                  <Input placeholder="Enter bed number" />
+                  <Select 
+                    placeholder={selectedFloorId ? "Select room" : "Select floor first"}
+                    onChange={handleRoomChange}
+                    value={selectedRoomId}
+                    disabled={!selectedFloorId}
+                  >
+                    {filteredRooms.map((room) => (
+                      <Option key={room.id} value={room.id}>
+                        {room.roomNumber || room.name || room.id}
+                      </Option>
+                    ))}
+                  </Select>
+                </Form.Item>
+              </Col>
+              <Col span={8}>
+                <div className="form-lable"> Bed </div>
+                <Form.Item
+                  name="bedId"
+                  rules={[
+                    { required: true, message: "Please select a bed" },
+                  ]}
+                >
+                  <Select 
+                    placeholder={selectedRoomId ? "Select bed" : "Select room first"}
+                    disabled={!selectedRoomId}
+                  >
+                    {filteredBeds.map((bed) => (
+                      <Option key={bed.id} value={bed.id}>
+                        {bed.bedNumber || bed.number || bed.id}
+                      </Option>
+                    ))}
+                  </Select>
                 </Form.Item>
               </Col>
             </Row>

@@ -100,6 +100,13 @@ const AddRoomModal = ({ visible, onClose, onSubmit, floors, roomData }) => {
         >
           <Input placeholder="e.g. 101, 102..." />
         </Form.Item>
+        <div className="form-lable">Room Name</div>
+        <Form.Item
+          name="name"
+          rules={[{ required: true, message: "Please enter room name" }]}
+        >
+          <Input placeholder="e.g. Room 101, Deluxe Room A..." />
+        </Form.Item>
         <div className="form-lable">Room Type</div>
         <Form.Item
           name="roomType"
