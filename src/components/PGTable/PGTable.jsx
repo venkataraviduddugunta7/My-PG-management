@@ -32,6 +32,7 @@ const PGTable = ({
   title = "PG Management Table",
   type = "tenants", // tenants, payments, rooms, complaints
   globalFilter = "", // New prop for external filtering
+  height = "70vh", // Default height
   ...tableProps
 }) => {
   const [selectedRows, setSelectedRows] = useState([]);
@@ -46,7 +47,7 @@ const PGTable = ({
           if (onRowAction) {
             onRowAction('view', record);
           } else {
-            onView?.(record);
+            onView && onView(record);
           }
         },
       },
@@ -57,7 +58,7 @@ const PGTable = ({
           if (onRowAction) {
             onRowAction('edit', record);
           } else {
-            onEdit?.(record);
+            onEdit && onEdit(record);
           }
         },
       },
@@ -68,7 +69,7 @@ const PGTable = ({
           if (onRowAction) {
             onRowAction('delete', record);
           } else {
-            onDelete?.(record);
+            onDelete && onDelete(record);
           }
         },
         disabled: (record) => record.status === 'active',
@@ -184,7 +185,7 @@ const PGTable = ({
             cell: ({ getValue }) => {
               const status = getValue();
               const getColor = () => {
-                switch(status?.toLowerCase()) {
+                switch(status && status.toLowerCase()) {
                   case 'paid': return 'green';
                   case 'pending': return 'orange';
                   case 'overdue': return 'red';
@@ -470,7 +471,7 @@ const PGTable = ({
         onExport={handleExport}
         onRowSelect={handleRowSelection}
         className="pg-table"
-        height="70vh"
+        height={height}
         enableSearch={true}
         enableColumnToggle={true}
         enableColumnResize={true}

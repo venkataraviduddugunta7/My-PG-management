@@ -52,7 +52,8 @@ const DraggableColumnHeader = ({
 
   const handleSort = () => {
     if (!enableSort || !header.column.getCanSort()) return;
-    header.column.getToggleSortingHandler()?.();
+          const handler = header.column.getToggleSortingHandler();
+      if (handler) handler();
   };
 
   const handleFilter = (value) => {

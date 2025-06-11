@@ -169,23 +169,25 @@ const Tenants = () => {
   return (
     <div className="TenantStyles">
       <div className="tabheader">Tenants</div>
-      <div style={{ padding: "16px" }}>
-        <Row gutter={[16, 16]} style={{ marginBottom: 24 }}>
-          {statsData.map((stat, index) => (
-            <Col key={index} xs={24} sm={12} md={8} lg={6} xl={6}>
-              <StatsCard statName={stat.name} count={stat.value} />
-            </Col>
-          ))}
-        </Row>
+      <div className="tenants-content">
+        <div className="stats-section">
+          <Row gutter={[16, 16]}>
+            {statsData.map((stat, index) => (
+              <Col key={index} xs={24} sm={12} md={8} lg={6} xl={6}>
+                <StatsCard statName={stat.name} count={stat.value} />
+              </Col>
+            ))}
+          </Row>
+        </div>
 
-        <Row
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            paddingBottom: "16px",
-          }}
-        >
+        <div className="filter-controls">
+          <Row
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
           <div>
             <Input
               placeholder="Search tenants..."
@@ -254,55 +256,51 @@ const Tenants = () => {
               Add Tenant
             </PgButton>
           </div>
-
-          <TenantFormModal
-            visible={isAddModalVisible}
-            onClose={() => {
-              setAddModalVisible(false);
-              setEditingTenant(null);
-            }}
-            onSubmit={editingTenant ? handleUpdateTenant : handleAddTenant}
-            termsAccepted={termsAccepted}
-            onShowTerms={() => setTermsModalVisible(true)}
-            tenantData={editingTenant}
-            isEditing={!!editingTenant}
-            floors={floors}
-            rooms={rooms}
-            beds={beds}
-          />
-
-          <TermsAgreementModal
-            visible={isTermsModalVisible}
-            onAccept={handleAcceptTerms}
-            onCancel={() => {
-              setTermsModalVisible(false);
-              setPendingTenantData(null);
-            }}
-          />
-        </Row>
-        {selectedMode === "card" && (
-          <Row gutter={[16, 16]}>
-            {tenants
-              .filter((tenant) =>
-                tenant.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                tenant.mobile.includes(searchTerm) ||
-                tenant.profession.toLowerCase().includes(searchTerm.toLowerCase())
-              )
-              .map((tenant) => (
-                <Col key={tenant.id} xs={24} sm={12} md={8} lg={6} xl={6}>
-                  <TenantCard tenant={tenant} />
-                </Col>
-              ))}
           </Row>
-        )}
+        </div>
 
-        {selectedMode === "table" && (
-          <div style={{ 
-            marginTop: '16px',
-            height: 'calc(100vh - 320px)', // Adjust height to show pagination
-            display: 'flex',
-            flexDirection: 'column'
-          }}>
+        <TenantFormModal
+          visible={isAddModalVisible}
+          onClose={() => {
+            setAddModalVisible(false);
+            setEditingTenant(null);
+          }}
+          onSubmit={editingTenant ? handleUpdateTenant : handleAddTenant}
+          termsAccepted={termsAccepted}
+          onShowTerms={() => setTermsModalVisible(true)}
+          tenantData={editingTenant}
+          isEditing={!!editingTenant}
+          floors={floors}
+          rooms={rooms}
+          beds={beds}
+        />
+
+        <TermsAgreementModal
+          visible={isTermsModalVisible}
+          onAccept={handleAcceptTerms}
+          onCancel={() => {
+            setTermsModalVisible(false);
+            setPendingTenantData(null);
+          }}
+        />
+        <div className="table-section">
+          {selectedMode === "card" && (
+            <Row gutter={[16, 16]}>
+              {tenants
+                .filter((tenant) =>
+                  tenant.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                  tenant.mobile.includes(searchTerm) ||
+                  tenant.profession.toLowerCase().includes(searchTerm.toLowerCase())
+                )
+                .map((tenant) => (
+                  <Col key={tenant.id} xs={24} sm={12} md={8} lg={6} xl={6}>
+                    <TenantCard tenant={tenant} />
+                  </Col>
+                ))}
+            </Row>
+          )}
+
+          {selectedMode === "table" && (
             <PGTable
               data={tenants}
               type="tenants"
@@ -319,8 +317,8 @@ const Tenants = () => {
               globalFilter={searchTerm} // Pass the search term for external filtering
               height="100%" // Use full container height
             />
-          </div>
-        )}
+          )}
+        </div>
       </div>
     </div>
   );

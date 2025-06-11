@@ -1,6 +1,11 @@
 @import "../../assets/scss/main.scss";
 
 .TenantStyles {
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+
     .tabheader {
         font-family: Poppins;
         font-weight: 600;
@@ -9,6 +14,7 @@
         color: 273156;
         padding: 16px;
         background-color: #E6EBF0;
+        flex-shrink: 0; // Don't shrink header
     }
 
     .input-style {
@@ -32,6 +38,43 @@
         &:focus {
             border-color: #586fcc;
 
+        }
+    }
+
+    // Content area that should flex
+    .tenants-content {
+        flex: 1;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        padding: 16px;
+        min-height: 0; // Important for flex children
+
+        // Stats section
+        .stats-section {
+            flex-shrink: 0;
+            margin-bottom: 24px;
+        }
+
+        // Filter controls section
+        .filter-controls {
+            flex-shrink: 0;
+            margin-bottom: 16px;
+        }
+
+        // Table section
+        .table-section {
+            flex: 1;
+            min-height: 0;
+            display: flex;
+            flex-direction: column;
+
+            .pg-table-container {
+                flex: 1;
+                min-height: 0;
+                display: flex;
+                flex-direction: column;
+            }
         }
     }
 }

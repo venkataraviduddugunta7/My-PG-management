@@ -225,7 +225,7 @@ const AdvancedTable = ({
   const selectedRowsCount = Object.keys(rowSelection).length;
 
   return (
-    <div className={`advanced-table-container ${className}`} style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+    <div className={`advanced-table-container ${className}`} style={{ height, display: 'flex', flexDirection: 'column' }}>
       {/* Table Header */}
       <div className="table-header">
         <div className="table-title">
@@ -521,7 +521,7 @@ const StatusCell = ({ value }) => {
       'paid': 'green',
       'unpaid': 'red',
     };
-    return colorMap[status?.toLowerCase()] || 'default';
+    return colorMap[status && status.toLowerCase()] || 'default';
   };
 
   return <Tag color={getStatusColor(value)}>{value}</Tag>;
@@ -544,8 +544,8 @@ const ActionsCell = ({ row, actions = [] }) => (
             type="text"
             size="small"
             icon={action.icon}
-            onClick={() => action.onClick?.(row.original)}
-            disabled={action.disabled?.(row.original)}
+            onClick={() => action.onClick && action.onClick(row.original)}
+            disabled={action.disabled && action.disabled(row.original)}
           />
         </Tooltip>
       ))}
@@ -556,7 +556,7 @@ const ActionsCell = ({ row, actions = [] }) => (
               key: index,
               label: action.label,
               icon: action.icon,
-              onClick: () => action.onClick?.(row.original),
+              onClick: () => action.onClick && action.onClick(row.original),
             })),
           }}
           trigger={['click']}
@@ -572,7 +572,7 @@ const AvatarCell = ({ value, row }) => (
   <div className="avatar-cell">
     <div className="avatar-container">
       <div className="avatar-image">
-        {value?.charAt(0)?.toUpperCase() || row.original.name?.charAt(0)?.toUpperCase() || 'U'}
+        {(value && value.charAt(0) && value.charAt(0).toUpperCase()) || (row.original.name && row.original.name.charAt(0) && row.original.name.charAt(0).toUpperCase()) || 'U'}
       </div>
       <div className="avatar-text">
         <div className="avatar-name">{row.original.name || value}</div>

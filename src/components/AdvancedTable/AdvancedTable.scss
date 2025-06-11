@@ -55,6 +55,7 @@
     overflow-y: auto;
     background: #ffffff;
     min-height: 0; // Important for flex layout
+    flex: 1; // Take remaining space
 
     &.bordered {
       .advanced-table {
@@ -470,6 +471,21 @@
         margin: 0;
         font-size: 14px;
       }
+    }
+  }
+
+  // Cell styles for specific content types
+  .tenant-id-cell {
+    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+    font-weight: 600;
+    color: #586fcc;
+  }
+
+  .email-cell {
+    color: #1890ff;
+    
+    .anticon {
+      color: #1890ff;
     }
   }
 
