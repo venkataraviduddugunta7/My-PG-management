@@ -378,17 +378,18 @@ const Settings = () => {
         <div className="settings-actions">
           <Space>
             <PgButton
+              type="secondary"
+              icon={<ReloadOutlined />}
+              onClick={handleReset}
+            >
+              Reset to Default
+            </PgButton>
+            <PgButton
               type="primary"
               icon={<SaveOutlined />}
               onClick={() => form.submit()}
             >
               Save Changes
-            </PgButton>
-            <PgButton
-              icon={<ReloadOutlined />}
-              onClick={handleReset}
-            >
-              Reset to Default
             </PgButton>
           </Space>
         </div>
