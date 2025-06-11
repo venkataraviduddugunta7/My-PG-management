@@ -15,71 +15,55 @@ import {
   RouteWarehouseIcon,
   TagsCloseIcon,
 } from "../../components/resusableComponents/DrayageIcons";
-import PgTable from "../../components/resusableComponents/PgTable";
+import PGTable from "../../components/PGTable/PGTable";
 import { addTenant, updateTenant, deleteTenant, setTenants } from "../../store/slices/tenantsSlice";
 
-// Mock data generator function
+// Mock data generator function - Updated for new table structure
 const generateTenants = () => {
   const tenants = [];
 
-  const imageOptions = [
-    "https://xsgames.co/randomusers/avatar.php?g=male",
-    "https://xsgames.co/randomusers/avatar.php?g=female",
-    "https://xsgames.co/randomusers/avatar.php?g=pixel",
-    "https://i.pravatar.cc/150?img=1",
-    "https://i.pravatar.cc/150?img=2",
+  const names = [
+    "Rajesh Kumar", "Priya Sharma", "Amit Singh", "Sneha Patel", "Vikram Reddy",
+    "Anita Gupta", "Rohit Mehta", "Kavya Nair", "Arjun Yadav", "Pooja Joshi",
+    "Manoj Tiwari", "Deepika Rao", "Suresh Iyer", "Meera Agarwal", "Kiran Joshi",
+    "Ravi Pillai", "Sonia Verma", "Ajay Malhotra", "Neha Saxena", "Vishal Chopra"
   ];
 
   const professions = [
-    "Software Engineer",
-    "Doctor",
-    "Teacher",
-    "Marketing Executive",
-    "Graphic Designer",
-    "Accountant",
-    "Nurse",
-    "Data Analyst",
-    "Sales Manager",
-    "Architect",
-    "Chef",
-    "Electrician",
-    "Student",
-    "Research Scientist",
-    "Bank Manager",
-    "Journalist",
-    "Interior Designer",
-    "Pharmacist",
-    "HR Manager",
-    "Civil Engineer",
+    "Software Engineer", "Doctor", "Teacher", "Marketing Executive", "Graphic Designer",
+    "Accountant", "Nurse", "Data Analyst", "Sales Manager", "Architect",
+    "Chef", "Electrician", "Student", "Research Scientist", "Bank Manager",
+    "Journalist", "Interior Designer", "Pharmacist", "HR Manager", "Civil Engineer"
   ];
 
-  for (let i = 1; i <= 10; i++) {
+  const statuses = ['Active', 'Inactive', 'Pending'];
+  const paymentStatuses = ['Paid', 'Pending', 'Overdue'];
+
+  for (let i = 1; i <= 20; i++) {
+    const name = names[i % names.length];
     tenants.push({
-      id: `T${1000 + i}`,
-      name: `Tenant ${i}`,
+      id: i,
+      name: name,
+      avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=${name.replace(' ', '')}`,
+      room: `A${Math.floor(Math.random() * 20) + 101}`,
+      phone: `+91 ${Math.floor(Math.random() * 9000000000) + 1000000000}`,
+      rent: Math.floor(Math.random() * 5000) + 8000,
+      joinDate: new Date(2024 - Math.floor(Math.random() * 2), Math.floor(Math.random() * 12), Math.floor(Math.random() * 28) + 1),
+      status: statuses[Math.floor(Math.random() * statuses.length)],
+      paymentStatus: paymentStatuses[Math.floor(Math.random() * paymentStatuses.length)],
+      email: `${name.toLowerCase().replace(' ', '.')}@email.com`,
+      deposit: Math.floor(Math.random() * 10000) + 15000,
+      emergencyContact: `+91 ${Math.floor(Math.random() * 9000000000) + 1000000000}`,
       age: 20 + Math.floor(Math.random() * 30),
-      dob: `19${Math.floor(Math.random() * 100)
-        .toString()
-        .padStart(2, "0")}-${Math.floor(Math.random() * 12 + 1)
-        .toString()
-        .padStart(2, "0")}-${Math.floor(Math.random() * 28 + 1)
-        .toString()
-        .padStart(2, "0")}`,
-      doj: `20${Math.floor(Math.random() * 15 + 10)
-        .toString()
-        .padStart(2, "0")}-${Math.floor(Math.random() * 12 + 1)
-        .toString()
-        .padStart(2, "0")}-${Math.floor(Math.random() * 28 + 1)
-        .toString()
-        .padStart(2, "0")}`,
-      mobile: `${Math.floor(9000000000 + Math.random() * 1000000000)}`,
+      profession: professions[Math.floor(Math.random() * professions.length)],
       address: `Address Line ${i}, City ${i}`,
       pincode: Math.floor(100000 + Math.random() * 900000),
-      profession: professions[Math.floor(Math.random() * professions.length)],
-      isActive: Math.random() > 0.3,
-      image:
-        imageOptions[Math.floor(Math.random() * imageOptions.length)] +
-        `&random=${i}`,
+      dob: new Date(1990 + Math.floor(Math.random() * 20), Math.floor(Math.random() * 12), Math.floor(Math.random() * 28) + 1),
+      // Legacy fields for compatibility
+      isActive: statuses[Math.floor(Math.random() * statuses.length)] === 'Active',
+      mobile: `${Math.floor(9000000000 + Math.random() * 1000000000)}`,
+      doj: new Date(2024 - Math.floor(Math.random() * 2), Math.floor(Math.random() * 12), Math.floor(Math.random() * 28) + 1).toISOString().split('T')[0],
+      image: `https://api.dicebear.com/7.x/avataaars/svg?seed=${name.replace(' ', '')}`
     });
   }
   return tenants;
@@ -142,64 +126,25 @@ const Tenants = () => {
     setAddModalVisible(false);
   };
 
-  const columnDefs = [
-    {
-      title: "Tenant Name",
-      dataIndex: "name",
-      key: "name",
-    },
-    {
-      title: "Mobile",
-      dataIndex: "mobile",
-      key: "mobile",
-    },
-    {
-      title: "Profession",
-      dataIndex: "profession",
-      key: "profession",
-    },
-    {
-      title: "Age",
-      dataIndex: "age",
-      key: "age",
-    },
-    {
-      title: "Date of Joining",
-      dataIndex: "doj",
-      key: "doj",
-    },
-    {
-      title: "Status",
-      dataIndex: "isActive",
-      key: "isActive",
-      render: (isActive) => (
-        <span style={{ color: isActive ? "green" : "red" }}>
-          {isActive ? "Active" : "Inactive"}
-        </span>
-      ),
-    },
-    {
-      title: "Actions",
-      key: "actions",
-      render: (_,record) => (
-        <div style={{ display: "flex", justifyContent: "flex-end" }}>
-          <Tooltip title="Edit">
-            <ItemEditIcon onClick={()=>handleEdit(record)} />
-          </Tooltip>
-          <Tooltip title="Delete">
-            <ItemDeleteIcon onClick={()=>handleDelete(record.id)}/>
-          </Tooltip>
-        </div>
-      ),
-    },
-  ];
+  // Handle actions from the new table
+  const handleTableActions = (action, tenant) => {
+    switch (action) {
+      case 'edit':
+        handleEdit(tenant);
+        break;
+      case 'delete':
+        handleDelete(tenant.id);
+        break;
+      case 'view':
+        // Add view logic if needed
+        console.log('View tenant:', tenant);
+        break;
+      default:
+        break;
+    }
+  };
 
-  const filteredTenants = tenants.filter(
-    (tenant) =>
-      tenant.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      tenant.mobile.includes(searchTerm) ||
-      tenant.profession.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  // Remove old filtering logic as new table handles this internally
 
   const handleAddTenant = (formData) => {
     if (termsAccepted) {
@@ -337,21 +282,44 @@ const Tenants = () => {
         </Row>
         {selectedMode === "card" && (
           <Row gutter={[16, 16]}>
-            {filteredTenants.map((tenant) => (
-              <Col key={tenant.id} xs={24} sm={12} md={8} lg={6} xl={6}>
-                <TenantCard tenant={tenant} />
-              </Col>
-            ))}
+            {tenants
+              .filter((tenant) =>
+                tenant.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                tenant.mobile.includes(searchTerm) ||
+                tenant.profession.toLowerCase().includes(searchTerm.toLowerCase())
+              )
+              .map((tenant) => (
+                <Col key={tenant.id} xs={24} sm={12} md={8} lg={6} xl={6}>
+                  <TenantCard tenant={tenant} />
+                </Col>
+              ))}
           </Row>
         )}
 
         {selectedMode === "table" && (
-          <PgTable
-            columns={columnDefs}
-            dataSource={filteredTenants}
-            pagination={{ pageSize: 10 }}
-            scroll={{ y: "calc(100vh - 300px)" }}
-          />
+          <div style={{ 
+            marginTop: '16px',
+            height: 'calc(100vh - 320px)', // Adjust height to show pagination
+            display: 'flex',
+            flexDirection: 'column'
+          }}>
+            <PGTable
+              data={tenants}
+              type="tenants"
+              showSearch={false} // We're using the external search
+              showColumnToggle={true}
+              showExport={true}
+              enableRowSelection={true}
+              enableSorting={true}
+              enableFiltering={true}
+              enableResizing={true}
+              enableColumnOrdering={false} // Disable reordering to maintain sticky columns
+              pageSize={10}
+              onRowAction={handleTableActions}
+              globalFilter={searchTerm} // Pass the search term for external filtering
+              height="100%" // Use full container height
+            />
+          </div>
         )}
       </div>
     </div>

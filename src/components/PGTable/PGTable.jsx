@@ -28,8 +28,10 @@ const PGTable = ({
   onEdit,
   onDelete,
   onView,
+  onRowAction, // New prop to handle row actions
   title = "PG Management Table",
   type = "tenants", // tenants, payments, rooms, complaints
+  globalFilter = "", // New prop for external filtering
   ...tableProps
 }) => {
   const [selectedRows, setSelectedRows] = useState([]);
@@ -40,17 +42,35 @@ const PGTable = ({
       {
         icon: <EyeOutlined />,
         tooltip: 'View Details',
-        onClick: (record) => onView?.(record),
+        onClick: (record) => {
+          if (onRowAction) {
+            onRowAction('view', record);
+          } else {
+            onView?.(record);
+          }
+        },
       },
       {
         icon: <EditOutlined />,
         tooltip: 'Edit',
-        onClick: (record) => onEdit?.(record),
+        onClick: (record) => {
+          if (onRowAction) {
+            onRowAction('edit', record);
+          } else {
+            onEdit?.(record);
+          }
+        },
       },
       {
         icon: <DeleteOutlined />,
         tooltip: 'Delete',
-        onClick: (record) => onDelete?.(record),
+        onClick: (record) => {
+          if (onRowAction) {
+            onRowAction('delete', record);
+          } else {
+            onDelete?.(record);
+          }
+        },
         disabled: (record) => record.status === 'active',
       },
     ];
@@ -58,18 +78,33 @@ const PGTable = ({
     switch (type) {
       case 'tenants':
         return [
+          // Sticky columns - Tenant ID (first after checkbox)
+          {
+            id: 'tenantId',
+            accessorKey: 'id',
+            header: 'ID',
+            size: 80,
+            enableSorting: true,
+            sticky: 'left',
+            cell: ({ getValue }) => (
+              <div className="tenant-id-cell">
+                <strong>#{String(getValue()).padStart(3, '0')}</strong>
+              </div>
+            ),
+          },
+          // Scrollable columns
           {
             id: 'avatar',
             accessorKey: 'name',
-            header: 'Tenant',
+            header: 'Tenant Name',
             cellType: 'avatar',
-            size: 250,
+            size: 220,
             enableSorting: true,
           },
           {
             id: 'room',
             accessorKey: 'room',
-            header: 'Room No',
+            header: 'Room',
             size: 100,
             cell: ({ getValue }) => (
               <div className="room-cell">
@@ -91,11 +126,38 @@ const PGTable = ({
             ),
           },
           {
+            id: 'email',
+            accessorKey: 'email',
+            header: 'Email',
+            size: 200,
+            cell: ({ getValue }) => (
+              <div className="email-cell">
+                <MailOutlined style={{ marginRight: 4, color: '#1890ff' }} />
+                {getValue()}
+              </div>
+            ),
+          },
+          {
+            id: 'profession',
+            accessorKey: 'profession',
+            header: 'Profession',
+            size: 150,
+            enableSorting: true,
+          },
+          {
             id: 'rent',
             accessorKey: 'rent',
             header: 'Monthly Rent',
             cellType: 'currency',
-            size: 150,
+            size: 130,
+            enableSorting: true,
+          },
+          {
+            id: 'deposit',
+            accessorKey: 'deposit',
+            header: 'Deposit',
+            cellType: 'currency',
+            size: 120,
             enableSorting: true,
           },
           {
@@ -111,18 +173,18 @@ const PGTable = ({
             accessorKey: 'status',
             header: 'Status',
             cellType: 'status',
-            size: 120,
+            size: 100,
             enableSorting: true,
           },
           {
             id: 'paymentStatus',
             accessorKey: 'paymentStatus',
             header: 'Payment',
-            size: 120,
+            size: 110,
             cell: ({ getValue }) => {
               const status = getValue();
               const getColor = () => {
-                switch(status) {
+                switch(status?.toLowerCase()) {
                   case 'paid': return 'green';
                   case 'pending': return 'orange';
                   case 'overdue': return 'red';
@@ -132,6 +194,7 @@ const PGTable = ({
               return <Tag color={getColor()}>{status}</Tag>;
             },
           },
+          // Sticky actions column (last)
           {
             id: 'actions',
             header: 'Actions',
@@ -140,6 +203,7 @@ const PGTable = ({
             size: 120,
             enableSorting: false,
             enableColumnFilter: false,
+            sticky: 'right',
           },
         ];
 
@@ -420,6 +484,7 @@ const PGTable = ({
         striped={true}
         bordered={true}
         sticky={true}
+        globalFilter={globalFilter} // Pass external filter
         {...tableProps}
       />
     </div>

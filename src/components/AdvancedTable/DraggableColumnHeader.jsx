@@ -25,6 +25,7 @@ const DraggableColumnHeader = ({
   enableSort = true,
   enableFilter = true,
   table,
+  stickyStyle = {},
 }) => {
   const [showFilter, setShowFilter] = useState(false);
   const [filterValue, setFilterValue] = useState(
@@ -97,19 +98,23 @@ const DraggableColumnHeader = ({
     </div>
   );
 
+  const isSticky = header.column.columnDef.sticky;
+
   return (
     <th
       ref={setNodeRef}
       style={{
         ...style,
         width: header.getSize(),
-        position: 'relative',
+        position: isSticky ? 'sticky' : 'relative',
+        ...stickyStyle,
       }}
       className={`
         sortable-header 
         ${isDragging ? 'dragging' : ''}
         ${canSort ? 'sortable' : ''}
         ${hasFilter ? 'filtered' : ''}
+        ${isSticky ? `sticky-${isSticky}` : ''}
       `}
     >
       <div className="header-content">

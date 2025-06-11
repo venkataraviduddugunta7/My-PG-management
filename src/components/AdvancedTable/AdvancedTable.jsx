@@ -70,6 +70,7 @@ const AdvancedTable = ({
   striped = true,
   bordered = true,
   sticky = true,
+  globalFilter: externalGlobalFilter = "", // Accept external global filter
 }) => {
   const [columnVisibility, setColumnVisibility] = useState({});
   const [columnOrder, setColumnOrder] = useState(
@@ -77,8 +78,11 @@ const AdvancedTable = ({
   );
   const [sorting, setSorting] = useState([]);
   const [columnFilters, setColumnFilters] = useState([]);
-  const [globalFilter, setGlobalFilter] = useState('');
+  const [internalGlobalFilter, setInternalGlobalFilter] = useState('');
   const [rowSelection, setRowSelection] = useState({});
+  
+  // Use external global filter if provided, otherwise use internal state
+  const globalFilter = externalGlobalFilter ? externalGlobalFilter : internalGlobalFilter;
   const [columnSizing, setColumnSizing] = useState({});
   const [showColumnPanel, setShowColumnPanel] = useState(false);
 
@@ -125,32 +129,33 @@ const AdvancedTable = ({
       },
     }));
 
-    // Add row selection column if enabled
-    if (enableRowSelection) {
-      return [
-        {
-          id: 'select',
-          header: ({ table }) => (
-            <Checkbox
-              checked={table.getIsAllRowsSelected()}
-              indeterminate={table.getIsSomeRowsSelected()}
-              onChange={table.getToggleAllRowsSelectedHandler()}
-            />
-          ),
-          cell: ({ row }) => (
-            <Checkbox
-              checked={row.getIsSelected()}
-              onChange={row.getToggleSelectedHandler()}
-            />
-          ),
-          enableSorting: false,
-          enableColumnFilter: false,
-          enableResizing: false,
-          size: 50,
-        },
-        ...baseColumns,
-      ];
-    }
+      // Add row selection column if enabled
+  if (enableRowSelection) {
+    return [
+      {
+        id: 'select',
+        header: ({ table }) => (
+          <Checkbox
+            checked={table.getIsAllRowsSelected()}
+            indeterminate={table.getIsSomeRowsSelected()}
+            onChange={table.getToggleAllRowsSelectedHandler()}
+          />
+        ),
+        cell: ({ row }) => (
+          <Checkbox
+            checked={row.getIsSelected()}
+            onChange={row.getToggleSelectedHandler()}
+          />
+        ),
+        enableSorting: false,
+        enableColumnFilter: false,
+        enableResizing: false,
+        size: 50,
+        sticky: 'left', // Make checkbox column sticky
+      },
+      ...baseColumns,
+    ];
+  }
 
     return baseColumns;
   }, [initialColumns, enableRowSelection, enableColumnResize, enableSorting]);
@@ -172,7 +177,7 @@ const AdvancedTable = ({
     columnResizeMode: 'onChange',
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
-    onGlobalFilterChange: setGlobalFilter,
+    onGlobalFilterChange: setInternalGlobalFilter,
     onRowSelectionChange: setRowSelection,
     onColumnVisibilityChange: setColumnVisibility,
     onColumnOrderChange: setColumnOrder,
@@ -220,7 +225,7 @@ const AdvancedTable = ({
   const selectedRowsCount = Object.keys(rowSelection).length;
 
   return (
-    <div className={`advanced-table-container ${className}`}>
+    <div className={`advanced-table-container ${className}`} style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
       {/* Table Header */}
       <div className="table-header">
         <div className="table-title">
@@ -233,12 +238,12 @@ const AdvancedTable = ({
         </div>
         
         <div className="table-actions">
-          {enableSearch && (
+          {enableSearch && !externalGlobalFilter && (
             <Input
               placeholder="Search all columns..."
               prefix={<SearchOutlined />}
               value={globalFilter}
-              onChange={(e) => setGlobalFilter(e.target.value)}
+              onChange={(e) => setInternalGlobalFilter(e.target.value)}
               style={{ width: 250 }}
               allowClear
             />
@@ -284,7 +289,7 @@ const AdvancedTable = ({
       {/* Table Container */}
       <div 
         className={`table-wrapper ${striped ? 'striped' : ''} ${bordered ? 'bordered' : ''}`}
-        style={{ height }}
+        style={{ flex: 1, minHeight: 0, overflow: 'auto' }}
       >
         <DndContext
           sensors={sensors}
@@ -300,17 +305,51 @@ const AdvancedTable = ({
                   strategy={horizontalListSortingStrategy}
                 >
                   <tr>
-                    {headerGroup.headers.map((header) => (
-                      <DraggableColumnHeader
-                        key={header.id}
-                        header={header}
-                        enableReorder={enableColumnReorder}
-                        enableResize={enableColumnResize}
-                        enableSort={enableSorting}
-                        enableFilter={enableFiltering}
-                        table={table}
-                      />
-                    ))}
+                    {headerGroup.headers.map((header, headerIndex) => {
+                      const isSticky = header.column.columnDef.sticky;
+                      const stickyStyle = {};
+                      
+                      if (isSticky === 'left') {
+                        let leftOffset = 0;
+                        // Calculate left offset for sticky columns
+                        for (let i = 0; i < headerIndex; i++) {
+                          const prevHeader = headerGroup.headers[i];
+                          if (prevHeader.column.columnDef.sticky === 'left') {
+                            leftOffset += prevHeader.getSize();
+                          }
+                        }
+                        stickyStyle.left = `${leftOffset}px`;
+                        stickyStyle.zIndex = 11;
+                        stickyStyle.backgroundColor = '#f9fafb';
+                        stickyStyle.borderRight = '1px solid #e5e7eb';
+                      } else if (isSticky === 'right') {
+                        let rightOffset = 0;
+                        // Calculate right offset for sticky columns
+                        for (let i = headerIndex + 1; i < headerGroup.headers.length; i++) {
+                          const nextHeader = headerGroup.headers[i];
+                          if (nextHeader.column.columnDef.sticky === 'right') {
+                            rightOffset += nextHeader.getSize();
+                          }
+                        }
+                        stickyStyle.right = `${rightOffset}px`;
+                        stickyStyle.zIndex = 11;
+                        stickyStyle.backgroundColor = '#f9fafb';
+                        stickyStyle.borderLeft = '1px solid #e5e7eb';
+                      }
+
+                      return (
+                        <DraggableColumnHeader
+                          key={header.id}
+                          header={header}
+                          enableReorder={enableColumnReorder && !isSticky}
+                          enableResize={enableColumnResize}
+                          enableSort={enableSorting}
+                          enableFilter={enableFiltering}
+                          table={table}
+                          stickyStyle={stickyStyle}
+                        />
+                      );
+                    })}
                   </tr>
                 </SortableContext>
               ))}
@@ -325,18 +364,56 @@ const AdvancedTable = ({
                     ${index % 2 === 0 ? 'even' : 'odd'}
                   `}
                 >
-                  {row.getVisibleCells().map((cell) => (
-                    <td
-                      key={cell.id}
-                      style={{
-                        width: cell.column.getSize(),
-                        minWidth: cell.column.columnDef.minSize,
-                        maxWidth: cell.column.columnDef.maxSize,
-                      }}
-                    >
-                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                    </td>
-                  ))}
+                  {row.getVisibleCells().map((cell, cellIndex) => {
+                    const isSticky = cell.column.columnDef.sticky;
+                    const stickyStyle = {};
+                    
+                    if (isSticky === 'left') {
+                      let leftOffset = 0;
+                      // Calculate left offset for sticky columns
+                      for (let i = 0; i < cellIndex; i++) {
+                        const prevCell = row.getVisibleCells()[i];
+                        if (prevCell.column.columnDef.sticky === 'left') {
+                          leftOffset += prevCell.column.getSize();
+                        }
+                      }
+                      stickyStyle.position = 'sticky';
+                      stickyStyle.left = `${leftOffset}px`;
+                      stickyStyle.zIndex = 10;
+                      stickyStyle.backgroundColor = 'white';
+                      stickyStyle.borderRight = '1px solid #e5e7eb';
+                    } else if (isSticky === 'right') {
+                      let rightOffset = 0;
+                      // Calculate right offset for sticky columns
+                      const visibleCells = row.getVisibleCells();
+                      for (let i = cellIndex + 1; i < visibleCells.length; i++) {
+                        const nextCell = visibleCells[i];
+                        if (nextCell.column.columnDef.sticky === 'right') {
+                          rightOffset += nextCell.column.getSize();
+                        }
+                      }
+                      stickyStyle.position = 'sticky';
+                      stickyStyle.right = `${rightOffset}px`;
+                      stickyStyle.zIndex = 10;
+                      stickyStyle.backgroundColor = 'white';
+                      stickyStyle.borderLeft = '1px solid #e5e7eb';
+                    }
+
+                    return (
+                      <td
+                        key={cell.id}
+                        style={{
+                          width: cell.column.getSize(),
+                          minWidth: cell.column.columnDef.minSize,
+                          maxWidth: cell.column.columnDef.maxSize,
+                          ...stickyStyle,
+                        }}
+                        className={isSticky ? `sticky-${isSticky}` : ''}
+                      >
+                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                      </td>
+                    );
+                  })}
                 </tr>
               ))}
             </tbody>

@@ -5,6 +5,9 @@
   border-radius: 8px;
   overflow: hidden;
   font-family: 'Lato', sans-serif;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 
   // Table Header
   .table-header {
@@ -48,8 +51,10 @@
   // Table Wrapper
   .table-wrapper {
     position: relative;
-    overflow: auto;
+    overflow-x: auto;
+    overflow-y: auto;
     background: #ffffff;
+    min-height: 0; // Important for flex layout
 
     &.bordered {
       .advanced-table {
@@ -340,6 +345,19 @@
     font-size: 13px;
   }
 
+  .tenant-id-cell {
+    font-family: 'Courier New', monospace;
+    font-weight: bold;
+    color: #586fcc;
+    text-align: center;
+    font-size: 13px;
+  }
+
+  .email-cell {
+    color: #1890ff;
+    font-size: 13px;
+  }
+
   // Filter Dropdown
   .column-filter-dropdown {
     padding: 8px;
@@ -452,6 +470,29 @@
         margin: 0;
         font-size: 14px;
       }
+    }
+  }
+
+  // Sticky columns
+  .sticky-left {
+    background-color: white !important;
+    z-index: 10 !important;
+    box-shadow: 2px 0 4px rgba(0, 0, 0, 0.1);
+    
+    &.sortable-header {
+      background-color: #f9fafb !important;
+      z-index: 11 !important;
+    }
+  }
+
+  .sticky-right {
+    background-color: white !important;
+    z-index: 10 !important;
+    box-shadow: -2px 0 4px rgba(0, 0, 0, 0.1);
+    
+    &.sortable-header {
+      background-color: #f9fafb !important;
+      z-index: 11 !important;
     }
   }
 
