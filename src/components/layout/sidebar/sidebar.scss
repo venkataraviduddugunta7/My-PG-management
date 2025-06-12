@@ -1,45 +1,129 @@
 @import '../../../assets/scss/variables';
 @import '../../../assets/scss/mixins';
 
-.ant-layout-sider {
-  background: $sidebar-bg;
-  box-shadow: 2px 0 8px 0 rgba(29, 35, 41, 0.05);
-  position: fixed;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  z-index: 100;
-  height: 100vh;
-  transition: all 0.2s;
+.sidebar-container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: #E6EBF0;
+  border-right: 1px solid rgba(0, 0, 0, 0.06);
+}
 
-  @include respond-to('md') {
-    width: $sidebar-collapsed-width !important;
-    flex: 0 0 $sidebar-collapsed-width !important;
-    max-width: $sidebar-collapsed-width !important;
-    min-width: $sidebar-collapsed-width !important;
+.sidebar-header {
+  padding: 20px 16px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  background: #E6EBF0;
+  
+  .logo-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    .logo-text {
+      font-family: 'Poppins', sans-serif;
+      font-size: 18px;
+      font-weight: 600;
+      color: #586FCC;
+      margin: 0;
+    }
   }
 }
 
-.ant-menu {
+.sidebar-menu {
+  flex: 1;
   border-right: none;
-  padding-top: 16px;
+  padding: 12px 8px;
+  background: #E6EBF0;
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: rgba(88, 111, 204, 0.2);
+    border-radius: 4px;
+  }
+
+  .ant-menu-item {
+    margin: 4px 8px;
+    border-radius: 8px;
+    height: 44px;
+    line-height: 44px;
+    transition: all 0.2s ease;
+    position: relative;
+
+    &:hover {
+      background: rgba(88, 111, 204, 0.08);
+      color: #586FCC;
+
+      .anticon {
+        color: #586FCC;
+      }
+    }
+
+    &.ant-menu-item-selected {
+      background: #CDD4F0;
+      color: #586FCC;
+      font-weight: 500;
+
+      .anticon {
+        color: #586FCC;
+      }
+
+      &:hover {
+        background: #CDD4F0;
+      }
+    }
+
+    .anticon {
+      color: #66717B;
+      font-size: 18px;
+      transition: all 0.2s ease;
+    }
+
+    span {
+      font-size: 14px;
+      font-weight: 500;
+    }
+  }
 }
 
-.logo-container {
-  height: $header-height;
-  padding: 16px;
-  @include flex-center;
-  
-  .logo {
-    height: 100%;
-    object-fit: contain;
+// Collapsed state styles
+.ant-layout-sider-collapsed {
+  .sidebar-header {
+    padding: 20px 8px;
+    
+    .logo-text {
+      display: none;
+    }
   }
-  
-  .logo-text {
-    margin-left: 12px;
-    font-size: 18px;
-    font-weight: 600;
-    color: $primary-color;
-    white-space: nowrap;
+
+  .sidebar-menu {
+    .ant-menu-item {
+      padding: 0 24px !important;
+    }
+  }
+}
+
+// Responsive styles
+@media (max-width: 768px) {
+  .sidebar-container {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 100% !important;
+  }
+
+  .sidebar-menu {
+    .ant-menu-item {
+      margin: 2px 4px;
+      height: 40px;
+      line-height: 40px;
+    }
   }
 }

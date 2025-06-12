@@ -1,20 +1,11 @@
 import { Menu } from "antd";
-import {
-  DashboardOutlined,
-  TeamOutlined,
-  CreditCardOutlined,
-  HomeOutlined,
-  FileTextOutlined,
-  NotificationOutlined,
-  ToolOutlined,
-  SettingOutlined,
-} from "@ant-design/icons";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import "./Sidebar.scss";
 import { DashboardIcon, MaintenanceIcon, NoticesIcon, PaymentsIcon, ReportsIcon, RoomsIcon, SettingsIcon, TenantsIcon } from "../../resusableComponents/DrayageIcons";
 
 const Sidebar = ({ collapsed }) => {
   const navigate = useNavigate();
+  const location = useLocation();
 
   const menuItems = [
     {
@@ -67,14 +58,31 @@ const Sidebar = ({ collapsed }) => {
     },
   ];
 
+  // Get the current path to determine selected key
+  const getSelectedKey = () => {
+    const path = location.pathname;
+    if (path === '/') return ['dashboard'];
+    return [path.split('/')[1]];
+  };
+
   return (
-    <Menu
-      theme="light"
-      mode="inline"
-      defaultSelectedKeys={["dashboard"]}
-      items={menuItems}
-      inlineCollapsed={collapsed}
-    />
+    <div className="sidebar-container">
+      <div className="sidebar-header">
+        <div className="logo-container">
+          <h1 className="logo-text">PG Manager</h1>
+        </div>
+      </div>
+      <div className="sidebar-menu-wrapper">
+        <Menu
+          theme="light"
+          mode="inline"
+          selectedKeys={getSelectedKey()}
+          items={menuItems}
+          inlineCollapsed={collapsed}
+          className="sidebar-menu"
+        />
+      </div>
+    </div>
   );
 };
 

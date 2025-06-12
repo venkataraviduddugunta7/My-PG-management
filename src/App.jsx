@@ -28,6 +28,7 @@ function App() {
           left: 0,
           top: 0,
           bottom: 0,
+          zIndex: 1000,
         }}
       >
         <Sidebar collapsed={collapsed} />
@@ -37,10 +38,10 @@ function App() {
       <Layout style={{ 
         marginLeft: collapsed ? 80 : 240,
         transition: 'margin-left 0.2s',
+        background: '#fafbfc',
       }}>
         <Content
           style={{
-            margin: '0px 0px 0px 8px ',
             minHeight: 280,
             background: colorBgContainer,
           }}
