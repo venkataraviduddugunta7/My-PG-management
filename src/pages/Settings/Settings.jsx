@@ -28,9 +28,9 @@ import {
   EditOutlined,
 } from "@ant-design/icons";
 import "./Settings.scss";
-import { 
-  updateSettings, 
-  updateNotificationPreferences, 
+import {
+  updateSettings,
+  updateNotificationPreferences,
   resetSettings,
   updateAddress,
   updateRoomTypes,
@@ -104,7 +104,7 @@ const Settings = () => {
 
   const handleRoomTypeModalOk = useCallback((values) => {
     if (editingRoomType) {
-      setRoomTypes(roomTypes.map(type => 
+      setRoomTypes(roomTypes.map(type =>
         type.id === editingRoomType.id ? { ...type, ...values } : type
       ));
     } else {
@@ -130,7 +130,7 @@ const Settings = () => {
 
   const handleBedTypeModalOk = useCallback((values) => {
     if (editingBedType) {
-      setBedTypes(bedTypes.map(type => 
+      setBedTypes(bedTypes.map(type =>
         type.id === editingBedType.id ? { ...type, ...values } : type
       ));
     } else {
@@ -174,15 +174,15 @@ const Settings = () => {
       key: 'actions',
       render: (_, record) => (
         <Space>
-          <Button 
-            type="text" 
-            icon={<EditOutlined />} 
+          <Button
+            type="text"
+            icon={<EditOutlined />}
             onClick={() => handleEditRoomType(record)}
           />
-          <Button 
-            type="text" 
-            danger 
-            icon={<DeleteOutlined />} 
+          <Button
+            type="text"
+            danger
+            icon={<DeleteOutlined />}
             onClick={() => handleDeleteRoomType(record.id)}
           />
         </Space>
@@ -224,15 +224,15 @@ const Settings = () => {
       key: 'actions',
       render: (_, record) => (
         <Space>
-          <Button 
-            type="text" 
-            icon={<EditOutlined />} 
+          <Button
+            type="text"
+            icon={<EditOutlined />}
             onClick={() => handleEditBedType(record)}
           />
-          <Button 
-            type="text" 
-            danger 
-            icon={<DeleteOutlined />} 
+          <Button
+            type="text"
+            danger
+            icon={<DeleteOutlined />}
             onClick={() => handleDeleteBedType(record.id)}
           />
         </Space>
@@ -271,14 +271,14 @@ const Settings = () => {
               <Card title="General Settings" className="settings-card">
                 <Row gutter={[24, 0]}>
                   <Col span={12}>
+                    <div>
+                      <span>
+                        PG Name
+                        {renderTooltip("The name of your PG establishment")}
+                      </span>
+                    </div>
                     <Form.Item
                       name={["pgName"]}
-                      label={
-                        <span>
-                          PG Name{" "}
-                          {renderTooltip("The name of your PG establishment")}
-                        </span>
-                      }
                       rules={[
                         { required: true, message: "Please enter PG name" },
                       ]}
@@ -287,14 +287,14 @@ const Settings = () => {
                     </Form.Item>
                   </Col>
                   <Col span={12}>
+                    <div>
+                      <span>
+                        Contact Number
+                        {renderTooltip("Primary contact number for PG")}
+                      </span>
+                    </div>
                     <Form.Item
                       name={["contactNumber"]}
-                      label={
-                        <span>
-                          Contact Number{" "}
-                          {renderTooltip("Primary contact number for PG")}
-                        </span>
-                      }
                       rules={[
                         {
                           required: true,
@@ -309,28 +309,28 @@ const Settings = () => {
 
                 <Row gutter={[24, 0]}>
                   <Col span={12}>
+                    <div>
+                      <span>
+                        Address Line 1{" "}
+                        {renderTooltip("Primary address line")}
+                      </span>
+                    </div>
                     <Form.Item
                       name={["address", "addressLine1"]}
-                      label={
-                        <span>
-                          Address Line 1{" "}
-                          {renderTooltip("Primary address line")}
-                        </span>
-                      }
                       rules={[{ required: true, message: "Please enter address line 1" }]}
                     >
                       <Input placeholder="Enter address line 1" />
                     </Form.Item>
                   </Col>
                   <Col span={12}>
+                    <div>
+                      <span>
+                        Address Line 2
+                        {renderTooltip("Secondary address line")}
+                      </span>
+                    </div>
                     <Form.Item
                       name={["address", "addressLine2"]}
-                      label={
-                        <span>
-                          Address Line 2{" "}
-                          {renderTooltip("Secondary address line")}
-                        </span>
-                      }
                     >
                       <Input placeholder="Enter address line 2" />
                     </Form.Item>
@@ -339,42 +339,43 @@ const Settings = () => {
 
                 <Row gutter={[24, 0]}>
                   <Col span={8}>
+                    <div>
+                      <span>
+                        City{" "}
+                        {renderTooltip("City name")}
+                      </span>
+                    </div>
                     <Form.Item
                       name={["address", "city"]}
-                      label={
-                        <span>
-                          City{" "}
-                          {renderTooltip("City name")}
-                        </span>
-                      }
                       rules={[{ required: true, message: "Please enter city" }]}
                     >
                       <Input placeholder="Enter city" />
                     </Form.Item>
                   </Col>
                   <Col span={8}>
+                    <div>
+                      <span>
+                        State{" "}
+                        {renderTooltip("State name")}
+                      </span>
+                    </div>
                     <Form.Item
                       name={["address", "state"]}
-                      label={
-                        <span>
-                          State{" "}
-                          {renderTooltip("State name")}
-                        </span>
-                      }
                       rules={[{ required: true, message: "Please enter state" }]}
                     >
                       <Input placeholder="Enter state" />
                     </Form.Item>
                   </Col>
                   <Col span={8}>
+                    <div>
+                      <span>
+                        Pincode{" "}
+                        {renderTooltip("Postal code")}
+                      </span>
+                    </div>
                     <Form.Item
                       name={["address", "pincode"]}
-                      label={
-                        <span>
-                          Pincode{" "}
-                          {renderTooltip("Postal code")}
-                        </span>
-                      }
+
                       rules={[{ required: true, message: "Please enter pincode" }]}
                     >
                       <Input placeholder="Enter pincode" />
@@ -384,14 +385,15 @@ const Settings = () => {
 
                 <Row gutter={[24, 0]}>
                   <Col span={12}>
+                    <div>
+                      <span>
+                        Email{" "}
+                        {renderTooltip("Primary email for communications")}
+                      </span>
+                    </div>
                     <Form.Item
                       name={["email"]}
-                      label={
-                        <span>
-                          Email{" "}
-                          {renderTooltip("Primary email for communications")}
-                        </span>
-                      }
+
                       rules={[
                         { required: true, message: "Please enter email" },
                         {
@@ -404,30 +406,31 @@ const Settings = () => {
                     </Form.Item>
                   </Col>
                   <Col span={12}>
+                    <div>
+                      <span>
+                        GST Number{" "}
+                        {renderTooltip("GST number for PG")}
+                      </span>
+                    </div>
                     <Form.Item
                       name={["gstNumber"]}
-                      label={
-                        <span>
-                          GST Number{" "}
-                          {renderTooltip(
-                            "GST registration number if applicable"
-                          )}
-                        </span>
-                      }
+
                     >
                       <Input placeholder="Enter GST number" />
                     </Form.Item>
                   </Col>
                 </Row>
 
+                <div>
+                  <span>
+                    Description{" "}
+                    {renderTooltip("Brief description about your PG")}
+                  </span>
+                </div>
+
                 <Form.Item
                   name={["description"]}
-                  label={
-                    <span>
-                      Description{" "}
-                      {renderTooltip("Brief description about your PG")}
-                    </span>
-                  }
+
                 >
                   <Input.TextArea rows={3} placeholder="Enter PG description" />
                 </Form.Item>
@@ -534,16 +537,14 @@ const Settings = () => {
               <Card title="Payment Settings" className="settings-card">
                 <Row gutter={[24, 0]}>
                   <Col span={12}>
+                    <div>
+                      <span>
+                        Currency{" "}
+                        {renderTooltip("Currency for PG")}
+                      </span>
+                    </div>
                     <Form.Item
                       name="currency"
-                      label={
-                        <span>
-                          Currency{" "}
-                          {renderTooltip(
-                            "Default currency for all transactions"
-                          )}
-                        </span>
-                      }
                     >
                       <Select>
                         <Select.Option value="INR">INR (₹)</Select.Option>
@@ -552,14 +553,15 @@ const Settings = () => {
                     </Form.Item>
                   </Col>
                   <Col span={12}>
+                    <div>
+                      <span>
+                        Payment Due Day{" "}
+                        {renderTooltip("Day of month when rent is due")}
+                      </span>
+                    </div>
                     <Form.Item
                       name="paymentDueDay"
-                      label={
-                        <span>
-                          Payment Due Day{" "}
-                          {renderTooltip("Day of month when rent is due")}
-                        </span>
-                      }
+
                       rules={[{ required: true }]}
                     >
                       <InputNumber min={1} max={31} style={{ width: "100%" }} />
@@ -569,30 +571,32 @@ const Settings = () => {
 
                 <Row gutter={[24, 0]}>
                   <Col span={12}>
+                    <div>
+                      <span>
+                        Grace Period (days){" "}
+                        {renderTooltip(
+                          "Days allowed after due date before late fee"
+                        )}
+                      </span>
+                    </div>
                     <Form.Item
                       name="latePaymentGracePeriod"
-                      label={
-                        <span>
-                          Grace Period (days){" "}
-                          {renderTooltip(
-                            "Days allowed after due date before late fee"
-                          )}
-                        </span>
-                      }
+
                       rules={[{ required: true }]}
                     >
                       <InputNumber min={0} max={30} style={{ width: "100%" }} />
                     </Form.Item>
                   </Col>
                   <Col span={12}>
+                    <div>
+                      <span>
+                        Late Fee{" "}
+                        {renderTooltip("Fee charged for late payments")}
+                      </span>
+                    </div>
                     <Form.Item
                       name="latePaymentFee"
-                      label={
-                        <span>
-                          Late Fee{" "}
-                          {renderTooltip("Fee charged for late payments")}
-                        </span>
-                      }
+
                       rules={[{ required: true }]}
                     >
                       <InputNumber min={0} style={{ width: "100%" }} />
@@ -602,32 +606,32 @@ const Settings = () => {
 
                 <Row gutter={[24, 0]}>
                   <Col span={12}>
+                    <div>
+                      <span>
+                        Security Deposit (months){" "}
+                        {renderTooltip(
+                          "Number of months rent as security deposit"
+                        )}
+                      </span>
+                    </div>
                     <Form.Item
                       name="securityDepositMonths"
-                      label={
-                        <span>
-                          Security Deposit (months){" "}
-                          {renderTooltip(
-                            "Number of months rent as security deposit"
-                          )}
-                        </span>
-                      }
+
                       rules={[{ required: true }]}
                     >
                       <InputNumber min={1} max={12} style={{ width: "100%" }} />
                     </Form.Item>
                   </Col>
                   <Col span={12}>
+                    <div>
+                      <span>
+                        Advance Rent (months){" "}
+                        {renderTooltip("Number of months rent as advance")}
+                      </span>
+                    </div>
                     <Form.Item
                       name="advanceRentMonths"
-                      label={
-                        <span>
-                          Advance Rent (months){" "}
-                          {renderTooltip(
-                            "Number of months rent to be paid in advance"
-                          )}
-                        </span>
-                      }
+
                       rules={[{ required: true }]}
                     >
                       <InputNumber min={1} max={12} style={{ width: "100%" }} />
@@ -635,14 +639,15 @@ const Settings = () => {
                   </Col>
                 </Row>
 
+                <div>
+                  <span>
+                    Accepted Payment Methods{" "}
+                    {renderTooltip("Payment methods accepted")}
+                  </span>
+                </div>
                 <Form.Item
                   name="paymentMethods"
-                  label={
-                    <span>
-                      Accepted Payment Methods{" "}
-                      {renderTooltip("Payment methods accepted")}
-                    </span>
-                  }
+
                 >
                   <Select mode="multiple" placeholder="Select payment methods">
                     <Select.Option value="cash">Cash</Select.Option>
@@ -692,7 +697,7 @@ const Settings = () => {
                   </Col>
                 </Row>
 
-                <div className="tab-title" style={{marginBottom: "16px"}}>Notification Preferences</div>
+                <div className="tab-title" style={{ marginBottom: "16px" }}>Notification Preferences</div>
 
                 <Row gutter={[24, 0]}>
                   <Col span={12}>
