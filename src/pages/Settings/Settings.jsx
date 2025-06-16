@@ -15,6 +15,9 @@ import {
   Row,
   Col,
   Tag,
+  Table,
+  Button,
+  Modal,
 } from "antd";
 import {
   SaveOutlined,
@@ -22,9 +25,17 @@ import {
   InfoCircleOutlined,
   PlusOutlined,
   DeleteOutlined,
+  EditOutlined,
 } from "@ant-design/icons";
 import "./Settings.scss";
-import { updateSettings, updateNotificationPreferences, resetSettings } from "../../store/slices/settingsSlice";
+import { 
+  updateSettings, 
+  updateNotificationPreferences, 
+  resetSettings,
+  updateAddress,
+  updateRoomTypes,
+  updateBedTypes,
+} from "../../store/slices/settingsSlice";
 import PgButton from "../../components/resusableComponents/PgButton";
 
 const Settings = () => {
@@ -33,11 +44,17 @@ const Settings = () => {
   const [form] = Form.useForm();
   const [activeTab, setActiveTab] = useState("general");
   const [roomTypes, setRoomTypes] = useState(settings.roomTypes || []);
+  const [bedTypes, setBedTypes] = useState(settings.bedTypes || []);
+  const [isRoomTypeModalVisible, setIsRoomTypeModalVisible] = useState(false);
+  const [isBedTypeModalVisible, setIsBedTypeModalVisible] = useState(false);
+  const [editingRoomType, setEditingRoomType] = useState(null);
+  const [editingBedType, setEditingBedType] = useState(null);
 
   // Tab configuration
   const tabs = useMemo(() => [
     { id: "general", label: "General" },
     { id: "rooms", label: "Rooms" },
+    { id: "beds", label: "Beds" },
     { id: "payments", label: "Payments" },
     { id: "notifications", label: "Notifications" },
     { id: "system", label: "System" },
@@ -45,17 +62,18 @@ const Settings = () => {
 
   const handleSave = useCallback(async (values) => {
     try {
-      dispatch(updateSettings({ ...values, roomTypes }));
+      dispatch(updateSettings({ ...values, roomTypes, bedTypes }));
       message.success("Settings saved successfully");
     } catch (error) {
       message.error("Failed to save settings");
     }
-  }, [dispatch, roomTypes]);
+  }, [dispatch, roomTypes, bedTypes]);
 
   const handleReset = useCallback(() => {
     dispatch(resetSettings());
     form.resetFields();
     setRoomTypes([]);
+    setBedTypes([]);
     message.success("Settings reset to default values");
   }, [dispatch, form]);
 
@@ -69,26 +87,158 @@ const Settings = () => {
     </Tooltip>
   ), []);
 
+  // Room Type Management
   const handleAddRoomType = useCallback(() => {
-    const newType = {
-      id: `type-${Date.now()}`,
-      name: "",
-      capacity: 2,
-      amenities: [],
-      basePrice: 0,
-    };
-    setRoomTypes([...roomTypes, newType]);
-  }, [roomTypes]);
+    setEditingRoomType(null);
+    setIsRoomTypeModalVisible(true);
+  }, []);
 
-  const handleUpdateRoomType = useCallback((id, field, value) => {
-    setRoomTypes(roomTypes.map(type => 
-      type.id === id ? { ...type, [field]: value } : type
-    ));
-  }, [roomTypes]);
+  const handleEditRoomType = useCallback((record) => {
+    setEditingRoomType(record);
+    setIsRoomTypeModalVisible(true);
+  }, []);
 
   const handleDeleteRoomType = useCallback((id) => {
     setRoomTypes(roomTypes.filter(type => type.id !== id));
   }, [roomTypes]);
+
+  const handleRoomTypeModalOk = useCallback((values) => {
+    if (editingRoomType) {
+      setRoomTypes(roomTypes.map(type => 
+        type.id === editingRoomType.id ? { ...type, ...values } : type
+      ));
+    } else {
+      setRoomTypes([...roomTypes, { ...values, id: `type-${Date.now()}` }]);
+    }
+    setIsRoomTypeModalVisible(false);
+  }, [roomTypes, editingRoomType]);
+
+  // Bed Type Management
+  const handleAddBedType = useCallback(() => {
+    setEditingBedType(null);
+    setIsBedTypeModalVisible(true);
+  }, []);
+
+  const handleEditBedType = useCallback((record) => {
+    setEditingBedType(record);
+    setIsBedTypeModalVisible(true);
+  }, []);
+
+  const handleDeleteBedType = useCallback((id) => {
+    setBedTypes(bedTypes.filter(type => type.id !== id));
+  }, [bedTypes]);
+
+  const handleBedTypeModalOk = useCallback((values) => {
+    if (editingBedType) {
+      setBedTypes(bedTypes.map(type => 
+        type.id === editingBedType.id ? { ...type, ...values } : type
+      ));
+    } else {
+      setBedTypes([...bedTypes, { ...values, id: `bed-type-${Date.now()}` }]);
+    }
+    setIsBedTypeModalVisible(false);
+  }, [bedTypes, editingBedType]);
+
+  // Table Columns
+  const roomTypeColumns = [
+    {
+      title: 'Type Name',
+      dataIndex: 'name',
+      key: 'name',
+    },
+    {
+      title: 'Capacity',
+      dataIndex: 'capacity',
+      key: 'capacity',
+    },
+    {
+      title: 'Base Price',
+      dataIndex: 'basePrice',
+      key: 'basePrice',
+      render: (price) => `₹${price}`,
+    },
+    {
+      title: 'Amenities',
+      dataIndex: 'amenities',
+      key: 'amenities',
+      render: (amenities) => (
+        <Space>
+          {amenities.map(amenity => (
+            <Tag key={amenity}>{amenity}</Tag>
+          ))}
+        </Space>
+      ),
+    },
+    {
+      title: 'Actions',
+      key: 'actions',
+      render: (_, record) => (
+        <Space>
+          <Button 
+            type="text" 
+            icon={<EditOutlined />} 
+            onClick={() => handleEditRoomType(record)}
+          />
+          <Button 
+            type="text" 
+            danger 
+            icon={<DeleteOutlined />} 
+            onClick={() => handleDeleteRoomType(record.id)}
+          />
+        </Space>
+      ),
+    },
+  ];
+
+  const bedTypeColumns = [
+    {
+      title: 'Type Name',
+      dataIndex: 'name',
+      key: 'name',
+    },
+    {
+      title: 'Size',
+      dataIndex: 'size',
+      key: 'size',
+    },
+    {
+      title: 'Base Price',
+      dataIndex: 'basePrice',
+      key: 'basePrice',
+      render: (price) => `₹${price}`,
+    },
+    {
+      title: 'Features',
+      dataIndex: 'features',
+      key: 'features',
+      render: (features) => (
+        <Space>
+          {features.map(feature => (
+            <Tag key={feature}>{feature}</Tag>
+          ))}
+        </Space>
+      ),
+    },
+    {
+      title: 'Actions',
+      key: 'actions',
+      render: (_, record) => (
+        <Space>
+          <Button 
+            type="text" 
+            icon={<EditOutlined />} 
+            onClick={() => handleEditBedType(record)}
+          />
+          <Button 
+            type="text" 
+            danger 
+            icon={<DeleteOutlined />} 
+            onClick={() => handleDeleteBedType(record.id)}
+          />
+        </Space>
+      ),
+    },
+  ];
 
   return (
     <div className="SettingsStyle">
@@ -122,7 +272,7 @@ const Settings = () => {
                 <Row gutter={[24, 0]}>
                   <Col span={12}>
                     <Form.Item
-                      name="pgName"
+                      name={["pgName"]}
                       label={
                         <span>
                           PG Name{" "}
@@ -138,7 +288,7 @@ const Settings = () => {
                   </Col>
                   <Col span={12}>
                     <Form.Item
-                      name="contactNumber"
+                      name={["contactNumber"]}
                       label={
                         <span>
                           Contact Number{" "}
@@ -157,22 +307,85 @@ const Settings = () => {
                   </Col>
                 </Row>
 
-                <Form.Item
-                  name="address"
-                  label={
-                    <span>
-                      Address {renderTooltip("Complete address of your PG")}
-                    </span>
-                  }
-                  rules={[{ required: true, message: "Please enter address" }]}
-                >
-                  <Input.TextArea rows={3} placeholder="Enter address" />
-                </Form.Item>
+                <Row gutter={[24, 0]}>
+                  <Col span={12}>
+                    <Form.Item
+                      name={["address", "addressLine1"]}
+                      label={
+                        <span>
+                          Address Line 1{" "}
+                          {renderTooltip("Primary address line")}
+                        </span>
+                      }
+                      rules={[{ required: true, message: "Please enter address line 1" }]}
+                    >
+                      <Input placeholder="Enter address line 1" />
+                    </Form.Item>
+                  </Col>
+                  <Col span={12}>
+                    <Form.Item
+                      name={["address", "addressLine2"]}
+                      label={
+                        <span>
+                          Address Line 2{" "}
+                          {renderTooltip("Secondary address line")}
+                        </span>
+                      }
+                    >
+                      <Input placeholder="Enter address line 2" />
+                    </Form.Item>
+                  </Col>
+                </Row>
+
+                <Row gutter={[24, 0]}>
+                  <Col span={8}>
+                    <Form.Item
+                      name={["address", "city"]}
+                      label={
+                        <span>
+                          City{" "}
+                          {renderTooltip("City name")}
+                        </span>
+                      }
+                      rules={[{ required: true, message: "Please enter city" }]}
+                    >
+                      <Input placeholder="Enter city" />
+                    </Form.Item>
+                  </Col>
+                  <Col span={8}>
+                    <Form.Item
+                      name={["address", "state"]}
+                      label={
+                        <span>
+                          State{" "}
+                          {renderTooltip("State name")}
+                        </span>
+                      }
+                      rules={[{ required: true, message: "Please enter state" }]}
+                    >
+                      <Input placeholder="Enter state" />
+                    </Form.Item>
+                  </Col>
+                  <Col span={8}>
+                    <Form.Item
+                      name={["address", "pincode"]}
+                      label={
+                        <span>
+                          Pincode{" "}
+                          {renderTooltip("Postal code")}
+                        </span>
+                      }
+                      rules={[{ required: true, message: "Please enter pincode" }]}
+                    >
+                      <Input placeholder="Enter pincode" />
+                    </Form.Item>
+                  </Col>
+                </Row>
 
                 <Row gutter={[24, 0]}>
                   <Col span={12}>
                     <Form.Item
-                      name="email"
+                      name={["email"]}
                       label={
                         <span>
                           Email{" "}
@@ -192,7 +405,7 @@ const Settings = () => {
                   </Col>
                   <Col span={12}>
                     <Form.Item
-                      name="gstNumber"
+                      name={["gstNumber"]}
                       label={
                         <span>
                           GST Number{" "}
@@ -208,7 +421,7 @@ const Settings = () => {
                 </Row>
 
                 <Form.Item
-                  name="description"
+                  name={["description"]}
                   label={
                     <span>
                       Description{" "}
@@ -238,96 +451,12 @@ const Settings = () => {
                     </PgButton>
                   </div>
 
-                  {roomTypes.map((type) => (
-                    <Card key={type.id} className="room-type-card">
-                      <Row gutter={[24, 0]}>
-                        <Col span={8}>
-                          <Form.Item label="Type Name" required>
-                            <Input
-                              value={type.name}
-                              onChange={(e) =>
-                                handleUpdateRoomType(
-                                  type.id,
-                                  "name",
-                                  e.target.value
-                                )
-                              }
-                              placeholder="e.g., Deluxe AC"
-                            />
-                          </Form.Item>
-                        </Col>
-                        <Col span={6}>
-                          <Form.Item label="Capacity" required>
-                            <InputNumber
-                              value={type.capacity}
-                              onChange={(value) =>
-                                handleUpdateRoomType(type.id, "capacity", value)
-                              }
-                              min={1}
-                              max={10}
-                              style={{ width: "100%" }}
-                            />
-                          </Form.Item>
-                        </Col>
-                        <Col span={6}>
-                          <Form.Item label="Base Price" required>
-                            <InputNumber
-                              value={type.basePrice}
-                              onChange={(value) =>
-                                handleUpdateRoomType(
-                                  type.id,
-                                  "basePrice",
-                                  value
-                                )
-                              }
-                              min={0}
-                              style={{ width: "100%" }}
-                              prefix="₹"
-                            />
-                          </Form.Item>
-                        </Col>
-                        <Col
-                          span={4}
-                          style={{
-                            display: "flex",
-                            alignItems: "flex-end",
-                            justifyContent: "flex-end",
-                          }}
-                        >
-                          <PgButton
-                            type="text"
-                            danger
-                            icon={<DeleteOutlined />}
-                            onClick={() => handleDeleteRoomType(type.id)}
-                          />
-                        </Col>
-                      </Row>
-
-                      <Form.Item label="Amenities">
-                        <Select
-                          mode="multiple"
-                          value={type.amenities}
-                          onChange={(value) =>
-                            handleUpdateRoomType(type.id, "amenities", value)
-                          }
-                          placeholder="Select amenities"
-                          style={{ width: "100%" }}
-                        >
-                          <Select.Option value="wifi">WiFi</Select.Option>
-                          <Select.Option value="ac">AC</Select.Option>
-                          <Select.Option value="tv">TV</Select.Option>
-                          <Select.Option value="attached_bathroom">
-                            Attached Bathroom
-                          </Select.Option>
-                          <Select.Option value="geyser">Geyser</Select.Option>
-                          <Select.Option value="wardrobe">
-                            Wardrobe
-                          </Select.Option>
-                          <Select.Option value="balcony">Balcony</Select.Option>
-                        </Select>
-                      </Form.Item>
-                    </Card>
-                  ))}
+                  <Table
+                    columns={roomTypeColumns}
+                    dataSource={roomTypes}
+                    rowKey="id"
+                    pagination={false}
+                  />
 
                   <Divider />
 
@@ -367,6 +496,33 @@ const Settings = () => {
                       </Form.Item>
                     </Col>
                   </Row>
+                </div>
+              </Card>
+            </div>
+          )}
+
+          {/* Bed Settings */}
+          {activeTab === "beds" && (
+            <div className="settings-section">
+              <Card title="Bed Settings" className="settings-card">
+                <div className="bed-types-section">
+                  <div className="section-header">
+                    <h3>Bed Types</h3>
+                    <PgButton
+                      type="primary"
+                      icon={<PlusOutlined />}
+                      onClick={handleAddBedType}
+                    >
+                      Add Bed Type
+                    </PgButton>
+                  </div>
+
+                  <Table
+                    columns={bedTypeColumns}
+                    dataSource={bedTypes}
+                    rowKey="id"
+                    pagination={false}
+                  />
                 </div>
               </Card>
             </div>
@@ -733,6 +889,129 @@ const Settings = () => {
           </div>
         </Form>
       </div>
+
+      {/* Room Type Modal */}
+      <Modal
+        title={editingRoomType ? "Edit Room Type" : "Add Room Type"}
+        open={isRoomTypeModalVisible}
+        onCancel={() => setIsRoomTypeModalVisible(false)}
+        footer={null}
+      >
+        <Form
+          layout="vertical"
+          initialValues={editingRoomType}
+          onFinish={handleRoomTypeModalOk}
+        >
+          <Form.Item
+            name="name"
+            label="Type Name"
+            rules={[{ required: true, message: "Please enter type name" }]}
+          >
+            <Input placeholder="e.g., Deluxe AC" />
+          </Form.Item>
+          <Form.Item
+            name="capacity"
+            label="Capacity"
+            rules={[{ required: true, message: "Please enter capacity" }]}
+          >
+            <InputNumber min={1} max={10} style={{ width: "100%" }} />
+          </Form.Item>
+          <Form.Item
+            name="basePrice"
+            label="Base Price"
+            rules={[{ required: true, message: "Please enter base price" }]}
+          >
+            <InputNumber min={0} style={{ width: "100%" }} prefix="₹" />
+          </Form.Item>
+          <Form.Item
+            name="amenities"
+            label="Amenities"
+          >
+            <Select mode="multiple" placeholder="Select amenities">
+              <Select.Option value="wifi">WiFi</Select.Option>
+              <Select.Option value="ac">AC</Select.Option>
+              <Select.Option value="tv">TV</Select.Option>
+              <Select.Option value="attached_bathroom">Attached Bathroom</Select.Option>
+              <Select.Option value="geyser">Geyser</Select.Option>
+              <Select.Option value="wardrobe">Wardrobe</Select.Option>
+              <Select.Option value="balcony">Balcony</Select.Option>
+            </Select>
+          </Form.Item>
+          <Form.Item>
+            <Space>
+              <Button onClick={() => setIsRoomTypeModalVisible(false)}>
+                Cancel
+              </Button>
+              <Button type="primary" htmlType="submit">
+                {editingRoomType ? "Update" : "Add"}
+              </Button>
+            </Space>
+          </Form.Item>
+        </Form>
+      </Modal>
+
+      {/* Bed Type Modal */}
+      <Modal
+        title={editingBedType ? "Edit Bed Type" : "Add Bed Type"}
+        open={isBedTypeModalVisible}
+        onCancel={() => setIsBedTypeModalVisible(false)}
+        footer={null}
+      >
+        <Form
+          layout="vertical"
+          initialValues={editingBedType}
+          onFinish={handleBedTypeModalOk}
+        >
+          <Form.Item
+            name="name"
+            label="Type Name"
+            rules={[{ required: true, message: "Please enter type name" }]}
+          >
+            <Input placeholder="e.g., Single Bed" />
+          </Form.Item>
+          <Form.Item
+            name="size"
+            label="Size"
+            rules={[{ required: true, message: "Please enter bed size" }]}
+          >
+            <Select>
+              <Select.Option value="single">Single</Select.Option>
+              <Select.Option value="double">Double</Select.Option>
+              <Select.Option value="queen">Queen</Select.Option>
+              <Select.Option value="king">King</Select.Option>
+            </Select>
+          </Form.Item>
+          <Form.Item
+            name="basePrice"
+            label="Base Price"
+            rules={[{ required: true, message: "Please enter base price" }]}
+          >
+            <InputNumber min={0} style={{ width: "100%" }} prefix="₹" />
+          </Form.Item>
+          <Form.Item
+            name="features"
+            label="Features"
+          >
+            <Select mode="multiple" placeholder="Select features">
+              <Select.Option value="mattress">Mattress</Select.Option>
+              <Select.Option value="pillow">Pillow</Select.Option>
+              <Select.Option value="blanket">Blanket</Select.Option>
+              <Select.Option value="bed_sheet">Bed Sheet</Select.Option>
+              <Select.Option value="side_table">Side Table</Select.Option>
+            </Select>
+          </Form.Item>
+          <Form.Item>
+            <Space>
+              <Button onClick={() => setIsBedTypeModalVisible(false)}>
+                Cancel
+              </Button>
+              <Button type="primary" htmlType="submit">
+                {editingBedType ? "Update" : "Add"}
+              </Button>
+            </Space>
+          </Form.Item>
+        </Form>
+      </Modal>
     </div>
   );
 };
