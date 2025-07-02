@@ -4,27 +4,14 @@ const initialState = {
   settings: {
     // General Settings
     pgName: 'My PG',
-    address: {
-      addressLine1: '',
-      addressLine2: '',
-      city: '',
-      state: '',
-      country: 'India',
-      pincode: '',
-    },
+    address: '',
     contactNumber: '',
     email: '',
-    gstNumber: '',
-    description: '',
     
     // Room Settings
-    roomTypes: [],
     defaultRoomCapacity: 2,
     allowMixedGenderRooms: false,
     maintenanceNotificationThreshold: 7, // days
-    
-    // Bed Settings
-    bedTypes: [],
     
     // Payment Settings
     currency: 'INR',
@@ -32,8 +19,6 @@ const initialState = {
     latePaymentGracePeriod: 5, // days
     latePaymentFee: 100, // amount
     securityDepositMonths: 2,
-    advanceRentMonths: 1,
-    paymentMethods: ['cash', 'bank_transfer', 'upi'],
     
     // Notification Settings
     enableEmailNotifications: true,
@@ -66,15 +51,6 @@ const settingsSlice = createSlice({
     updateSettings: (state, action) => {
       state.settings = { ...state.settings, ...action.payload };
     },
-    updateAddress: (state, action) => {
-      state.settings.address = { ...state.settings.address, ...action.payload };
-    },
-    updateRoomTypes: (state, action) => {
-      state.settings.roomTypes = action.payload;
-    },
-    updateBedTypes: (state, action) => {
-      state.settings.bedTypes = action.payload;
-    },
     updateNotificationPreferences: (state, action) => {
       state.settings.notificationPreferences = {
         ...state.settings.notificationPreferences,
@@ -95,9 +71,6 @@ const settingsSlice = createSlice({
 
 export const {
   updateSettings,
-  updateAddress,
-  updateRoomTypes,
-  updateBedTypes,
   updateNotificationPreferences,
   resetSettings,
   setLoading,
