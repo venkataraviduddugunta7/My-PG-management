@@ -55,7 +55,7 @@ const stayTypes = [
 ];
 const idTypes = ["Aadhar", "PAN", "Passport", "Driving License", "Voter ID"];
 
-const TenantFormModal = ({ visible, onClose, onSubmit, tenantData, termsAccepted, onShowTerms, floors = [], rooms = [], beds = [] }) => {
+const TenantFormModal = ({ visible, onClose, onSubmit, tenantData, termsAccepted, onShowTerms, onTermsChange, floors = [], rooms = [], beds = [] }) => {
   const [form] = Form.useForm();
   const [fileList, setFileList] = useState([]);
   const [selectedFloorId, setSelectedFloorId] = useState(null);
@@ -729,7 +729,18 @@ const TenantFormModal = ({ visible, onClose, onSubmit, tenantData, termsAccepted
             <Form.Item>
               <Checkbox
                 checked={termsAccepted}
-                onChange={(e) => setTermsAccepted(e.target.checked)}
+                onChange={(e) => {
+                  if (e.target.checked) {
+                    // If checking the box, show terms modal
+                    onShowTerms();
+                  } else {
+                    // If unchecking, we need to handle this in parent
+                    // For now, we'll pass the unchecked state to parent
+                    if (onTermsChange) {
+                      onTermsChange(false);
+                    }
+                  }
+                }}
               >
                 I agree to the{" "}
                 <a

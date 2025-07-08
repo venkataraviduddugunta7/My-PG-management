@@ -166,6 +166,10 @@ const Tenants = () => {
     }
   };
 
+  const handleTermsChange = (accepted) => {
+    setTermsAccepted(accepted);
+  };
+
   return (
     <div className="TenantStyles">
       <div className="tabheader">Tenants</div>
@@ -268,6 +272,7 @@ const Tenants = () => {
           onSubmit={editingTenant ? handleUpdateTenant : handleAddTenant}
           termsAccepted={termsAccepted}
           onShowTerms={() => setTermsModalVisible(true)}
+          onTermsChange={handleTermsChange}
           tenantData={editingTenant}
           isEditing={!!editingTenant}
           floors={floors}
@@ -280,6 +285,7 @@ const Tenants = () => {
           onAccept={handleAcceptTerms}
           onCancel={() => {
             setTermsModalVisible(false);
+            setTermsAccepted(false); // Uncheck the checkbox when terms are cancelled
             setPendingTenantData(null);
           }}
         />
