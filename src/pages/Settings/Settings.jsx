@@ -696,13 +696,21 @@ const Settings = () => {
                 </div>
 
                 <div style={{ marginTop: "16px", marginBottom: "24px" }}>
-                  <PgButton
-                    type="secondary"
-                    icon={<PlusOutlined />}
-                    onClick={handleAddTerm}
+                  <Tooltip 
+                    title={termsAndConditions.some(term => term.trim() === "") 
+                      ? "Please fill in all existing terms before adding a new one" 
+                      : "Add a new term or condition"
+                    }
                   >
-                    Add New Term
-                  </PgButton>
+                    <PgButton
+                      type="secondary"
+                      icon={<PlusOutlined />}
+                      onClick={handleAddTerm}
+                      disabled={termsAndConditions.some(term => term.trim() === "")}
+                    >
+                      Add New Term
+                    </PgButton>
+                  </Tooltip>
                 </div>
 
                 <Divider />
@@ -749,13 +757,21 @@ const Settings = () => {
                 </div>
 
                 <div style={{ marginTop: "16px" }}>
-                  <PgButton
-                    type="primary"
-                    icon={<SaveOutlined />}
-                    onClick={handleSaveTerms}
+                  <Tooltip 
+                    title={termsAndConditions.some(term => term.trim() === "") 
+                      ? "Please fill in all terms before saving" 
+                      : "Save the terms and conditions"
+                    }
                   >
-                    Save Terms & Conditions
-                  </PgButton>
+                    <PgButton
+                      type="primary"
+                      icon={<SaveOutlined />}
+                      onClick={handleSaveTerms}
+                      disabled={termsAndConditions.some(term => term.trim() === "")}
+                    >
+                      Save Terms & Conditions
+                    </PgButton>
+                  </Tooltip>
                 </div>
               </Card>
             </div>
