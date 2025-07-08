@@ -110,6 +110,13 @@ const Settings = () => {
     setTermsAndConditions(updatedTerms);
   }, [termsAndConditions]);
 
+  const handleTermBlur = useCallback((index, value) => {
+    // Auto-delete empty terms when user leaves the field (except if it's the only term)
+    if (value.trim() === '' && termsAndConditions.length > 1) {
+      setTermsAndConditions(current => current.filter((_, i) => i !== index));
+    }
+  }, [termsAndConditions]);
+
   const handleDeleteTerm = useCallback((index) => {
     setTermsAndConditions(termsAndConditions.filter((_, i) => i !== index));
   }, [termsAndConditions]);
@@ -679,6 +686,7 @@ const Settings = () => {
                         <Input.TextArea
                           value={term}
                           onChange={(e) => handleUpdateTerm(index, e.target.value)}
+                          onBlur={(e) => handleTermBlur(index, e.target.value)}
                           placeholder="Enter term or condition..."
                           autoSize={{ minRows: 2, maxRows: 4 }}
                           style={{ flex: 1 }}
@@ -760,14 +768,16 @@ const Settings = () => {
                   <Tooltip 
                     title={termsAndConditions.some(term => term.trim() === "") 
                       ? "Please fill in all terms before saving" 
-                      : "Save the terms and conditions"
+                      : termsAndConditions.length === 0 
+                        ? "Please add at least one term before saving"
+                        : "Save the terms and conditions"
                     }
                   >
                     <PgButton
                       type="primary"
                       icon={<SaveOutlined />}
                       onClick={handleSaveTerms}
-                      disabled={termsAndConditions.some(term => term.trim() === "")}
+                      disabled={termsAndConditions.some(term => term.trim() === "") || termsAndConditions.length === 0}
                     >
                       Save Terms & Conditions
                     </PgButton>
