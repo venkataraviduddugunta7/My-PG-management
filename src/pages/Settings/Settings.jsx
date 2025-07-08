@@ -1,4 +1,4 @@
-import { useState, useMemo, useCallback } from "react";
+import { useState, useMemo, useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   Form,
@@ -24,7 +24,7 @@ import {
   DeleteOutlined,
 } from "@ant-design/icons";
 import "./Settings.scss";
-import { updateSettings, updateNotificationPreferences, resetSettings } from "../../store/slices/settingsSlice";
+import { updateSettings, updateNotificationPreferences, updateTermsAndConditions, resetSettings } from "../../store/slices/settingsSlice";
 import PgButton from "../../components/resusableComponents/PgButton";
 
 const Settings = () => {
@@ -33,6 +33,12 @@ const Settings = () => {
   const [form] = Form.useForm();
   const [activeTab, setActiveTab] = useState("general");
   const [roomTypes, setRoomTypes] = useState(settings.roomTypes || []);
+  const [termsAndConditions, setTermsAndConditions] = useState(settings.termsAndConditions || []);
+  
+  // Update local state when settings change
+  useEffect(() => {
+    setTermsAndConditions(settings.termsAndConditions || []);
+  }, [settings.termsAndConditions]);
 
   // Tab configuration
   const tabs = useMemo(() => [
@@ -40,22 +46,25 @@ const Settings = () => {
     { id: "rooms", label: "Rooms" },
     { id: "payments", label: "Payments" },
     { id: "notifications", label: "Notifications" },
+    { id: "terms", label: "Terms & Conditions" },
     { id: "system", label: "System" },
   ], []);
 
   const handleSave = useCallback(async (values) => {
     try {
       dispatch(updateSettings({ ...values, roomTypes }));
+      dispatch(updateTermsAndConditions(termsAndConditions));
       message.success("Settings saved successfully");
     } catch (error) {
       message.error("Failed to save settings");
     }
-  }, [dispatch, roomTypes]);
+  }, [dispatch, roomTypes, termsAndConditions]);
 
   const handleReset = useCallback(() => {
     dispatch(resetSettings());
     form.resetFields();
     setRoomTypes([]);
+    setTermsAndConditions([]);
     message.success("Settings reset to default values");
   }, [dispatch, form]);
 
@@ -89,6 +98,26 @@ const Settings = () => {
   const handleDeleteRoomType = useCallback((id) => {
     setRoomTypes(roomTypes.filter(type => type.id !== id));
   }, [roomTypes]);
+
+  // Terms and Conditions handlers
+  const handleAddTerm = useCallback(() => {
+    setTermsAndConditions([...termsAndConditions, ""]);
+  }, [termsAndConditions]);
+
+  const handleUpdateTerm = useCallback((index, value) => {
+    const updatedTerms = [...termsAndConditions];
+    updatedTerms[index] = value;
+    setTermsAndConditions(updatedTerms);
+  }, [termsAndConditions]);
+
+  const handleDeleteTerm = useCallback((index) => {
+    setTermsAndConditions(termsAndConditions.filter((_, i) => i !== index));
+  }, [termsAndConditions]);
+
+  const handleSaveTerms = useCallback(() => {
+    dispatch(updateTermsAndConditions(termsAndConditions));
+    message.success("Terms and conditions saved successfully");
+  }, [dispatch, termsAndConditions]);
 
   return (
     <div className="SettingsStyle">
@@ -620,6 +649,114 @@ const Settings = () => {
                 >
                   <Switch />
                 </Form.Item>
+              </Card>
+            </div>
+          )}
+
+          {/* Terms and Conditions */}
+          {activeTab === "terms" && (
+            <div className="settings-section">
+              <Card title="Terms and Conditions" className="settings-card">
+                <div style={{ marginBottom: "16px" }}>
+                  <p style={{ color: "#666", marginBottom: "16px" }}>
+                    Configure the terms and conditions that tenants must agree to during registration.
+                    These terms will be displayed in a formal agreement format.
+                  </p>
+                </div>
+                
+                <div className="terms-list">
+                  {termsAndConditions.map((term, index) => (
+                    <div key={index} className="term-item" style={{ marginBottom: "12px" }}>
+                      <div style={{ display: "flex", alignItems: "flex-start", gap: "8px" }}>
+                        <span style={{ 
+                          minWidth: "20px", 
+                          color: "#586FCC", 
+                          fontWeight: "600",
+                          marginTop: "8px"
+                        }}>
+                          {index + 1}.
+                        </span>
+                        <Input.TextArea
+                          value={term}
+                          onChange={(e) => handleUpdateTerm(index, e.target.value)}
+                          placeholder="Enter term or condition..."
+                          autoSize={{ minRows: 2, maxRows: 4 }}
+                          style={{ flex: 1 }}
+                        />
+                        <PgButton
+                          type="secondary"
+                          size="small"
+                          icon={<DeleteOutlined />}
+                          onClick={() => handleDeleteTerm(index)}
+                          style={{ marginTop: "4px" }}
+                        />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                <div style={{ marginTop: "16px", marginBottom: "24px" }}>
+                  <PgButton
+                    type="secondary"
+                    icon={<PlusOutlined />}
+                    onClick={handleAddTerm}
+                  >
+                    Add New Term
+                  </PgButton>
+                </div>
+
+                <Divider />
+
+                <div className="terms-preview">
+                  <h4 style={{ color: "#586FCC", marginBottom: "16px" }}>Preview:</h4>
+                  <div style={{ 
+                    background: "#f8f9fa", 
+                    padding: "16px", 
+                    borderRadius: "8px",
+                    border: "1px solid #e9ecef",
+                    maxHeight: "300px",
+                    overflowY: "auto"
+                  }}>
+                    <h3 style={{ 
+                      textAlign: "center", 
+                      marginBottom: "20px",
+                      color: "#273156",
+                      fontFamily: "Poppins"
+                    }}>
+                      Terms and Conditions
+                    </h3>
+                    <div style={{ textAlign: "justify", lineHeight: "1.6" }}>
+                      <p style={{ marginBottom: "16px", color: "#666" }}>
+                        By registering as a tenant, you agree to comply with the following terms and conditions:
+                      </p>
+                      {termsAndConditions.map((term, index) => (
+                        <div key={index} style={{ 
+                          marginBottom: "12px",
+                          paddingLeft: "16px",
+                          color: "#333",
+                          fontFamily: "Lato"
+                        }}>
+                          <strong>{index + 1}.</strong> {term}
+                        </div>
+                      ))}
+                      {termsAndConditions.length === 0 && (
+                        <p style={{ color: "#999", fontStyle: "italic" }}>
+                          No terms and conditions added yet. Click "Add New Term" to get started.
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                </div>
+
+                <div style={{ marginTop: "16px" }}>
+                  <PgButton
+                    type="primary"
+                    icon={<SaveOutlined />}
+                    onClick={handleSaveTerms}
+                  >
+                    Save Terms & Conditions
+                  </PgButton>
+                </div>
               </Card>
             </div>
           )}

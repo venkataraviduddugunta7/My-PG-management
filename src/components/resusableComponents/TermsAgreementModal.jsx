@@ -1,15 +1,11 @@
 import { Modal } from "antd";
+import { useSelector } from "react-redux";
 import PgButton from "./PgButton";
 import "./TenantForm.scss";
 
 const TermsAgreementModal = ({ visible, onAccept, onCancel }) => {
-  const termsRules = [
-    "Tenant must provide valid government ID proof",
-    "Rent must be paid by the 5th of every month",
-    "No smoking inside the premises",
-    "Visitors allowed only between 8AM-10PM",
-    "Security deposit is non-refundable if lease is broken early",
-  ];
+  const { settings } = useSelector((state) => state.settings);
+  const termsRules = settings.termsAndConditions || [];
 
   return (
     <Modal
@@ -35,7 +31,13 @@ const TermsAgreementModal = ({ visible, onAccept, onCancel }) => {
             Cancel
           </PgButton>
           ,
-          <PgButton key="accept" type="primary" size="small" onClick={onAccept}>
+          <PgButton 
+            key="accept" 
+            type="primary" 
+            size="small" 
+            onClick={onAccept}
+            disabled={termsRules.length === 0}
+          >
             I Agree
           </PgButton>
         </div>
@@ -43,11 +45,31 @@ const TermsAgreementModal = ({ visible, onAccept, onCancel }) => {
       closable={false}
     >
       <div className="premium-tenant-form" style={{ maxHeight: "400px", overflowY: "auto" }}>
-        {termsRules.map((term) => (
-          <div key={term} style={{ marginBottom: "8px" }} className="terms-lable">
-            • {term}
-          </div>
-        ))}
+        <div style={{ textAlign: "justify", lineHeight: "1.6" }}>
+          <p style={{ marginBottom: "16px", color: "#666" }} className="terms-lable">
+            By proceeding with the registration, you acknowledge that you have read, understood, and agree to comply with the following terms and conditions:
+          </p>
+          {termsRules.length > 0 ? (
+            termsRules.map((term, index) => (
+              <div key={index} style={{ 
+                marginBottom: "12px",
+                paddingLeft: "16px",
+                color: "#333"
+              }} className="terms-lable">
+                <strong>{index + 1}.</strong> {term}
+              </div>
+            ))
+          ) : (
+            <div style={{ 
+              textAlign: "center", 
+              color: "#999", 
+              fontStyle: "italic",
+              padding: "20px"
+            }} className="terms-lable">
+              No terms and conditions have been configured yet. Please contact the administrator.
+            </div>
+          )}
+        </div>
       </div>
     </Modal>
   );

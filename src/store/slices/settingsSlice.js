@@ -39,6 +39,20 @@ const initialState = {
     autoBackup: true,
     backupFrequency: 'daily',
     dataRetentionPeriod: 365, // days
+    
+    // Terms and Conditions
+    termsAndConditions: [
+      "Tenant must provide valid government ID proof for verification and registration purposes.",
+      "Rent must be paid by the 5th of every month. Late payments will incur additional charges.",
+      "Smoking, consumption of alcohol, and drug use are strictly prohibited inside the premises.",
+      "Visitors are allowed only between 8:00 AM to 10:00 PM. Prior notification to management is required for overnight guests.",
+      "Security deposit is non-refundable if lease is broken early or in case of property damage.",
+      "Tenants are responsible for maintaining cleanliness in their rooms and common areas.",
+      "Any damage to property will be charged to the tenant at market rates.",
+      "Noise levels must be kept to a minimum, especially during night hours (10:00 PM to 6:00 AM).",
+      "Tenants must inform management 30 days in advance before vacating the premises.",
+      "Management reserves the right to inspect rooms with prior notice for maintenance and safety purposes."
+    ],
   },
   loading: false,
   error: null,
@@ -57,6 +71,9 @@ const settingsSlice = createSlice({
         ...action.payload
       };
     },
+    updateTermsAndConditions: (state, action) => {
+      state.settings.termsAndConditions = action.payload;
+    },
     resetSettings: (state) => {
       state.settings = initialState.settings;
     },
@@ -72,6 +89,7 @@ const settingsSlice = createSlice({
 export const {
   updateSettings,
   updateNotificationPreferences,
+  updateTermsAndConditions,
   resetSettings,
   setLoading,
   setError,
