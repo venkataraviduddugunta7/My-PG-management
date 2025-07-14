@@ -1,7 +1,38 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  floors: [],
+  floors: [
+    {
+      id: 'floor-1',
+      floorNumber: 1,
+      floorName: 'Ground Floor',
+      description: 'Main entrance floor with reception area'
+    },
+    {
+      id: 'floor-2',
+      floorNumber: 2,
+      floorName: 'First Floor',
+      description: 'Residential floor with standard rooms'
+    },
+    {
+      id: 'floor-3',
+      floorNumber: 3,
+      floorName: 'Second Floor',
+      description: 'Premium rooms with better amenities'
+    },
+    {
+      id: 'floor-4',
+      floorNumber: 4,
+      floorName: 'Third Floor',
+      description: 'Deluxe rooms with balcony access'
+    },
+    {
+      id: 'floor-5',
+      floorNumber: 5,
+      floorName: 'Top Floor',
+      description: 'Penthouse style rooms with rooftop access'
+    }
+  ],
   loading: false,
   error: null,
 };

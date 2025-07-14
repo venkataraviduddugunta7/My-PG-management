@@ -1,7 +1,78 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  rooms: [],
+  rooms: [
+    {
+      id: 'room-1',
+      roomNumber: '101',
+      name: 'Room 101',
+      floorId: 'floor-1',
+      roomType: 'Standard'
+    },
+    {
+      id: 'room-2',
+      roomNumber: '102',
+      name: 'Room 102',
+      floorId: 'floor-1',
+      roomType: 'Standard'
+    },
+    {
+      id: 'room-3',
+      roomNumber: '201',
+      name: 'Deluxe Room A',
+      floorId: 'floor-2',
+      roomType: 'Deluxe'
+    },
+    {
+      id: 'room-4',
+      roomNumber: '202',
+      name: 'Deluxe Room B',
+      floorId: 'floor-2',
+      roomType: 'Deluxe'
+    },
+    {
+      id: 'room-5',
+      roomNumber: '203',
+      name: 'Shared Room 203',
+      floorId: 'floor-2',
+      roomType: 'Shared'
+    },
+    {
+      id: 'room-6',
+      roomNumber: '301',
+      name: 'Premium Suite A',
+      floorId: 'floor-3',
+      roomType: 'Premium'
+    },
+    {
+      id: 'room-7',
+      roomNumber: '302',
+      name: 'Premium Suite B',
+      floorId: 'floor-3',
+      roomType: 'Premium'
+    },
+    {
+      id: 'room-8',
+      roomNumber: '401',
+      name: 'Deluxe Suite 401',
+      floorId: 'floor-4',
+      roomType: 'Deluxe'
+    },
+    {
+      id: 'room-9',
+      roomNumber: '402',
+      name: 'Deluxe Suite 402',
+      floorId: 'floor-4',
+      roomType: 'Deluxe'
+    },
+    {
+      id: 'room-10',
+      roomNumber: '501',
+      name: 'Penthouse Suite',
+      floorId: 'floor-5',
+      roomType: 'Premium'
+    }
+  ],
   loading: false,
   error: null,
 };
